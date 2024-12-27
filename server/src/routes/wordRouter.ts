@@ -16,7 +16,22 @@ router.get('/loadNouns', async (req, res) => {
     } catch (error) {
         console.error(error);
     }
-})
+});
+
+router.delete('/deleteOneNoun/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const deleteNoun = await NounCollection.findByIdAndDelete(id);
+        if (!deleteNoun) {
+            res.status(404).json({ message: 'Record not found' });
+        }
+        res.status(200).json({ message: 'Record deleted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting record' });
+    }
+});
 
 router.post('/AddOneNoun', async (req: Request, res: Response) => {
     const { noun } = req.body;

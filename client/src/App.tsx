@@ -39,10 +39,20 @@ function App() {
       .then((response) => {
         console.log(response);
         setNoun('');
+        handleGetNouns();
       }).catch((error) => {
         console.log("Error adding noun", error);
         setError(error.response.data.message);
 
+      })
+  }
+
+  const handleDeleteNoun = (id: string) => {
+    axios.delete(`/api/words/deleteOneNoun/${id}`,)
+      .then(() => {
+        handleGetNouns();
+      }).catch((error) => {
+        console.error(error);
       })
   }
 
@@ -77,7 +87,12 @@ function App() {
       <div>
         {allNouns.length > 0 &&
           allNouns.map((item) => (
-            <p>{item.noun}</p>
+            <p>{item.noun} <a onClick={() => handleDeleteNoun(item._id.toString())} style={{
+              cursor: 'pointer',
+              color: 'red',
+              marginLeft: 15
+            }}>X</a>
+            </p>
           ))
         }
 

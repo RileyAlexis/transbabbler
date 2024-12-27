@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 //Types
-import { NounType, VerbType, AdjectiveType, AdverbType } from '../../../Types/WordTypes';
+import { NounType, VerbType, AdjectiveType, AdverbType } from "../Types/WordTypes";
 
 export interface NounWordType extends NounType, Document { }
 export interface VerbWordType extends VerbType, Document { }
@@ -10,8 +10,6 @@ export interface AdverbWordType extends AdverbType, Document { }
 
 export type CategoryType =
     "science" | "trans" | "fantasy" | "none"
-
-
 
 const NounSchema: Schema = new Schema({
     noun: { type: String, required: true },
@@ -46,4 +44,4 @@ const AdverbSchema: Schema = new Schema({
 export const NounCollection = mongoose.model<NounWordType>("NounCollection", NounSchema);
 export const VerbCollection = mongoose.model<VerbWordType>("VerbCollection", VerbSchema);
 export const AdjectiveCollection = mongoose.model<AdjectiveWordType>("AdjectiveCollection", AdjectiveSchema);
-export const AdverbCollection = mongoose.model<AdverbWordType>("AdbvebCollection", AdverbSchema);
+export const AdverbCollection = mongoose.model<AdverbWordType>("AdverbCollection", AdverbSchema);
