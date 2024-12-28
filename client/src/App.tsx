@@ -3,7 +3,9 @@ import axios from "axios";
 
 import { Button, FormHelperText, MenuItem, Select, TextField } from "@mui/material";
 
-import { NounType } from "../../Types/WordTypes";
+//Types
+import { NounType } from "./Types/WordTypes";
+
 
 function App() {
 
@@ -87,7 +89,7 @@ function App() {
       <div>
         {allNouns.length > 0 &&
           allNouns.map((item) => (
-            <p>{item.noun} <a onClick={() => handleDeleteNoun(item._id.toString())} style={{
+            <p key={item._id.toString()}>{item.noun} <a onClick={() => handleDeleteNoun(item._id.toString())} style={{
               cursor: 'pointer',
               color: 'red',
               marginLeft: 15
