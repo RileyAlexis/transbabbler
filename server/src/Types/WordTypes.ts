@@ -1,6 +1,6 @@
-import { ObjectId } from "mongoose";
+import { ObjectId, Document } from "mongoose";
 
-export interface NounType {
+export interface NounType extends Document {
     _id: ObjectId;
     noun: string;
     category?: CategoryType;
@@ -11,19 +11,19 @@ export interface NounType {
 export type CategoryType =
     "science" | "trans" | "fantasy" | "none"
 
-export interface VerbType {
+export interface VerbType extends Document {
     _id: ObjectId;
     verb: string;
     category?: CategoryType;
 }
 
-export interface AdjectiveType {
+export interface AdjectiveType extends Document {
     _id: ObjectId;
     adjective: string;
     category?: CategoryType
 }
 
-export interface AdverbType {
+export interface AdverbType extends Document {
     _id: ObjectId;
     adverb: string;
     category?: CategoryType

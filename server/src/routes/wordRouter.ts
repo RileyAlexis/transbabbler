@@ -5,7 +5,7 @@ import { NounCollection } from '../models/wordSchema'
 
 //Types
 import { Request, Response } from "express";
-import { NounWordType } from '../models/wordSchema';
+import { NounType } from '../Types/WordTypes';
 
 const router = express.Router();
 
@@ -45,7 +45,7 @@ router.post('/AddOneNoun', async (req: Request, res: Response) => {
     } else if (isAlpha) {
 
         try {
-            const newData: NounWordType = new NounCollection({ noun: noun, category: "none" });
+            const newData: NounType = new NounCollection({ noun: noun, category: "none" });
             const savedData = await newData.save();
             res.status(200).json({ message: "Noun Added to DB" });
         } catch (error) {
