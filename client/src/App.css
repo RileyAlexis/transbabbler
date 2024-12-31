@@ -1,14 +1,14 @@
 @layer base {
     :root {
-        --blue: #2c8daa;
-        --pink: #cb3487;
-        --whiteText: rgba(150, 150, 150, 1);
-        --blackText: black;
-        --darkBackground: rgba(0, 0, 0, 0.85);
-        --linkColor: white;
-        --visitedLink: #ff8ddb;
-
+        --blue: #5BCEFA;
+        --pink: #F5A9B8;
+        --primary-color: #5bCEFA;
+        --secondary-color: #F5A9B8;
+        --textColor: dimgray;
+        --backgroundColor: silver;
+        --border-color: black;
         --sans: "Open Sans", sans-serif;
+        font-family: var(--sans);
 
         /* Font Scale */
         --base-size: 1rem;
@@ -31,6 +31,14 @@
         --radius: 5px;
     }
 
+    .dark-theme {
+        --backgroundColor: #373737;
+        --textColor: lightgray;
+        --primary-color: #205063;
+        --secondary-color: #7A5159;
+        --border-color: white;
+    }
+
     html {
         box-sizing: border-box;
     }
@@ -47,9 +55,9 @@
         font-size: var(--base-size);
         padding: 0;
         margin: 0;
-        color: var(--whiteText);
-        background-color: var(--darkBackground);
-
+        color: var(--textColor);
+        background-color: var(--backgroundColor);
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     h1,
@@ -60,5 +68,73 @@
     h6 {
         font-weight: 400;
         margin: 0;
+    }
+
+    button {
+        background-color: var(--primary-color);
+        color: var(--text-color);
+        border-radius: 15;
+        border-width: 1;
+        border-color: var(--text-color);
+        padding: 0.5rem;
+        font-family: inherit;
+        cursor: pointer;
+        box-shadow: none;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    .overlay {
+        position: relative;
+        inset: 0;
+        background: var(--background-color);
+    }
+
+    .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--background-color);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .MuiButton-root {
+        background-color: var(--primary-color) !important;
+        color: var(--textColor) !important;
+        border: 1px solid var(--textColor) !important;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+    }
+
+    .MuiCard-root {
+        background-color: var(--background-color) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--text-color) !important;
+        transition: background-color 0.3s ease, color 0.3s ease !important;
+    }
+
+    .MuiTypography-root {
+        color: var(--text-color) !important;
+        transition: color 0.3s ease !important;
+    }
+
+    .MuiTextField-root .MuiInputBase-root .MuiOutlinedInput-root {
+        background-color: var(--background-color) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--text-color) !important;
+        transition: background-color 0.3s ease, color 0.3s ease !important;
+        border-color: var(--border-color) !important;
+    }
+
+
+    .MuiSelect-root .MuiSelect-select {
+        background-color: var(--background-color) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--text-color) !important;
+        transition: background-color 0.3s ease, color 0.3s ease !important;
     }
 }
