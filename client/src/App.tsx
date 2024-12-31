@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Button } from '@radix-ui/themes';
 
-
-
 //Components
 import { BaseApp } from "./components/BaseApp";
 import { ThemeSelector } from './components/ThemeSelector';
