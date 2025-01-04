@@ -8,7 +8,7 @@ export type CategoryType =
     "science" | "trans" | "fantasy" | "none"
 
 const NounSchema: Schema = new Schema({
-    noun: { type: String, required: true },
+    noun: { type: String, required: true, unique: true },
     category: { type: String, required: false },
     acceptsUnits: { type: Boolean, required: false },
     plural: { type: Boolean, required: false },
@@ -17,21 +17,21 @@ const NounSchema: Schema = new Schema({
 );
 
 const VerbSchema: Schema = new Schema({
-    verb: { type: String, requried: true },
+    verb: { type: String, requried: true, unique: true },
     category: { type: String, required: false }
 },
     { timestamps: true }
 );
 
 const AdjectiveSchema: Schema = new Schema({
-    adjective: { type: String, requried: true },
+    adjective: { type: String, requried: true, unique: true },
     category: { type: String, required: false }
 },
     { timestamps: true }
 );
 
 const AdverbSchema: Schema = new Schema({
-    adverb: { type: String, requried: true },
+    adverb: { type: String, requried: true, unique: true },
     category: { type: String, required: false }
 },
     { timestamps: true }
