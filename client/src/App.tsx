@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-
-import { Button } from '@radix-ui/themes';
 
 //Components
 import { BaseApp } from "./components/BaseApp";
+import { LoginScreen } from './components/LoginScreen';
 import { ThemeSelector } from './components/ThemeSelector';
 
 function App() {
@@ -16,12 +14,19 @@ function App() {
         <Routes>
           <Route path="/" element={<>
             <BaseApp />
+            <ThemeSelector />
+
           </>
           } />
           <Route path="/themeSelect" element={<>
             <ThemeSelector />
           </>
           } />
+
+          <Route path="/login" element={<>
+            <LoginScreen />
+          </>}
+          />
         </Routes>
       </div>
     </div>
