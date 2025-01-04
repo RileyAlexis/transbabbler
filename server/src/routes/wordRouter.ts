@@ -1,4 +1,5 @@
 import express from 'express';
+import { rejectUnauthenticated } from '../strategies/rejectUnauthenticated';
 
 //DB
 import { NounCollection } from '../models/wordSchema'
@@ -18,7 +19,7 @@ router.get('/loadNouns', async (req, res) => {
     }
 });
 
-router.delete('/deleteOneNoun/:id', async (req, res) => {
+router.delete('/deleteOneNoun/:id', rejectUnauthenticated, async (req, res) => {
     const id = req.params.id;
 
     try {

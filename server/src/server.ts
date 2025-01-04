@@ -18,13 +18,38 @@ import { Request, Response } from 'express';
 
 dotenv.config();
 
+const corsOptions = {
+    origin: function (origin: any, callback: any) {
+        const allowedOrigins = [
+            'http://localhost:5173',
+            'https://localhost:5173',
+            'http://transphasic.asuscomm.com',
+            'https://transphasic.asuscomm.com',
+        ];
+
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);  // Allow if origin matches or if no origin
+        } else {
+            callback(new Error('Not allowed by CORS'));  // Reject otherwise
+        }
+    },
+    credentials: true,  // Allow cookies to be sent across origins
+    // methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    // allowedHeaders: ['Content-Type', 'Authorization'],
+    // exposedHeaders: ['Content-Length', 'X-Kuma-Revision'],
+};
+
+
+
 const app = express();
-app.use(cors());
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(session({
     secret: process.env.SERVER_SECRET || '45654ngfmkdfkgfld4',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+
 }));
 
 app.use(passport.initialize());
