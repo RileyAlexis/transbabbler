@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 import { Button } from '@radix-ui/themes';
 
@@ -12,8 +13,16 @@ function App() {
     <div>
       <div>
         <h1>Trans Babbler</h1>
-        <BaseApp />
-        <ThemeSelector />
+        <Routes>
+          <Route path="/" element={<>
+            <BaseApp />
+          </>
+          } />
+          <Route path="/themeSelect" element={<>
+            <ThemeSelector />
+          </>
+          } />
+        </Routes>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { Theme } from '@radix-ui/themes';
 import App from './App';
 import "@radix-ui/themes/styles.css";
@@ -73,7 +74,9 @@ export const useTheme = () => {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemedContainer>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ThemedContainer>
   </StrictMode>
 )
