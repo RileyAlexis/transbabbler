@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import passport from 'passport';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import path from 'path';
+
+const passport = require('./strategies/user.strategy');
 
 //Routes
 const wordRouter = require('./routes/wordRouter');
