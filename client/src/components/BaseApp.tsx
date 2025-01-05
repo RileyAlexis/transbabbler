@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, TextField } from "@radix-ui/themes";
 
-import { NounType } from "src/Types/WordTypes";
+import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
+import { Heading } from "@radix-ui/themes/dist/cjs/index.js";
+import { Select } from "@radix-ui/themes";
 
 export const BaseApp = () => {
 
     const [noun, setNoun] = useState('');
-    const [allNouns, setAllNouns] = useState<NounType[]>([]);
+    const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
+    const [wordToAdd, setWordToAdd] = useState<string>('');
+    const [wordType, setWordType] = useState<string | undefined>();
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -22,7 +26,7 @@ export const BaseApp = () => {
     const handleGetNouns = () => {
         axios.get('/api/words/loadNouns')
             .then((response) => {
-                setAllNouns(response.data);
+                setAllWords(response.data);
             }).catch((error) => {
                 console.error("Error fetching nouns", error);
             })
@@ -50,6 +54,19 @@ export const BaseApp = () => {
             })
     }
 
+    const handleAddWord = () => {
+        if (wordToAdd !== '' && wordType) {
+            axios.post(`/api/words/AddOneWord`, { word: wordToAdd, type: wordType }, { withCredentials: true })
+                .then((response) => {
+                    console.log(response.data.message);
+                    setWordToAdd('');
+                    setWordType(undefined);
+                }).catch((error) => {
+                    console.error(error);
+                })
+        }
+    }
+
     return (
         <div>
             {error !== '' &&
@@ -63,10 +80,42 @@ export const BaseApp = () => {
                 <Button onClick={handleGetNouns}>Load All Nouns</Button>
             </div>
 
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                margin: 10,
+                borderWidth: 2,
+                borderColor: 'white',
+            }}>
+                <Heading weight="bold" align="center" as="h6">Add One Word of any Type</Heading>
+                <Select.Root required onValueChange={(value) => setWordType(value)}>
+                    <Select.Trigger placeholder="Choose Word Type" variant="soft" />
+                    <Select.Content>
+                        <Select.Group>
+                            <Select.Label>Word Type</Select.Label>
+                            <Select.Item value="noun">Noun</Select.Item>
+                            <Select.Item value="verb">Verb</Select.Item>
+                            <Select.Item value="adjective">Adjective</Select.Item>
+                            <Select.Item value="prefix">Prefix</Select.Item>
+                            <Select.Item value="suffix">Suffix</Select.Item>
+
+                        </Select.Group>
+                    </Select.Content>
+                </Select.Root>
+                <TextField.Root placeholder="Enter a Word" variant="soft" radius="small" value={wordToAdd} onChange={(e) => setWordToAdd(e.target.value)}>
+                    <TextField.Slot />
+                </TextField.Root>
+                <Button onClick={handleAddWord}>Add New Word</Button>
+
+
+            </div>
+
             <div>
-                {allNouns.length > 0 &&
-                    allNouns.map((item) => (
-                        <p key={item._id.toString()}>{item.noun} <a onClick={() => handleDeleteNoun(item._id.toString())} style={{
+                {allWords.length > 0 &&
+                    allWords.map((item) => (
+                        <p key={item._id.toString()}>{item.word} <a onClick={() => handleDeleteNoun(item._id.toString())} style={{
                             cursor: 'pointer',
                             color: 'red',
                             marginLeft: 15

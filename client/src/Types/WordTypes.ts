@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 
-export interface NounType {
+export interface NounType extends Document {
     _id: ObjectId;
-    noun: string;
+    word: string;
     category?: CategoryType;
     acceptsUnits: boolean;
     plural?: boolean;
@@ -11,20 +11,26 @@ export interface NounType {
 export type CategoryType =
     "science" | "trans" | "fantasy" | "none"
 
-export interface VerbType {
+export interface VerbType extends Document {
     _id: ObjectId;
-    verb: string;
+    word: string;
     category?: CategoryType;
 }
 
-export interface AdjectiveType {
+export interface AdjectiveType extends Document {
     _id: ObjectId;
-    adjective: string;
+    word: string;
     category?: CategoryType
 }
 
-export interface AdverbType {
+export interface PrefixType extends Document {
     _id: ObjectId;
-    adverb: string;
+    word: string;
+    category?: CategoryType
+}
+
+export interface SuffixType extends Document {
+    _id: ObjectId;
+    word: string;
     category?: CategoryType
 }
