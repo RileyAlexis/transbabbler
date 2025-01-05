@@ -10,15 +10,6 @@ import { AdjectiveType, NounType, VerbType, PrefixType, SuffixType } from '../Ty
 
 const router = express.Router();
 
-router.get('/loadNouns', async (req, res) => {
-    try {
-        const nouns = await NounCollection.find();
-        res.status(200).json(nouns);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
 router.get('/loadCollection/:type', async (req, res) => {
     const type = req.params.type;
     console.log('/loadCollection', type);
@@ -66,46 +57,37 @@ router.delete('/deleteWord/:id/:type', async (req, res) => {
     }
 });
 
-router.delete('/deleteOneNoun/:id', rejectUnauthenticated, async (req, res) => {
-    const id = req.params.id;
+router.post('/updateWord', async (req, res) => {
+    const { type, id, word } = req.body;
 
-    try {
-        const deleteNoun = await NounCollection.findByIdAndDelete(id);
-        if (!deleteNoun) {
-            res.status(404).json({ message: 'Record not found' });
-        }
-        res.status(200).json({ message: 'Record Deleted' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error deleting record' });
-    }
-});
-
-router.post('/AddOneNoun', async (req: Request, res: Response) => {
-    const { noun } = req.body;
-
-    const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(noun);
-    console.log(req.body);
-    console.log('AddOneNoun called', noun, isAlpha);
+    const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
 
     if (!isAlpha) {
-        res.status(400).json({ message: "Invalid input: Noun must contain only alphabetic characters" });
+        res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
     } else if (isAlpha) {
-
         try {
-            const newData: NounType = new NounCollection({ word: noun, category: "none" });
-            const savedData = await newData.save();
-            res.status(200).json({ message: "Noun Added to DB" });
+            let updateWord;
+            switch (type) {
+                case "noun": updateWord = NounCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "verb": updateWord = VerbCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "adjective": updateWord = AdjectiveCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "prefix": updateWord = PrefixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "suffix": updateWord = SuffixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                default: res.status(400).json({ message: "Invalid Word Type" });
+            }
+            if (!updateWord) {
+                res.status(400).json({ message: "Record not found" });
+            } else {
+                res.status(200).json({ message: `Word ${word} in collection ${type} updated` });
+            }
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Error Saving Data" });
+            res.status(500).json({ message: "Error updating record" });
         }
     }
-});
+})
 
 router.post('/AddOneWord', async (req: Request, res: Response) => {
     const { type, word } = req.body;
-    console.log(`AddOneWord called. Type: ${type}, Word: ${word}`);
 
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
 
@@ -133,29 +115,32 @@ router.post('/AddOneWord', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/AddManyNouns', async (req, res) => {
+router.post('/AddManyWords', async (req, res) => {
     try {
-        const { nouns } = req.body;
+        const { words, type } = req.body;
 
-        if (!Array.isArray(nouns) || nouns.some((noun) => typeof noun !== 'string')) {
-            res.status(400).json({ message: "Invalid Input, must be an array of strings" });
+        if (!Array.isArray(words) || words.some((word) => typeof word !== 'string')) {
+            res.status(400).json({ message: "Invalid Input, must be an array of strings" })
         }
 
-        const nounDocs = nouns.map((noun: string) => ({ noun }));
-        const result = await NounCollection.insertMany(nounDocs, { ordered: false });
-        res.status(201).json({
-            message: `${result.length} nouns successfully added to the database.`,
-            insertedWords: result.map((doc) => doc.noun)
-        });
+        const wordDocs = words.map((word: string) => ({ word }));
+        let result;
+        switch (type) {
+            case "noun": result = await NounCollection.insertMany(wordDocs, { ordered: false }); break;
+            case "verb": result = await VerbCollection.insertMany(wordDocs, { ordered: false }); break;
+            case "adjective": result = await AdjectiveCollection.insertMany(wordDocs, { ordered: false }); break;
+            case "prefix": result = await PrefixCollection.insertMany(wordDocs, { ordered: false }); break;
+            case "suffix": result = await SuffixCollection.insertMany(wordDocs, { ordered: false }); break;
+            default: res.status(400).json({ message: "Invalid Type" });
+        }
+        if (result) {
+            res.status(200).json({ message: "Words successfully added to database" })
+        }
     } catch (error: any) {
         if (error.code === 11000) {
-            res.status(400).json({
-                message: "Some nouns were duplicates and not added",
-                error: error.message,
-            });
+            res.status(400).json({ message: "Some words were duplicates and not added" })
         } else {
-            console.error("Error inserting nouns:", error);
-            res.status(500).json({ message: "An error occurred.", error: error.message })
+            res.status(500).json({ message: "An error ocurred.", error: error.message });
         }
     }
 });
