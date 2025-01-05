@@ -8,7 +8,6 @@ import { Select } from "@radix-ui/themes";
 
 export const BaseApp = () => {
 
-    const [noun, setNoun] = useState('');
     const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
     const [collection, setCollection] = useState<string | undefined>();
     const [wordToAdd, setWordToAdd] = useState<string>('');
@@ -34,10 +33,21 @@ export const BaseApp = () => {
                 .then((response) => {
                     console.log(response.data.message);
                     setWordToAdd('');
+                    handleLoadCollection();
                 }).catch((error) => {
                     console.error(error);
                 })
         }
+    }
+
+    const handleDeleteWord = (id: string) => {
+        axios.delete(`/api/words/deleteWord/${id}/${collection}`)
+            .then((response) => {
+                console.log(response.data.message);
+                handleLoadCollection();
+            }).catch((error) => {
+                console.error(error);
+            })
     }
 
     return (
@@ -99,7 +109,7 @@ export const BaseApp = () => {
             <div>
                 {allWords.length > 0 &&
                     allWords.map((item) => (
-                        <p key={item._id.toString()}>{item.word} <a onClick={() => handleDeleteNoun(item._id.toString())} style={{
+                        <p key={item._id.toString()}>{item.word} <a onClick={() => handleDeleteWord(item._id.toString())} style={{
                             cursor: 'pointer',
                             color: 'red',
                             marginLeft: 15

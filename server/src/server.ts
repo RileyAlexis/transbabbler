@@ -9,6 +9,7 @@ const passport = require('./strategies/user.strategy');
 //Routes
 const wordRouter = require('./routes/wordRouter');
 const userRouter = require('./routes/userRouter');
+const generator = require('./routes/generator');
 
 //MongoDB
 import { dbConnect } from './models/dbConnect';
@@ -70,7 +71,7 @@ app.get('/api', (req: Request, res: Response) => {
 
 app.use('/api/words', wordRouter);
 app.use('/api/users', userRouter);
-
+app.use('/api/generator', generator);
 
 const port = process.env.PORT || 5001;
 app.listen(port, () => {

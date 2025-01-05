@@ -40,7 +40,31 @@ router.get('/loadCollection/:type', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error retrieving collection" });
     }
-})
+});
+
+router.delete('/deleteWord/:id/:type', async (req, res) => {
+    const id = req.params.id;
+    const type = req.params.type;
+    console.log('/deleteWord', id, type);
+    try {
+        let newWord;
+        switch (type) {
+            case "nouns": newWord = await NounCollection.findByIdAndDelete(id); break;
+            case "verbs": newWord = await VerbCollection.findByIdAndDelete(id); break;
+            case "adjectives": newWord = await AdjectiveCollection.findByIdAndDelete(id); break;
+            case "prefixes": newWord = await PrefixCollection.findByIdAndDelete(id); break;
+            case "suffixes": newWord = await SuffixCollection.findByIdAndDelete(id); break;
+            default: res.status(400).json({ message: "Invalid Word Type" });
+        }
+        if (!newWord) {
+            res.status(404).json({ message: "Record not found" });
+        } else {
+            res.status(200).json({ message: "Record Deleted" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting record" });
+    }
+});
 
 router.delete('/deleteOneNoun/:id', rejectUnauthenticated, async (req, res) => {
     const id = req.params.id;
@@ -50,7 +74,7 @@ router.delete('/deleteOneNoun/:id', rejectUnauthenticated, async (req, res) => {
         if (!deleteNoun) {
             res.status(404).json({ message: 'Record not found' });
         }
-        res.status(200).json({ message: 'Record deleted' });
+        res.status(200).json({ message: 'Record Deleted' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error deleting record' });
@@ -135,8 +159,6 @@ router.post('/AddManyNouns', async (req, res) => {
         }
     }
 });
-
-
 
 
 module.exports = router;

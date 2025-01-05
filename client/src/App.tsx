@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { BaseApp } from "./components/BaseApp";
 import { LoginScreen } from './components/LoginScreen';
 import { ThemeSelector } from './components/ThemeSelector';
+import { GenerateBase } from './components/GenerateBase';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<>
             <BaseApp />
+            <GenerateBase />
             <ThemeSelector />
 
           </>
