@@ -56,5 +56,32 @@ router.post('/AddOneNoun', async (req: Request, res: Response) => {
     }
 });
 
+router.post('/AddManyNouns', async (req, res) => {
+    try {
+        const { nouns } = req.body;
+
+        if (!Array.isArray(nouns) || nouns.some((noun) => typeof noun !== 'string')) {
+            res.status(400).json({ message: "Invalid Input, must be an array of strings" });
+        }
+
+        const nounDocs = nouns.map((noun: string) => ({ noun }));
+        const result = await NounCollection.insertMany(nounDocs, { ordered: false });
+        res.status(201).json({
+            message: `${result.length} nouns successfully added to the database.`,
+            insertedWords: result.map((doc) => doc.noun)
+        });
+    } catch (error: any) {
+        if (error.code === 11000) {
+            res.status(400).json({
+                message: "Some nouns were duplicates and not added",
+                error: error.message,
+            });
+        } else {
+            console.error("Error inserting nouns:", error);
+            res.status(500).json({ message: "An error occurred.", error: error.message })
+        }
+    }
+})
+
 
 module.exports = router;
