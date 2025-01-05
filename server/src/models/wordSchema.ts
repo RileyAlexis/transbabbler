@@ -1,14 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
 //Types
-import { NounType, VerbType, AdjectiveType, AdverbType } from "../Types/WordTypes";
+import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../Types/WordTypes";
 
 
 export type CategoryType =
     "science" | "trans" | "fantasy" | "none"
 
 const NounSchema: Schema = new Schema({
-    noun: { type: String, required: true, unique: true },
+    word: { type: String, required: true, unique: true },
     category: { type: String, required: false },
     acceptsUnits: { type: Boolean, required: false },
     plural: { type: Boolean, required: false },
@@ -17,21 +17,28 @@ const NounSchema: Schema = new Schema({
 );
 
 const VerbSchema: Schema = new Schema({
-    verb: { type: String, requried: true, unique: true },
+    word: { type: String, requried: true, unique: true },
     category: { type: String, required: false }
 },
     { timestamps: true }
 );
 
 const AdjectiveSchema: Schema = new Schema({
-    adjective: { type: String, requried: true, unique: true },
+    word: { type: String, requried: true, unique: true },
     category: { type: String, required: false }
 },
     { timestamps: true }
 );
 
-const AdverbSchema: Schema = new Schema({
-    adverb: { type: String, requried: true, unique: true },
+const PrefixSchema: Schema = new Schema({
+    word: { type: String, requried: true, unique: true },
+    category: { type: String, required: false }
+},
+    { timestamps: true }
+);
+
+const SuffixSchema: Schema = new Schema({
+    word: { type: String, requried: true, unique: true },
     category: { type: String, required: false }
 },
     { timestamps: true }
@@ -40,4 +47,5 @@ const AdverbSchema: Schema = new Schema({
 export const NounCollection = mongoose.model<NounType>("NounCollection", NounSchema);
 export const VerbCollection = mongoose.model<VerbType>("VerbCollection", VerbSchema);
 export const AdjectiveCollection = mongoose.model<AdjectiveType>("AdjectiveCollection", AdjectiveSchema);
-export const AdverbCollection = mongoose.model<AdverbType>("AdverbCollection", AdverbSchema);
+export const PrefixCollection = mongoose.model<PrefixType>("PrefixCollection", PrefixSchema);
+export const SuffixCollection = mongoose.model<SuffixType>("SuffixCollection", SuffixSchema)
