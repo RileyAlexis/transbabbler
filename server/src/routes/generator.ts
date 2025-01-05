@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         const suffix: SuffixType[] = await SuffixCollection.aggregate([{ $sample: { size: 1 } }]);
 
         if (noun.length > 0) {
-            res.status(200).json(`${verb[0].word} the ${adjective[0].word} ${prefix[0].word}-${noun[0].word}-${suffix[0].word}`);
+            res.status(200).json(`${verb[0].word} the ${prefix[0].word}${adjective[0].word} ${noun[0].word}`);
         } else {
             res.status(404).json({ message: "No Phrase found" });
         }
