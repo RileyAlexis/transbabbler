@@ -6,13 +6,11 @@ import { AdjectiveCollection, NounCollection, PrefixCollection, SuffixCollection
 
 //Types
 import { Request, Response } from "express";
-import { AdjectiveType, NounType, VerbType, PrefixType, SuffixType } from '../Types/WordTypes';
 
 const router = express.Router();
 
 router.get('/loadCollection/:type', async (req, res) => {
     const type = req.params.type;
-    console.log('/loadCollection', type);
     let collectionToLoad;
 
     try {
@@ -36,7 +34,6 @@ router.get('/loadCollection/:type', async (req, res) => {
 router.delete('/deleteWord/:id/:type', async (req, res) => {
     const id = req.params.id;
     const type = req.params.type;
-    console.log('/deleteWord', id, type);
     try {
         let newWord;
         switch (type) {

@@ -17,9 +17,6 @@ router.get('/', async (req, res) => {
         const prefix: PrefixType[] = await PrefixCollection.aggregate([{ $sample: { size: 1 } }]);
         const suffix: SuffixType[] = await SuffixCollection.aggregate([{ $sample: { size: 1 } }]);
 
-
-        console.log(noun[0].word, verb[0].word, adjective[0].word);
-
         if (noun.length > 0) {
             res.status(200).json(`${verb[0].word} the ${adjective[0].word} ${prefix[0].word}-${noun[0].word}-${suffix[0].word}`);
         } else {
