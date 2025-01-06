@@ -40,6 +40,11 @@ const corsOptions = {
     // exposedHeaders: ['Content-Length', 'X-Kuma-Revision'],
 };
 
+declare module 'express-session' {
+    interface SessionData {
+        user: { username: string };
+    }
+}
 
 
 const app = express();
@@ -50,7 +55,12 @@ app.use(session({
     secret: process.env.SERVER_SECRET || '45654ngfmkdfkgfld4',
     resave: false,
     saveUninitialized: false,
-
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+    },
 }));
 
 app.use(passport.initialize());

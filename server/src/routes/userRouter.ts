@@ -5,6 +5,7 @@ import { User } from '../models/userSchema';
 //Types
 import { Request, Response } from "express";
 import passport from 'passport';
+import { rejectUnauthenticated } from '../strategies/rejectUnauthenticated';
 
 const router = express.Router();
 
@@ -12,7 +13,11 @@ router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-}));
+}), (req, res) => {
+    console.log(req.user);
+    res.status(200).json({ message: 'Login Successful', user: req.user })
+
+});
 
 router.get('/', (req, res) => {
     if (!req.isAuthenticated()) {
@@ -27,6 +32,12 @@ router.get('/logout', (req, res, next) => {
         res.redirect('/');
     });
 });
+
+router.get('/profile', rejectUnauthenticated, (req, res) => {
+    console.log(req.user);
+    res.status(200).json({ user: req.user });
+
+})
 
 router.post('/register', async (req: Request, res: Response) => {
     const { username, password } = req.body;

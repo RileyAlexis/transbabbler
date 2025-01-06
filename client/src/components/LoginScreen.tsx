@@ -17,7 +17,7 @@ export const LoginScreen: React.FC = () => {
             if (registerNew) {
                 axios.post('/api/users/register', { username: username, password: password })
                     .then((response) => {
-                        console.log(response.statusText);
+                        console.log(response.data);
 
                         setUser({
                             usernanme: username,
@@ -31,9 +31,9 @@ export const LoginScreen: React.FC = () => {
                         console.error(error);
                     })
             }
-            axios.post('/api/users/login', { username: username, password: password }, { withCredentials: true })
+            axios.post('/api/users/login', { username: username, password: password })
                 .then((response) => {
-                    console.log(response.statusText)
+                    console.log(response.data)
 
                     setUser({
                         usernanme: username,
