@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { User } from '../models/userSchema';
+import { TUser, User } from '../models/userSchema';
 
 //Types
 import { Request, Response } from "express";
@@ -9,15 +9,24 @@ import { rejectUnauthenticated } from '../strategies/rejectUnauthenticated';
 
 const router = express.Router();
 
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-}), (req, res) => {
-    console.log(req.user);
-    res.status(200).json({ message: 'Login Successful', user: req.user })
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (error: Error, user: TUser) => {
+        if (error) {
+            return res.status(500).json({ message: 'An error occurred during authentication' });
+        }
+        if (!user) {
+            return res.status(401).json({ message: 'Login failed' });
+        }
+        req.logIn(user, (loginErr) => {
+            if (loginErr) {
+                return res.status(500).json({ message: 'Login failed' });
+            }
+            return res.status(200).send({ message: 'Logged in successfully', id: user._id, username: user.username, is_admin: user.is_admin });
+        });
+    })(req, res, next);
+})
 
-});
+
 
 router.get('/', (req, res) => {
     if (!req.isAuthenticated()) {

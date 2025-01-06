@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { Button } from '@radix-ui/themes';
-import { BadgeProps } from '@radix-ui/themes/dist/cjs/index.js';
 import { DropdownMenu } from '@radix-ui/themes';
 
 export const BabbleHeader: React.FC = () => {
@@ -34,7 +33,8 @@ export const BabbleHeader: React.FC = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             flexDirection: 'row',
-            paddingRight: 10
+            paddingRight: 10,
+            background: 'linear-gradient(to right, var(--pink-a5), var(--blue)'
 
         }}>
             <h1 style={{
@@ -65,6 +65,12 @@ export const BabbleHeader: React.FC = () => {
 
                         <DropdownMenu.Content>
                             <DropdownMenu.Item onSelect={handleLogout}>Logout</DropdownMenu.Item>
+                            {user.is_admin &&
+                                <>
+                                    <DropdownMenu.Separator />
+                                    <DropdownMenu.Item>Admin Panel</DropdownMenu.Item>
+                                </>
+                            }
                         </DropdownMenu.Content>
 
                     </DropdownMenu.Root>

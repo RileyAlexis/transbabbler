@@ -11,6 +11,7 @@ type User = {
   usernanme: string;
   email: string;
   isAuthenticated: boolean;
+  is_admin?: boolean;
 }
 
 interface ThemeContextValue {
