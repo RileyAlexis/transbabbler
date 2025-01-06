@@ -5,20 +5,19 @@ import { BaseApp } from "./components/BaseApp";
 import { LoginScreen } from './components/LoginScreen';
 import { ThemeSelector } from './components/ThemeSelector';
 import { GenerateBase } from './components/GenerateBase';
+import { BabbleHeader } from './components/BabbleHeader';
 
 function App() {
 
   return (
-    <div>
+    <div className='primaryContainer' >
       <div>
-        <h1>Trans Babbler</h1>
         <Routes>
-          <Route path="/" element={<>
-            <BaseApp />
-            <GenerateBase />
-            <ThemeSelector />
-
-          </>
+          <Route path="/" element={
+            <div>
+              <BabbleHeader />
+              <GenerateBase />
+            </div>
           } />
           <Route path="/themeSelect" element={<>
             <ThemeSelector />

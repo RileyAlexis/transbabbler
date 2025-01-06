@@ -5,9 +5,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { Theme } from '@radix-ui/themes';
 import App from './App';
 import "@radix-ui/themes/styles.css";
-import './App.css';
 
 type ThemeType = 'light' | 'dark' | 'auto';
+type User = {
+  usernanme: string;
+  email: string;
+  isAuthenticated: boolean;
+}
 
 interface ThemeContextValue {
   theme: ThemeType;
@@ -15,7 +19,13 @@ interface ThemeContextValue {
   setTheme: (theme: ThemeType) => void;
 }
 
+interface UserContextValue {
+  user: User | null;
+  setUser: (user: User | null) => void;
+}
+
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 function ThemedContainer({ children }: { children: React.ReactNode }) {
 
@@ -53,7 +63,12 @@ function ThemedContainer({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
-      <Theme accentColor='pink' grayColor='sand' appearance={resolvedTheme}>
+      <Theme
+        accentColor='pink'
+        grayColor='sand'
+        appearance={resolvedTheme}
+        panelBackground='translucent'
+      >
         {children}
       </Theme>
     </ThemeContext.Provider>
@@ -62,21 +77,39 @@ function ThemedContainer({ children }: { children: React.ReactNode }) {
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
-
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
-
   return context;
+}
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
+}
+
+function UserProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  )
 }
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemedContainer>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <UserProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </UserProvider>
     </ThemedContainer>
   </StrictMode>
 )

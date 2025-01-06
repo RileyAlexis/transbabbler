@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from '../main';
 import { Button, TextField } from "@radix-ui/themes";
 
 export const LoginScreen: React.FC = () => {
@@ -8,6 +9,7 @@ export const LoginScreen: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [registerNew, setRegisterNew] = useState(false);
+    const { setUser } = useUser();
 
 
     const submitLogin = () => {
@@ -15,7 +17,14 @@ export const LoginScreen: React.FC = () => {
             if (registerNew) {
                 axios.post('/api/users/register', { username: username, password: password })
                     .then((response) => {
-                        console.log(response.statusText)
+                        console.log(response.statusText);
+
+                        setUser({
+                            usernanme: username,
+                            email: '',
+                            isAuthenticated: true
+                        });
+
                         setRegisterNew(false);
                         navigate('/');
                     }).catch((error) => {
@@ -25,6 +34,12 @@ export const LoginScreen: React.FC = () => {
             axios.post('/api/users/login', { username: username, password: password }, { withCredentials: true })
                 .then((response) => {
                     console.log(response.statusText)
+
+                    setUser({
+                        usernanme: username,
+                        email: '',
+                        isAuthenticated: true
+                    });
 
                     navigate('/');
                 }).catch((error) => {
