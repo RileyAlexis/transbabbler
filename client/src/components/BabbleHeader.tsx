@@ -2,7 +2,8 @@ import React from 'react';
 import { useUser } from '../main';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Text } from '@radix-ui/themes';
+import { Button } from '@radix-ui/themes';
+import { Badge } from '@radix-ui/themes/dist/cjs/index.js';
 
 export const BabbleHeader: React.FC = () => {
 
@@ -37,7 +38,14 @@ export const BabbleHeader: React.FC = () => {
                     <Button variant='soft' onClick={handleLogin}>Log In</Button>
                 }
                 {user?.usernanme &&
-                    <Text>{user.usernanme}</Text>
+                    <Badge color="pink" size="3" variant='soft'
+                        style={{
+                            paddingTop: 7,
+                            paddingBottom: 7,
+                            paddingLeft: 12,
+                            paddingRight: 12,
+                        }}
+                    >{user.usernanme}</Badge>
 
                 }
             </div>
