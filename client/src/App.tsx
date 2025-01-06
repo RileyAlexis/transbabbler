@@ -15,12 +15,14 @@ function App() {
   const { user, setUser } = useUser();
 
   useEffect(() => {
-    axios.get('/api/users/profile')
+    axios.get('/api/users/profile', { withCredentials: true })
       .then((response) => {
+        console.log(response);
         setUser({
           usernanme: response.data.user.username,
           email: '',
-          isAuthenticated: true
+          isAuthenticated: true,
+          is_admin: response.data.user.is_admin
         });
       }).catch((error) => {
         console.log(error);
