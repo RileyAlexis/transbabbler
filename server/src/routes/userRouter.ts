@@ -27,6 +27,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/logout', (req, res, next) => {
+    console.log('Logout Route Called');
     req.logOut((error) => {
         if (error) return next(error);
         res.redirect('/');

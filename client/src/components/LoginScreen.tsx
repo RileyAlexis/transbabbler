@@ -32,9 +32,7 @@ export const LoginScreen: React.FC = () => {
                     })
             }
             axios.post('/api/users/login', { username: username, password: password })
-                .then((response) => {
-                    console.log(response.data)
-
+                .then(() => {
                     setUser({
                         usernanme: username,
                         email: '',

@@ -116,7 +116,7 @@
 
 @media only screen and (max-width: 450px) and (orientation: portrait) {
     .babblerContainer {
-        height: 90vh;
+        height: 92vh;
         width: 100vw;
         margin-top: 0.3rem;
     }

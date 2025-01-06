@@ -1,17 +1,31 @@
 import React from 'react';
 import { useUser } from '../main';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { Button } from '@radix-ui/themes';
-import { Badge } from '@radix-ui/themes/dist/cjs/index.js';
+import { BadgeProps } from '@radix-ui/themes/dist/cjs/index.js';
+import { DropdownMenu } from '@radix-ui/themes';
 
 export const BabbleHeader: React.FC = () => {
 
     const navigate = useNavigate();
-    const { user } = useUser();
+    const { user, setUser } = useUser();
 
     const handleLogin = () => {
         navigate('/login');
+    }
+
+    const handleLogout = async () => {
+        axios.get('/api/users/logout', { withCredentials: true })
+            .then((response) => {
+                if (response.request.responseURL) {
+                    setUser(null);
+                    navigate('/');
+                }
+            }).catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
@@ -38,14 +52,32 @@ export const BabbleHeader: React.FC = () => {
                     <Button variant='soft' onClick={handleLogin}>Log In</Button>
                 }
                 {user?.usernanme &&
-                    <Badge color="pink" size="3" variant='soft'
-                        style={{
-                            paddingTop: 7,
-                            paddingBottom: 7,
-                            paddingLeft: 12,
-                            paddingRight: 12,
-                        }}
-                    >{user.usernanme}</Badge>
+
+
+                    <DropdownMenu.Root>
+                        <DropdownMenu.Trigger>
+                            <Button variant='soft' style={{
+                                background: 'var(--pink-a5'
+                            }}>{user.usernanme}
+                                <DropdownMenu.TriggerIcon />
+                            </Button>
+                        </DropdownMenu.Trigger>
+
+                        <DropdownMenu.Content>
+                            <DropdownMenu.Item onSelect={handleLogout}>Logout</DropdownMenu.Item>
+                        </DropdownMenu.Content>
+
+                    </DropdownMenu.Root>
+
+
+                    // <Badge color="pink" size="3" variant='soft'
+                    //     style={{
+                    //         paddingTop: 7,
+                    //         paddingBottom: 7,
+                    //         paddingLeft: 12,
+                    //         paddingRight: 12,
+                    //     }}
+                    // >{user.usernanme}</Badge>
 
                 }
             </div>
