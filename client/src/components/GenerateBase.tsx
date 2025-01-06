@@ -15,37 +15,43 @@ export const GenerateBase: React.FC = () => {
             })
     }
 
+    const resetBabbler = () => {
+        setGenPhrase([]);
+    }
+
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                overflowY: 'scroll',
-                height: 250,
-                width: 550,
-            }}
-        >
-            <Button onClick={handleGenerate}>Generate</Button>
-            <div>
-                {genPhrase.length > 0 &&
-                    genPhrase.map((line, index) => (
-                        <div key={index}>
-                            <Text
-                                style={{
-                                    margin: 5
-                                }}
-                                weight="bold"
-                                align="center"
-                                wrap="nowrap"
-                            >
+        <div className="babblerContainer">
+            <div className="babblerContainerButtons">
+                <Button style={{ marginRight: 15 }} onClick={handleGenerate}>Generate Babble</Button>
+                <Button onClick={resetBabbler}>Clear Babble</Button>
+            </div>
+            <div className="babblerContainerBabbles">
+
+
+                <Text
+                    style={{
+                        marginRight: '0.3rem',
+                        marginLeft: '0.3rem',
+                    }}
+                    weight="medium"
+                    as="p"
+                >
+                    {genPhrase.length > 0 &&
+                        genPhrase.map((line, index) => (
+                            <span className="babblerLines" key={index}>
                                 {line}
-                            </Text>
-                        </div>
-                    ))
-                }
+                                {
+                                    genPhrase.length > 1 &&
+                                    <Text color="pink" size="6" as="span" style={{ marginLeft: '0.2rem' }}>|</Text>
+                                }
+                            </span>
+                        ))
+                    }
+                </Text>
+
+
+
 
             </div>
         </div>

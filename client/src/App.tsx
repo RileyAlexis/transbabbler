@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useUser } from './main';
 import axios from 'axios';
+import './App.css';
 
 //Components
 import { LoginScreen } from './components/LoginScreen';
