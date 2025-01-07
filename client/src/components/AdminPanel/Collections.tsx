@@ -93,11 +93,12 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
         <div>
             <Table.Root>
                 <Table.Header>
-                    <Table.Row>
-                        <Table.ColumnHeaderCell>{capitalize(collection)}</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Category</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Modify</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Delete</Table.ColumnHeaderCell>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        marginLeft: 15,
+                        marginTop: 15,
+                    }}>
                         <IconButton>
                             {!isAdding &&
                                 <PlusCircledIcon onClick={() => setIsAdding(true)} />
@@ -106,6 +107,13 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
                                 <MinusCircledIcon onClick={() => setIsAdding(false)} />
                             }
                         </IconButton>
+                    </div>
+                    <Table.Row>
+                        <Table.ColumnHeaderCell>{capitalize(collection)}</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>Category</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>Modify</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell>Delete</Table.ColumnHeaderCell>
+
                     </Table.Row>
                 </Table.Header>
 

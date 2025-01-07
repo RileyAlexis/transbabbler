@@ -41,12 +41,17 @@ export const BabbleHeader: React.FC = () => {
             background: 'linear-gradient(to right, var(--pink-a5), var(--blue)'
 
         }}>
-            <h1 style={{
-                flexGrow: 1,
-                margin: 0,
-                textAlign: 'center'
-            }}>
-                Transbabbler</h1>
+            <a style={{
+                cursor: 'pointer'
+            }}
+                onClick={() => navigate('/')}>
+                <h1 style={{
+                    flexGrow: 1,
+                    margin: 0,
+                    textAlign: 'center'
+                }}>
+                    Transbabbler</h1>
+            </a>
             <div
                 style={{
                     justifyContent: 'flex-end'
@@ -78,17 +83,6 @@ export const BabbleHeader: React.FC = () => {
                         </DropdownMenu.Content>
 
                     </DropdownMenu.Root>
-
-
-                    // <Badge color="pink" size="3" variant='soft'
-                    //     style={{
-                    //         paddingTop: 7,
-                    //         paddingBottom: 7,
-                    //         paddingLeft: 12,
-                    //         paddingRight: 12,
-                    //     }}
-                    // >{user.usernanme}</Badge>
-
                 }
             </div>
         </div>
