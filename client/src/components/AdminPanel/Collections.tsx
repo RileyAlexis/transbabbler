@@ -6,6 +6,7 @@ import { Table, TextField } from "@radix-ui/themes";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
+import { alphabetize } from '../../modules/alphabetize';
 
 //Types
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
@@ -26,7 +27,7 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
         if (collection) {
             axios.get(`api/words/loadCollection/${collection}`)
                 .then((response) => {
-                    setAllWords(response.data);
+                    setAllWords(alphabetize(response.data));
                 }).catch((error) => {
                     console.error(error);
                 })
