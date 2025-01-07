@@ -54,8 +54,14 @@ export const AdminPanel: React.FC = () => {
         <>
             <BabbleHeader />
             <div className="adminContainer">
-                <Tabs.Root>
-                    <Tabs.List>
+                <Tabs.Root style={{
+                    width: '100%'
+                }}>
+                    <Tabs.List style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
                         <Tabs.Trigger value="Nouns">Nouns</Tabs.Trigger>
                         <Tabs.Trigger value="Verbs">Verbs</Tabs.Trigger>
                         <Tabs.Trigger value="Adjectives">Adjectives</Tabs.Trigger>
