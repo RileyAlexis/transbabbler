@@ -13,6 +13,11 @@ export const ModifyWord: React.FC<ModifyWordProps> = ({ word, loading, onSubmit 
 
     const [wordToModify, setWordToModify] = useState('');
 
+    const handleSubmit = () => {
+        onSubmit(wordToModify);
+        setWordToModify('');
+    }
+
     return (
         <div style={{
             display: 'flex',
@@ -23,7 +28,7 @@ export const ModifyWord: React.FC<ModifyWordProps> = ({ word, loading, onSubmit 
                 <TextField.Slot />
 
             </TextField.Root>
-            <IconButton loading={loading} onClick={() => onSubmit(wordToModify)}>
+            <IconButton loading={loading} onClick={handleSubmit}>
                 <UploadIcon />
             </IconButton>
         </div>

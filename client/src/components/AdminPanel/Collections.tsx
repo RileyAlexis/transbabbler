@@ -3,7 +3,7 @@ import axios from 'axios';
 
 //UI
 import { IconButton, Table, TextField } from "@radix-ui/themes";
-import { UploadIcon } from "@radix-ui/react-icons";
+import { MinusCircledIcon, PlusCircledIcon, UploadIcon } from "@radix-ui/react-icons";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
@@ -23,6 +23,8 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
 
     const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
     const [loading, setLoading] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
+    const [wordToAdd, setWordToAdd] = useState(`Add a Word to ${collection}`);
     const [error, setError] = useState<string>('');
 
 
@@ -45,11 +47,16 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
 
     const handleAddWord = (wordToAdd: string, wordType: string) => {
         if (wordToAdd !== '' && wordType) {
-            axios.post(`/api/words/AddOneWord`, { word: wordToAdd, type: wordType }, { withCredentials: true })
+            setLoading(true);
+            axios.post(`/api/words/addOneWord`, { word: wordToAdd, type: wordType })
                 .then((response) => {
                     console.log(response.data.message);
+                    handleLoadCollection();
+                    setLoading(false);
+                    setIsAdding(false);
                 }).catch((error) => {
                     console.error(error);
+                    setLoading(false);
                 })
         }
     }
@@ -65,12 +72,11 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
     }
 
     const handleModify = (id: string, originalWord: string, modifiedWord: string) => {
-        setLoading(true);
         console.log(modifiedWord);
         if (originalWord === modifiedWord || modifiedWord === '') {
             return;
         } else {
-
+            setLoading(true);
             axios.post('/api/words/updateWord', { type: collection, id: id, word: modifiedWord })
                 .then((response) => {
                     console.log(response.data.message);
@@ -83,11 +89,6 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
         }
     }
 
-    const handleOnSubmit = (word: string) => {
-
-    }
-
-
     return (
         <div>
             <Table.Root>
@@ -97,10 +98,26 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
                         <Table.ColumnHeaderCell>Category</Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>Modify</Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>Delete</Table.ColumnHeaderCell>
+                        <IconButton>
+                            {!isAdding &&
+                                <PlusCircledIcon onClick={() => setIsAdding(true)} />
+                            }
+                            {isAdding &&
+                                <MinusCircledIcon onClick={() => setIsAdding(false)} />
+                            }
+                        </IconButton>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
+                    {isAdding &&
+                        <Table.Row>
+                            <Table.RowHeaderCell>
+                                <ModifyWord word={wordToAdd} loading={loading} onSubmit={(word: string) => handleAddWord(word, collection)} />
+                            </Table.RowHeaderCell>
+                        </Table.Row>
+                    }
+
                     {allWords.map((item, _id) => (
                         <Table.Row key={_id}>
                             <Table.RowHeaderCell>{item.word}</Table.RowHeaderCell>

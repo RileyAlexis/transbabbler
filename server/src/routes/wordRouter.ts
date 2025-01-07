@@ -85,7 +85,7 @@ router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
     }
 })
 
-router.post('/AddOneWord', rejectUnauthenticated, async (req: Request, res: Response) => {
+router.post('/addOneWord', rejectUnauthenticated, async (req: Request, res: Response) => {
     const { type, word } = req.body;
 
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
@@ -97,11 +97,11 @@ router.post('/AddOneWord', rejectUnauthenticated, async (req: Request, res: Resp
         try {
             let newWord;
             switch (type) {
-                case "noun": newWord = new NounCollection({ word: word, category: "none" }); break;
-                case "verb": newWord = new VerbCollection({ word: word, category: "none" }); break;
-                case "adjective": newWord = new AdjectiveCollection({ word: word, category: "none" }); break;
-                case "prefix": newWord = new PrefixCollection({ word: word, category: "none" }); break;
-                case "suffix": newWord = new SuffixCollection({ word: word, category: "none" }); break;
+                case "nouns": newWord = new NounCollection({ word: word, category: "none" }); break;
+                case "verbs": newWord = new VerbCollection({ word: word, category: "none" }); break;
+                case "adjectives": newWord = new AdjectiveCollection({ word: word, category: "none" }); break;
+                case "prefixes": newWord = new PrefixCollection({ word: word, category: "none" }); break;
+                case "suffixes": newWord = new SuffixCollection({ word: word, category: "none" }); break;
                 default: res.status(400).json({ message: "Invalid Word Type" });
             }
             if (newWord) {
@@ -114,7 +114,7 @@ router.post('/AddOneWord', rejectUnauthenticated, async (req: Request, res: Resp
     }
 });
 
-router.post('/AddManyWords', rejectUnauthenticated, async (req, res) => {
+router.post('/addManyWords', rejectUnauthenticated, async (req, res) => {
     try {
         const { words, type } = req.body;
 
