@@ -39,19 +39,13 @@ export const BabbleHeader: React.FC = () => {
             flexDirection: 'row',
             paddingRight: 10,
             background: 'linear-gradient(to right, var(--pink-a5), var(--blue)'
-
         }}>
-            <a style={{
-                cursor: 'pointer'
-            }}
-                onClick={() => navigate('/')}>
-                <h1 style={{
-                    flexGrow: 1,
-                    margin: 0,
-                    textAlign: 'center'
-                }}>
-                    Transbabbler</h1>
-            </a>
+            <div style={{ cursor: 'pointer', flexGrow: 1, margin: 0, textAlign: 'center' }}>
+                <a onClick={() => navigate('/')}>
+                    <h1>Transbabbler</h1>
+                </a>
+            </div>
+
             <div
                 style={{
                     justifyContent: 'flex-end'
