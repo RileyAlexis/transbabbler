@@ -62,19 +62,21 @@ router.post('/updateWord', async (req, res) => {
     if (!isAlpha) {
         res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
     } else if (isAlpha) {
+        console.log('/updateWord called', id, word, type);
         try {
             let updateWord;
             switch (type) {
-                case "noun": updateWord = NounCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "verb": updateWord = VerbCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "adjective": updateWord = AdjectiveCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "prefix": updateWord = PrefixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "suffix": updateWord = SuffixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "nouns": updateWord = await NounCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "verbs": updateWord = await VerbCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "adjectives": updateWord = await AdjectiveCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "prefixes": updateWord = await PrefixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
+                case "suffixes": updateWord = await SuffixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
                 default: res.status(400).json({ message: "Invalid Word Type" });
             }
             if (!updateWord) {
                 res.status(400).json({ message: "Record not found" });
             } else {
+                console.log(updateWord.word);
                 res.status(200).json({ message: `Word ${word} in collection ${type} updated` });
             }
         } catch (error) {

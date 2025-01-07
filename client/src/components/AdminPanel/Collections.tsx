@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 //UI
-import { Table, TextField } from "@radix-ui/themes";
+import { IconButton, Table, TextField } from "@radix-ui/themes";
+import { UploadIcon } from "@radix-ui/react-icons";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
@@ -11,6 +12,7 @@ import { alphabetize } from '../../modules/alphabetize';
 //Types
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
 import { Button } from "@radix-ui/themes/dist/cjs/index.js";
+import { ModifyWord } from "./ModifyWord";
 
 interface CollectionsProps {
     collection: string;
@@ -20,6 +22,7 @@ interface CollectionsProps {
 export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
 
     const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>('');
 
 
@@ -61,6 +64,29 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
             })
     }
 
+    const handleModify = (id: string, originalWord: string, modifiedWord: string) => {
+        setLoading(true);
+        console.log(modifiedWord);
+        if (originalWord === modifiedWord || modifiedWord === '') {
+            return;
+        } else {
+
+            axios.post('/api/words/updateWord', { type: collection, id: id, word: modifiedWord })
+                .then((response) => {
+                    console.log(response.data.message);
+                    handleLoadCollection();
+                    setLoading(false);
+                }).catch((error) => {
+                    console.log('Error Updating Word', error);
+                    setLoading(false);
+                });
+        }
+    }
+
+    const handleOnSubmit = (word: string) => {
+
+    }
+
 
     return (
         <div>
@@ -80,15 +106,8 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
                             <Table.RowHeaderCell>{item.word}</Table.RowHeaderCell>
                             <Table.Cell>{item.category}</Table.Cell>
 
-                            <Table.Cell style={{
-                                width: '200px'
-                            }}>
-                                <TextField.Root placeholder="Modify Word" variant="soft" radius="small" value={item.word}
-                                // onChange={(e) => setWordToAdd(e.target.value)}>
-                                >
-                                    <TextField.Slot />
-
-                                </TextField.Root>
+                            <Table.Cell>
+                                <ModifyWord word={item.word} loading={loading} onSubmit={(word: string) => handleModify(item._id.toString(), item.word, word)} />
                             </Table.Cell>
                             <Table.Cell><Button onClick={() => handleDeleteWord(item._id.toString())}>X</Button></Table.Cell>
                         </Table.Row>

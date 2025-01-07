@@ -26,28 +26,7 @@ export const AdminPanel: React.FC = () => {
     //     }
     // }
 
-    // const handleAddWord = () => {
-    //     if (wordToAdd !== '' && wordType) {
-    //         axios.post(`/api/words/AddOneWord`, { word: wordToAdd, type: wordType }, { withCredentials: true })
-    //             .then((response) => {
-    //                 console.log(response.data.message);
-    //                 setWordToAdd('');
-    //                 handleLoadCollection();
-    //             }).catch((error) => {
-    //                 console.error(error);
-    //             })
-    //     }
-    // }
 
-    // const handleDeleteWord = (id: string) => {
-    //     axios.delete(`/api/words/deleteWord/${id}/${collection}`)
-    //         .then((response) => {
-    //             console.log(response.data.message);
-    //             handleLoadCollection();
-    //         }).catch((error) => {
-    //             console.error(error);
-    //         })
-    // }
 
 
     return (
