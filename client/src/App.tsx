@@ -9,6 +9,7 @@ import { LoginScreen } from './components/LoginScreen';
 import { ThemeSelector } from './components/ThemeSelector';
 import { GenerateBase } from './components/GenerateBase';
 import { BabbleHeader } from './components/BabbleHeader';
+import { AdminPanel } from './components/AdminPanel/AdminPanel';
 
 function App() {
 
@@ -47,6 +48,11 @@ function App() {
 
           <Route path="/login" element={<>
             <LoginScreen />
+          </>}
+          />
+
+          <Route path="/admin" element={<>
+            <AdminPanel />
           </>}
           />
         </Routes>

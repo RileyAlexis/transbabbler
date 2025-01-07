@@ -112,6 +112,20 @@
         padding: 0;
     }
 
+    .adminContainer {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        overflow-y: auto;
+        width: 100vw;
+        height: 90vh;
+        border: 2px solid hotpink;
+        margin-top: 1rem;
+    }
+
+
+
 }
 
 @media only screen and (max-width: 450px) and (orientation: portrait) {

@@ -27,6 +27,10 @@ export const BabbleHeader: React.FC = () => {
             })
     }
 
+    const handleAdminSelect = () => {
+        navigate('/admin')
+    }
+
     return (
         <div style={{
             display: 'flex',
@@ -68,7 +72,7 @@ export const BabbleHeader: React.FC = () => {
                             {user.is_admin &&
                                 <>
                                     <DropdownMenu.Separator />
-                                    <DropdownMenu.Item>Admin Panel</DropdownMenu.Item>
+                                    <DropdownMenu.Item onSelect={handleAdminSelect}>Admin Panel</DropdownMenu.Item>
                                 </>
                             }
                         </DropdownMenu.Content>
