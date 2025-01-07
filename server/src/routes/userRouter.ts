@@ -12,27 +12,31 @@ const router = express.Router();
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', (error: Error, user: TUser) => {
         if (error) {
-            return res.status(500).json({ message: 'An error occurred during authentication' });
+            res.status(500).json({ message: 'An error occurred during authentication' });
         }
         if (!user) {
-            return res.status(401).json({ message: 'Login failed' });
+            res.status(401).json({ message: 'Login failed' });
         }
         req.logIn(user, (loginErr) => {
             if (loginErr) {
-                return res.status(500).json({ message: 'Login failed' });
+                res.status(500).json({ message: 'Login failed' });
             }
-            return res.status(200).send({ message: 'Logged in successfully', id: user._id, username: user.username, is_admin: user.is_admin });
+            res.status(200).send({ message: 'Logged in successfully', id: user._id, username: user.username, is_admin: user.is_admin });
         });
     })(req, res, next);
 })
 
 
 
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/login');
     }
-    res.send('Login Successful');
+    console.log('/api/users/ get called', req.user);
+    const safeUser = req.user as TUser;
+
+
+    res.status(200).json({ message: 'Login Successful', user: { username: safeUser.username, is_admin: safeUser.is_admin } });
 });
 
 router.get('/logout', (req, res, next) => {
@@ -42,12 +46,6 @@ router.get('/logout', (req, res, next) => {
         res.redirect('/');
     });
 });
-
-router.get('/profile', rejectUnauthenticated, (req, res) => {
-    console.log(req.user);
-    res.status(200).json({ user: req.user });
-
-})
 
 router.post('/register', async (req: Request, res: Response) => {
     const { username, password } = req.body;

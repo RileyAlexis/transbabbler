@@ -16,9 +16,9 @@ function App() {
   const { user, setUser } = useUser();
 
   useEffect(() => {
-    axios.get('/api/users/profile', { withCredentials: true })
+    axios.get('/api/users/', { withCredentials: true })
       .then((response) => {
-        console.log(response);
+        console.log(response.data.user);
         setUser({
           usernanme: response.data.user.username,
           email: '',

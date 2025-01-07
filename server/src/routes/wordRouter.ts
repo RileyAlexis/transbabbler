@@ -31,7 +31,7 @@ router.get('/loadCollection/:type', async (req, res) => {
     }
 });
 
-router.delete('/deleteWord/:id/:type', async (req, res) => {
+router.delete('/deleteWord/:id/:type', rejectUnauthenticated, async (req, res) => {
     const id = req.params.id;
     const type = req.params.type;
     try {
@@ -54,7 +54,7 @@ router.delete('/deleteWord/:id/:type', async (req, res) => {
     }
 });
 
-router.post('/updateWord', async (req, res) => {
+router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
     const { type, id, word } = req.body;
 
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
@@ -85,7 +85,7 @@ router.post('/updateWord', async (req, res) => {
     }
 })
 
-router.post('/AddOneWord', async (req: Request, res: Response) => {
+router.post('/AddOneWord', rejectUnauthenticated, async (req: Request, res: Response) => {
     const { type, word } = req.body;
 
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
@@ -114,7 +114,7 @@ router.post('/AddOneWord', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/AddManyWords', async (req, res) => {
+router.post('/AddManyWords', rejectUnauthenticated, async (req, res) => {
     try {
         const { words, type } = req.body;
 
