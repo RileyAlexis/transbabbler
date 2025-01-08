@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
-import { useUser } from '../main';
 import { Button, TextField } from "@radix-ui/themes";
+
+//Actions
+import { setUser } from "../redux/reducers/userReducer";
+
 
 export const LoginScreen: React.FC = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [registerNew, setRegisterNew] = useState(false);
-    const { setUser } = useUser();
+    const dispatch = useDispatch();
 
 
     const submitLogin = () => {
@@ -18,12 +22,12 @@ export const LoginScreen: React.FC = () => {
                 axios.post('/api/users/register', { username: username, password: password })
                     .then((response) => {
                         console.log(response.data);
-
-                        setUser({
-                            usernanme: username,
-                            email: '',
-                            isAuthenticated: true
-                        });
+                        dispatch(
+                            setUser({
+                                usernanme: username,
+                                email: '',
+                                isAuthenticated: true
+                            }));
 
                         setRegisterNew(false);
                         navigate('/');
@@ -34,12 +38,13 @@ export const LoginScreen: React.FC = () => {
             axios.post('/api/users/login', { username: username, password: password })
                 .then((response) => {
                     console.log(response);
-                    setUser({
-                        usernanme: response.data.username,
-                        email: '',
-                        isAuthenticated: true,
-                        is_admin: response.data.is_admin
-                    });
+                    dispatch(
+                        setUser({
+                            usernanme: response.data.username,
+                            email: '',
+                            isAuthenticated: true,
+                            is_admin: response.data.is_admin
+                        }));
 
                     navigate('/');
                 }).catch((error) => {

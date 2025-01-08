@@ -1,6 +1,8 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Provider, ProviderProps } from 'react-redux';
+import { storeInstance } from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 import { Theme } from '@radix-ui/themes';
 import App from './App';
@@ -84,33 +86,33 @@ export const useTheme = () => {
   return context;
 }
 
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-}
+// export const useUser = () => {
+//   const context = useContext(UserContext);
+//   if (!context) {
+//     throw new Error('useUser must be used within a UserProvider');
+//   }
+//   return context;
+// }
 
-function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+// function UserProvider({ children }: { children: React.ReactNode }) {
+//   const [user, setUser] = useState<User | null>(null);
 
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  )
-}
+//   return (
+//     <UserContext.Provider value={{ user, setUser }}>
+//       {children}
+//     </UserContext.Provider>
+//   )
+// }
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemedContainer>
-      <UserProvider>
+      <Provider store={storeInstance}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </UserProvider>
+      </Provider>
     </ThemedContainer>
   </StrictMode>
 )

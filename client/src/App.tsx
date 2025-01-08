@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useUser } from './main';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import './App.css';
 
@@ -12,20 +12,22 @@ import { BabbleHeader } from './components/BabbleHeader';
 import { AdminPanel } from './components/AdminPanel/AdminPanel';
 import { BaseApp } from './components/BaseApp';
 
+//Actions
+import { setUser } from './redux/reducers/userReducer';
+
 function App() {
 
-  const { user, setUser } = useUser();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios.get('/api/users/', { withCredentials: true })
       .then((response) => {
         console.log(response.data.user);
-        setUser({
+        dispatch(setUser({
           usernanme: response.data.user.username,
-          email: '',
-          isAuthenticated: true,
           is_admin: response.data.user.is_admin
-        });
+        }));
+
       }).catch((error) => {
         console.log(error);
         setUser(null);

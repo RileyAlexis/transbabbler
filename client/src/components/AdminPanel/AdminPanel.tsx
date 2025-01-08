@@ -1,33 +1,11 @@
-import { useState } from "react";
-import axios from "axios";
-
-import { Button, TextField, Tabs, Text } from "@radix-ui/themes";
-
+import { Tabs } from "@radix-ui/themes";
 
 import { BabbleHeader } from "../BabbleHeader";
 import { Collections } from "./Collections";
 
-import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
 import { DbOptions } from "./DbOptions";
 
 export const AdminPanel: React.FC = () => {
-
-    const [collection, setCollection] = useState<string | undefined>();
-
-    // const handleLoadCollection = () => {
-    //     if (collection) {
-    //         axios.get(`api/words/loadCollection/${collection}`)
-    //             .then((response) => {
-    //                 setAllWords(response.data);
-    //             }).catch((error) => {
-    //                 console.error(error);
-    //             })
-    //     } else {
-    //         setError('Must select Collection to load');
-    //     }
-    // }
-
-
 
 
     return (

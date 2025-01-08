@@ -1,15 +1,23 @@
 import React from 'react';
-import { useUser } from '../main';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
+//RadixUI
 import { Button } from '@radix-ui/themes';
 import { DropdownMenu } from '@radix-ui/themes';
+
+//Actions
+import { setUser } from '../redux/reducers/userReducer';
+
+//Types
+import { BabbleRootState } from 'src/Types/BabblerRootState';
 
 export const BabbleHeader: React.FC = () => {
 
     const navigate = useNavigate();
-    const { user, setUser } = useUser();
+    const dispatch = useDispatch();
+    const user = useSelector((state: BabbleRootState) => state.user);
 
     const handleLogin = () => {
         navigate('/login');
@@ -19,7 +27,7 @@ export const BabbleHeader: React.FC = () => {
         axios.get('/api/users/logout', { withCredentials: true })
             .then((response) => {
                 if (response.request.responseURL) {
-                    setUser(null);
+                    dispatch(setUser(null));
                     navigate('/');
                 }
             }).catch((error) => {
@@ -51,10 +59,10 @@ export const BabbleHeader: React.FC = () => {
                     justifyContent: 'flex-end'
                 }}
             >
-                {!user &&
+                {!user.username &&
                     <Button variant='soft' onClick={handleLogin}>Log In</Button>
                 }
-                {user?.usernanme &&
+                {user.usernanme &&
 
 
                     <DropdownMenu.Root>
@@ -68,7 +76,7 @@ export const BabbleHeader: React.FC = () => {
 
                         <DropdownMenu.Content>
                             <DropdownMenu.Item onSelect={handleLogout}>Logout</DropdownMenu.Item>
-                            {user.is_admin &&
+                            {user.is_admin === true &&
                                 <>
                                     <DropdownMenu.Separator />
                                     <DropdownMenu.Item onSelect={handleAdminSelect}>Admin Panel</DropdownMenu.Item>
