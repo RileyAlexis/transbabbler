@@ -5,7 +5,7 @@ import { AdjectiveCollection, NounCollection, PrefixCollection, SuffixCollection
 
 //Types
 import { Request, Response } from "express";
-import { AdjectiveType, NounType, VerbType, PrefixType, SuffixType } from '../Types/WordTypes';
+import { AdjectiveType, NounType, VerbType, PrefixType, SuffixType } from '../types/WordTypes';
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 //Types
-import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../Types/WordTypes";
+import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../types/WordTypes";
 
 
 export type CategoryType =
@@ -44,8 +44,22 @@ const SuffixSchema: Schema = new Schema({
     { timestamps: true }
 );
 
+
+const DatabaseSchema: Schema = new Schema({
+    name: { type: String, required: true, unique: true },
+    nouns: [NounSchema],
+    verbs: [VerbSchema],
+    adjectives: [AdjectiveSchema],
+    prefixes: [PrefixSchema],
+    suffixes: [SuffixSchema],
+},
+    { timestamps: true }
+);
+
+
 export const NounCollection = mongoose.model<NounType>("NounCollection", NounSchema);
 export const VerbCollection = mongoose.model<VerbType>("VerbCollection", VerbSchema);
 export const AdjectiveCollection = mongoose.model<AdjectiveType>("AdjectiveCollection", AdjectiveSchema);
 export const PrefixCollection = mongoose.model<PrefixType>("PrefixCollection", PrefixSchema);
-export const SuffixCollection = mongoose.model<SuffixType>("SuffixCollection", SuffixSchema)
+export const SuffixCollection = mongoose.model<SuffixType>("SuffixCollection", SuffixSchema);
+export const DatabaseCollection = mongoose.model("Database", DatabaseSchema);

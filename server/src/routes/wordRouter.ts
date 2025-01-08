@@ -2,7 +2,7 @@ import express from 'express';
 import { rejectUnauthenticated } from '../strategies/rejectUnauthenticated';
 
 //DB
-import { AdjectiveCollection, NounCollection, PrefixCollection, SuffixCollection, VerbCollection } from '../models/wordSchema'
+import { AdjectiveCollection, DatabaseCollection, NounCollection, PrefixCollection, SuffixCollection, VerbCollection } from '../models/wordSchema'
 
 //Types
 import { Request, Response } from "express";

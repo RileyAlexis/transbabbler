@@ -10,6 +10,7 @@ const passport = require('./strategies/user.strategy');
 const wordRouter = require('./routes/wordRouter');
 const userRouter = require('./routes/userRouter');
 const generator = require('./routes/generator');
+const data = require('./routes/dataRouter');
 
 //MongoDB
 import { dbConnect } from './models/dbConnect';
@@ -43,6 +44,7 @@ const corsOptions = {
 declare module 'express-session' {
     interface SessionData {
         user: { username: string };
+        is_admin: { is_admin: boolean };
     }
 }
 
@@ -82,6 +84,7 @@ app.get('/api', (req: Request, res: Response) => {
 app.use('/api/words', wordRouter);
 app.use('/api/users', userRouter);
 app.use('/api/generator', generator);
+app.use('/api/data', data);
 
 const port = process.env.PORT || 5001;
 app.listen(port, () => {

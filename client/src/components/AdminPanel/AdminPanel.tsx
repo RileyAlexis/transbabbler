@@ -8,6 +8,7 @@ import { BabbleHeader } from "../BabbleHeader";
 import { Collections } from "./Collections";
 
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
+import { DbOptions } from "./DbOptions";
 
 export const AdminPanel: React.FC = () => {
 
@@ -33,6 +34,7 @@ export const AdminPanel: React.FC = () => {
         <>
             <BabbleHeader />
             <div className="adminContainer">
+                <DbOptions />
                 <Tabs.Root style={{
                     width: '100%'
                 }}>
