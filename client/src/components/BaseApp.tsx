@@ -3,6 +3,7 @@ import axios from "axios";
 import { Text, Button, TextField } from "@radix-ui/themes";
 
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
+import { ModifyWord } from "./AdminPanel/ModifyWord";
 
 export const BaseApp = () => {
 
@@ -47,6 +48,21 @@ export const BaseApp = () => {
             })
     }
 
+    const handleModify = (originalWord: string, modifiedWord: string) => {
+        console.log(modifiedWord);
+        if (originalWord === modifiedWord || modifiedWord === '') {
+            return;
+        } else {
+            axios.post('/api/words/updateWord', { databaseName: "Cats", type: "nouns", word: originalWord, newWord: modifiedWord, category: "none" })
+                .then((response) => {
+                    console.log(response.data.message);
+                    handleLoadCollection();
+                }).catch((error) => {
+                    console.log('Error Updating Word', error);
+                });
+        }
+    }
+
     return (
         <div>
             {error !== '' &&
@@ -64,6 +80,15 @@ export const BaseApp = () => {
                     allWords.map((item, index) => (
                         <Text key={index} as="span"> {item.word} |</Text>
                     ))}
+            </div>
+
+            <div>
+                {allWords.length > 0 &&
+                    allWords.map((item, index) => (
+                        <ModifyWord word={item.word} loading={false} onSubmit={(word: string) => handleModify(item.word, word)} />
+                    ))
+                }
+
             </div>
 
 
