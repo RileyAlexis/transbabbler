@@ -1,30 +1,28 @@
 import { useState } from "react";
 import axios from "axios";
-import { Button, TextField } from "@radix-ui/themes";
+import { Text, Button, TextField } from "@radix-ui/themes";
 
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
-import { Heading } from "@radix-ui/themes/dist/cjs/index.js";
-import { Select } from "@radix-ui/themes";
 
 export const BaseApp = () => {
 
-    const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
+    const [allWords, setAllWords] = useState<NounType[] | []>([]);
     const [collection, setCollection] = useState<string | undefined>();
     const [wordToAdd, setWordToAdd] = useState<string>('');
     const [wordType, setWordType] = useState<string | undefined>();
     const [error, setError] = useState('');
 
     const handleLoadCollection = () => {
-        if (collection) {
-            axios.get(`api/words/loadCollection/${collection}`)
-                .then((response) => {
-                    setAllWords(response.data);
-                }).catch((error) => {
-                    console.error(error);
-                })
-        } else {
-            setError('Must select Collection to load');
-        }
+
+        axios.get(`/api/words/loadCollection`, { params: { databaseName: "Cats", type: "nouns" } })
+            .then((response) => {
+                console.log(response.data);
+                console.log(typeof response.data);
+                setAllWords(response.data);
+            }).catch((error) => {
+                console.error(error);
+            })
+
     }
 
     const handleAddWord = () => {
@@ -59,6 +57,13 @@ export const BaseApp = () => {
                     <TextField.Slot />
                 </TextField.Root>
                 <Button variant="soft" onClick={handleAddWord}>Add</Button>
+            </div>
+            <div>
+                <Button variant="soft" onClick={handleLoadCollection}>Load Nouns</Button>
+                {allWords.length > 0 &&
+                    allWords.map((item, index) => (
+                        <Text key={index} as="span"> {item.word} |</Text>
+                    ))}
             </div>
 
 

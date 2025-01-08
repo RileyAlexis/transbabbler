@@ -10,25 +10,32 @@ import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from '../ty
 
 const router = express.Router();
 
-router.get('/loadCollection/:type', async (req, res) => {
-    const type = req.params.type;
-    let collectionToLoad;
+router.get('/loadCollection', async (req, res) => {
+    const { databaseName, type } = req.query;
+    console.log('/loadCollection called', databaseName, type);
+
+    if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type as string)) {
+        res.status(400).json({ message: "Invalid word type" });
+        return;
+    }
 
     try {
-        switch (type) {
-            case "nouns": collectionToLoad = await NounCollection.find(); break;
-            case "verbs": collectionToLoad = await VerbCollection.find(); break;
-            case "adjectives": collectionToLoad = await AdjectiveCollection.find(); break;
-            case "prefixes": collectionToLoad = await PrefixCollection.find(); break;
-            case "suffixes": collectionToLoad = await SuffixCollection.find(); break;
-            default: res.status(400).json({ message: "Invalid Collection" });
+        const database = await DatabaseCollection.findOne({ name: databaseName });
+        if (!database) {
+            res.status(404).json({ message: "Database not found" });
+            return;
         }
 
-        if (collectionToLoad) {
-            res.status(201).json(collectionToLoad);
+        const collection = database[type as keyof typeof database];
+        if (!collection) {
+            res.status(404).json({ message: `${type} collection not found` });
+            return;
         }
+
+        res.status(200).json(collection);
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving collection" });
+        console.error("Error loading collection:", error);
+        res.status(500).json({ message: "Failed to load collection" });
     }
 });
 
@@ -56,30 +63,48 @@ router.delete('/deleteWord/:id/:type', rejectUnauthenticated, async (req, res) =
 });
 
 router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
-    const { type, id, word } = req.body;
+    const { databaseName, type, word, newWord, newCategory } = req.body;
 
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
 
     if (!isAlpha) {
         res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
     } else if (isAlpha) {
-        console.log('/updateWord called', id, word, type);
+        console.log('/updateWord called', databaseName, word, type, newCategory);
         try {
-            let updateWord;
-            switch (type) {
-                case "nouns": updateWord = await NounCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "verbs": updateWord = await VerbCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "adjectives": updateWord = await AdjectiveCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "prefixes": updateWord = await PrefixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                case "suffixes": updateWord = await SuffixCollection.findOneAndUpdate({ _id: id }, { $set: { word: word }, }, { returnDocument: 'after' }); break;
-                default: res.status(400).json({ message: "Invalid Word Type" });
+            if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
+                res.status(400).json({ message: "Invalid word type" });
+                return
             }
-            if (!updateWord) {
-                res.status(400).json({ message: "Record not found" });
-            } else {
-                console.log(updateWord.word);
-                res.status(200).json({ message: `Word ${word} in collection ${type} updated` });
+
+            // Find the target database document
+            const database = await DatabaseCollection.findOne({ name: databaseName });
+
+            if (!database) {
+                res.status(404).json({ message: "Database not found" });
+                return
             }
+
+            // Find the word within the specified collection
+            const wordIndex = (database[type] as any).findIndex((entry: any) => entry.word === word);
+
+            if (wordIndex === -1) {
+                res.status(404).json({ message: `Word '${word}' not found in ${type}` });
+                return;
+            }
+
+            // Update the word properties
+            if (newWord) {
+                (database[type] as any)[wordIndex].word = newWord;
+            }
+            if (newCategory) {
+                (database[type] as any)[wordIndex].category = newCategory;
+            }
+
+            // Save the updated database document
+            await database.save();
+
+            res.status(200).json({ message: `Word '${word}' updated successfully in ${type}` });
         } catch (error) {
             res.status(500).json({ message: "Error updating record" });
         }
@@ -109,16 +134,6 @@ router.post('/addOneWord', rejectUnauthenticated, async (req: Request, res: Resp
             res.status(400).json({ message: "Database not found" });
             return; // Return after sending the response to prevent further execution
         }
-
-        // let newWord;
-        // switch (type) {
-        //     case 'nouns': newWord = new NounCollection({ word, category}); break;
-        //     case 'verbs': newWord = new VerbCollection({ word, category}); break;
-        //     case 'adjectives': newWord = new AdjectiveCollection({ word, category}); break;
-        //     case 'prefixes': newWord = new PrefixCollection({ word, category}); break;
-        //     case 'suffixes': newWord = new SuffixCollection({ word, category}); break;
-        //     default: res.status(400).json({ message: "Invalid collection type" }); return;
-        // }
 
         const newWord = { word, category };
 
