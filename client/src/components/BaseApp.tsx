@@ -38,8 +38,8 @@ export const BaseApp = () => {
         }
     }
 
-    const handleDeleteWord = (id: string) => {
-        axios.delete(`/api/words/deleteWord/${id}/${collection}`)
+    const handleDeleteWord = (wordToDelete: string) => {
+        axios.delete(`/api/words/deleteWord/`, { data: { databaseName: "Cats", type: "nouns", word: wordToDelete } })
             .then((response) => {
                 console.log(response.data.message);
                 handleLoadCollection();
@@ -78,7 +78,10 @@ export const BaseApp = () => {
                 <Button variant="soft" onClick={handleLoadCollection}>Load Nouns</Button>
                 {allWords.length > 0 &&
                     allWords.map((item, index) => (
-                        <Text key={index} as="span"> {item.word} |</Text>
+                        <div>
+                            <Text key={index} as="span"> {item.word} |</Text>
+                            <Button variant="soft" onClick={() => handleDeleteWord(item.word)}>X</Button>
+                        </div>
                     ))}
             </div>
 

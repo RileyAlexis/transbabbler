@@ -39,24 +39,32 @@ router.get('/loadCollection', async (req, res) => {
     }
 });
 
-router.delete('/deleteWord/:id/:type', rejectUnauthenticated, async (req, res) => {
-    const id = req.params.id;
-    const type = req.params.type;
+router.delete('/deleteWord/', rejectUnauthenticated, async (req, res) => {
+    const { databaseName, type, word } = req.body;
+    console.log('/deleteWord called', databaseName, type, word);
+
     try {
-        let newWord;
-        switch (type) {
-            case "nouns": newWord = await NounCollection.findByIdAndDelete(id); break;
-            case "verbs": newWord = await VerbCollection.findByIdAndDelete(id); break;
-            case "adjectives": newWord = await AdjectiveCollection.findByIdAndDelete(id); break;
-            case "prefixes": newWord = await PrefixCollection.findByIdAndDelete(id); break;
-            case "suffixes": newWord = await SuffixCollection.findByIdAndDelete(id); break;
-            default: res.status(400).json({ message: "Invalid Word Type" });
+        const database = await DatabaseCollection.findOne({ name: databaseName });
+        if (!database) {
+            res.status(400).json({ message: "Database not found" });
+            return;
         }
-        if (!newWord) {
-            res.status(404).json({ message: "Record not found" });
-        } else {
-            res.status(200).json({ message: "Record Deleted" });
+
+        if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
+            res.status(400).json({ message: "Invalid word type" });
+            return;
         }
+
+        const wordIndex = (database[type] as any).findIndex((item: any) => item.word === word);
+
+        if (wordIndex === -1) {
+            res.status(404).json({ message: `Word ${word} not found in ${databaseName} ${type}` });
+            return;
+        }
+
+        (database[type] as any).splice(wordIndex, 1);
+        await database.save();
+        res.status(200).json({ message: `Word ${word} deleted from ${databaseName} ${type}` })
     } catch (error) {
         res.status(500).json({ message: "Error deleting record" });
     }
@@ -74,7 +82,7 @@ router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
         try {
             if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
                 res.status(400).json({ message: "Invalid word type" });
-                return
+                return;
             }
 
             // Find the target database document
@@ -82,7 +90,7 @@ router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
 
             if (!database) {
                 res.status(404).json({ message: "Database not found" });
-                return
+                return;
             }
 
             // Find the word within the specified collection
