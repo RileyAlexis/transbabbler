@@ -6,6 +6,7 @@ import { AdjectiveCollection, DatabaseCollection, NounCollection, PrefixCollecti
 
 //Types
 import { Request, Response } from "express";
+import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from '../types/WordTypes';
 
 const router = express.Router();
 
@@ -86,31 +87,47 @@ router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
 })
 
 router.post('/addOneWord', rejectUnauthenticated, async (req: Request, res: Response) => {
-    const { type, word } = req.body;
-
+    const { databaseName, type, word } = req.body;
+    const category = "none";
+    console.log('/addOneWord route called', databaseName, type, word);
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
 
-    if (!isAlpha) {
-        res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
-    } else if (isAlpha) {
+    try {
 
-        try {
-            let newWord;
-            switch (type) {
-                case "nouns": newWord = new NounCollection({ word: word, category: "none" }); break;
-                case "verbs": newWord = new VerbCollection({ word: word, category: "none" }); break;
-                case "adjectives": newWord = new AdjectiveCollection({ word: word, category: "none" }); break;
-                case "prefixes": newWord = new PrefixCollection({ word: word, category: "none" }); break;
-                case "suffixes": newWord = new SuffixCollection({ word: word, category: "none" }); break;
-                default: res.status(400).json({ message: "Invalid Word Type" });
-            }
-            if (newWord) {
-                const savedData = await newWord.save();
-                res.status(201).json({ message: `${word} added successfully to ${type} collection.`, data: savedData, });
-            }
-        } catch (error) {
-            res.status(500).json({ message: "Error saving word", error: error });
+        if (!isAlpha) {
+            res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
+            return;
         }
+
+        if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
+            res.status(400).json({ message: "Invalid collection type" });
+            return;
+
+        }
+        const database = await DatabaseCollection.findOne({ name: databaseName });
+        if (!database) {
+            res.status(400).json({ message: "Database not found" });
+            return; // Return after sending the response to prevent further execution
+        }
+
+        // let newWord;
+        // switch (type) {
+        //     case 'nouns': newWord = new NounCollection({ word, category}); break;
+        //     case 'verbs': newWord = new VerbCollection({ word, category}); break;
+        //     case 'adjectives': newWord = new AdjectiveCollection({ word, category}); break;
+        //     case 'prefixes': newWord = new PrefixCollection({ word, category}); break;
+        //     case 'suffixes': newWord = new SuffixCollection({ word, category}); break;
+        //     default: res.status(400).json({ message: "Invalid collection type" }); return;
+        // }
+
+        const newWord = { word, category };
+
+        (database[type] as any).push(newWord);
+        await database.save();
+        res.status(201).json({ message: `${word} added to ${type} in ${databaseName}` })
+    } catch (error) {
+        console.error('Error adding word', error);
+        res.status(500).json({ message: "Failed to add word" });
     }
 });
 

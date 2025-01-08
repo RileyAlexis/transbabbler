@@ -4,14 +4,14 @@ import bcrypt from 'bcryptjs';
 import { Strategy as LocalStrategy } from "passport-local";
 
 passport.serializeUser((user: any, done) => {
-    console.log('serializeUser', user);
+    // console.log('serializeUser', user);
     done(null, user._id);
 });
 
 passport.deserializeUser(async (_id: string, done) => {
     try {
         const user = await UserCollection.findById(_id);
-        console.log('DeserializeUser', user);
+        // console.log('DeserializeUser', user);
         done(null, user);
     } catch (error) {
         done(error);

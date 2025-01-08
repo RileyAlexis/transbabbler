@@ -11,7 +11,7 @@ import { Request, Response } from "express";
 const router = express.Router();
 
 router.post('/createDatabase', checkAdmin, async (req: Request, res: Response) => {
-    const { name, nouns, verbs, adjectives, prefixes, suffixes } = req.body;
+    const { name } = req.body;
     console.log('/createDatabase route called', name);
     try {
         const existingDatabase = await DatabaseCollection.findOne({ name });
@@ -20,11 +20,11 @@ router.post('/createDatabase', checkAdmin, async (req: Request, res: Response) =
         } else {
             const newDatabase = new DatabaseCollection({
                 name,
-                nouns: nouns || [],
-                verbs: verbs || [],
-                adjectives: adjectives || [],
-                prefixes: prefixes || [],
-                suffixes: suffixes || [],
+                nouns: [],
+                verbs: [],
+                adjectives: [],
+                prefixes: [],
+                suffixes: []
             });
 
             await newDatabase.save();
@@ -42,6 +42,8 @@ router.get('/databaseNames', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch database names" })
     }
-})
+});
+
+
 
 module.exports = router;

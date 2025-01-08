@@ -10,6 +10,7 @@ import { ThemeSelector } from './components/ThemeSelector';
 import { GenerateBase } from './components/GenerateBase';
 import { BabbleHeader } from './components/BabbleHeader';
 import { AdminPanel } from './components/AdminPanel/AdminPanel';
+import { BaseApp } from './components/BaseApp';
 
 function App() {
 
@@ -50,6 +51,11 @@ function App() {
             <LoginScreen />
           </>}
           />
+
+          <Route path="test" element={<>
+            <BabbleHeader />
+            <BaseApp />
+          </>} />
 
           <Route path="/admin" element={<>
             <AdminPanel />
