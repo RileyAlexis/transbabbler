@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
 
 //UI
-import { IconButton, Table, TextField } from "@radix-ui/themes";
-import { MinusCircledIcon, PlusCircledIcon, UploadIcon } from "@radix-ui/react-icons";
+import { IconButton, Table } from "@radix-ui/themes";
+import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
 import { alphabetize } from '../../modules/alphabetize';
 
 //Types
-import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
+import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../../Types/WordTypes";
 import { Button } from "@radix-ui/themes/dist/cjs/index.js";
 import { ModifyWord } from "./ModifyWord";
+import { BabbleRootState } from "../../Types/BabblerRootState";
+import { loadCollection } from "../../modules/loadCollection";
+
+//Actions
+
 
 interface CollectionsProps {
     collection: string;
@@ -21,6 +27,7 @@ interface CollectionsProps {
 
 export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
 
+    const database = useSelector((state: BabbleRootState) => state.database);
     const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
     const [loading, setLoading] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
@@ -28,17 +35,9 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
     const [error, setError] = useState<string>('');
 
 
-    const handleLoadCollection = () => {
-        if (collection) {
-            axios.get(`api/words/loadCollection/${collection}`)
-                .then((response) => {
-                    setAllWords(alphabetize(response.data));
-                }).catch((error) => {
-                    console.error(error);
-                })
-        } else {
-            setError('Must select Collection to load');
-        }
+    const handleLoadCollection = async () => {
+        const response = await loadCollection(database.selectedDatabase, collection);
+        setAllWords(response);
     }
 
     useEffect(() => {
