@@ -12,8 +12,9 @@ const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         setUser(state, action) {
-            console.log(action.payload);
-            state = action.payload;
+            console.log(action.payload.username);
+            state.username = action.payload.username;
+            state.is_admin = action.payload.is_admin;
         },
         logoutUser(state) {
             state = initialState;

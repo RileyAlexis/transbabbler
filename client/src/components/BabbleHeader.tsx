@@ -62,14 +62,13 @@ export const BabbleHeader: React.FC = () => {
                 {!user.username &&
                     <Button variant='soft' onClick={handleLogin}>Log In</Button>
                 }
-                {user.usernanme &&
-
-
+                {user.usernanme !== null &&
                     <DropdownMenu.Root>
                         <DropdownMenu.Trigger>
                             <Button variant='soft' style={{
                                 background: 'var(--pink-a5'
-                            }}>{user.usernanme}
+                            }}>
+                                {user.username}
                                 <DropdownMenu.TriggerIcon />
                             </Button>
                         </DropdownMenu.Trigger>

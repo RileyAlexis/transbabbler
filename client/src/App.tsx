@@ -23,10 +23,7 @@ function App() {
     axios.get('/api/users/', { withCredentials: true })
       .then((response) => {
         console.log(response.data.user);
-        dispatch(setUser({
-          usernanme: response.data.user.username,
-          is_admin: response.data.user.is_admin
-        }));
+        dispatch(setUser(response.data.user));
 
       }).catch((error) => {
         console.log(error);

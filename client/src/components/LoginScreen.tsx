@@ -23,11 +23,7 @@ export const LoginScreen: React.FC = () => {
                     .then((response) => {
                         console.log(response.data);
                         dispatch(
-                            setUser({
-                                usernanme: username,
-                                email: '',
-                                isAuthenticated: true
-                            }));
+                            setUser(response.data));
 
                         setRegisterNew(false);
                         navigate('/');
@@ -37,14 +33,9 @@ export const LoginScreen: React.FC = () => {
             }
             axios.post('/api/users/login', { username: username, password: password })
                 .then((response) => {
-                    console.log(response);
+                    console.log(response.data);
                     dispatch(
-                        setUser({
-                            usernanme: response.data.username,
-                            email: '',
-                            isAuthenticated: true,
-                            is_admin: response.data.is_admin
-                        }));
+                        setUser(response.data));
 
                     navigate('/');
                 }).catch((error) => {
