@@ -15,7 +15,7 @@ const databaseSlice = createSlice({
             state.selectedDatabase = action.payload;
         },
         setSelectedDatabaseToDefault(state) {
-            state = initialState;
+            state.selectedDatabase = 'default';
         },
         setAvilableDatabases(state, action) {
             state.availableDatabases = action.payload;

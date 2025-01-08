@@ -13,6 +13,7 @@ import { setSelectedDatabase, setSelectedDatabaseToDefault } from '../redux/redu
 
 //Types
 import { BabbleRootState } from 'src/Types/BabblerRootState';
+import { CheckIcon } from '@radix-ui/react-icons';
 
 export const BabbleHeader: React.FC = () => {
 
@@ -86,9 +87,27 @@ export const BabbleHeader: React.FC = () => {
                             <DropdownMenu.Sub>
                                 <DropdownMenu.SubTrigger>Data Set</DropdownMenu.SubTrigger>
                                 <DropdownMenu.SubContent>
-                                    <DropdownMenu.Item onSelect={() => dispatch(setSelectedDatabaseToDefault())}>Default</DropdownMenu.Item>
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}>
+                                        <DropdownMenu.Item
+                                            style={{
+                                                backgroundColor: databases.selectedDatabase === 'default' ? 'var(--highlightColor)' : '',
+                                                border: databases.selectedDatabase === 'default' ? '1px solid white' : ''
+                                            }}
+                                            onSelect={() => dispatch(setSelectedDatabaseToDefault())}>Default
+                                        </DropdownMenu.Item>
+
+                                    </div>
                                     {databases.availableDatabases.map((item, index) => (
-                                        <DropdownMenu.Item key={index} onSelect={() => dispatch(setSelectedDatabase(item))}>{item}</DropdownMenu.Item>
+                                        <DropdownMenu.Item key={index}
+                                            style={{
+                                                backgroundColor: databases.selectedDatabase === item ? 'var(--highlightColor)' : '',
+                                                border: databases.selectedDatabase === item ? '1px solid white' : '',
+                                            }}
+                                            onSelect={() => dispatch(setSelectedDatabase(item))}>{item}
+                                        </DropdownMenu.Item>
                                     ))}
 
                                 </DropdownMenu.SubContent>
