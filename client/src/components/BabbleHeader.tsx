@@ -9,6 +9,7 @@ import { DropdownMenu } from '@radix-ui/themes';
 
 //Actions
 import { setUser } from '../redux/reducers/userReducer';
+import { setSelectedDatabase, setSelectedDatabaseToDefault } from '../redux/reducers/databaseReducer';
 
 //Types
 import { BabbleRootState } from 'src/Types/BabblerRootState';
@@ -18,6 +19,7 @@ export const BabbleHeader: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: BabbleRootState) => state.user);
+    const databases = useSelector((state: BabbleRootState) => state.database);
 
     const handleLogin = () => {
         navigate('/login');
@@ -77,10 +79,20 @@ export const BabbleHeader: React.FC = () => {
                             <DropdownMenu.Item onSelect={handleLogout}>Logout</DropdownMenu.Item>
                             {user.is_admin === true &&
                                 <>
-                                    <DropdownMenu.Separator />
                                     <DropdownMenu.Item onSelect={handleAdminSelect}>Admin Panel</DropdownMenu.Item>
                                 </>
                             }
+                            <DropdownMenu.Separator />
+                            <DropdownMenu.Sub>
+                                <DropdownMenu.SubTrigger>Data Set</DropdownMenu.SubTrigger>
+                                <DropdownMenu.SubContent>
+                                    <DropdownMenu.Item onSelect={() => dispatch(setSelectedDatabaseToDefault())}>Default</DropdownMenu.Item>
+                                    {databases.availableDatabases.map((item, index) => (
+                                        <DropdownMenu.Item key={index} onSelect={() => dispatch(setSelectedDatabase(item))}>{item}</DropdownMenu.Item>
+                                    ))}
+
+                                </DropdownMenu.SubContent>
+                            </DropdownMenu.Sub>
                         </DropdownMenu.Content>
 
                     </DropdownMenu.Root>

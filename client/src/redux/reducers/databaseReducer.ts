@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface DatabaseType {
-    selectedDatabase: string | 'default';
-    availableDatabases: string[];
-}
+import { DatabaseType } from "src/Types/DatabaseType";
 
 const initialState: DatabaseType = {
     selectedDatabase: 'default',
@@ -15,13 +12,13 @@ const databaseSlice = createSlice({
     initialState: initialState,
     reducers: {
         setSelectedDatabase(state, action) {
-            state = action.payload;
+            state.selectedDatabase = action.payload;
         },
         setSelectedDatabaseToDefault(state) {
             state = initialState;
         },
         setAvilableDatabases(state, action) {
-            state = action.payload;
+            state.availableDatabases = action.payload;
         }
     }
 });

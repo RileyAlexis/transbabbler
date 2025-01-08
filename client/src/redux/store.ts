@@ -6,7 +6,7 @@ import databaseSlice from './reducers/databaseReducer';
 
 const allReducers = combineReducers({
     user: userSlice,
-    databaseSlice,
+    database: databaseSlice,
 });
 
 const storeInstance = configureStore({
