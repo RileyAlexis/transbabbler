@@ -4,16 +4,31 @@ import axios from "axios";
 
 import { Button, Text } from "@radix-ui/themes";
 
+//Components
 import { DataSetSelector } from "./DataSetSelector";
+
+//Types
+import { BabbleRootState } from "src/Types/BabblerRootState";
 
 export const GenerateBase: React.FC = () => {
 
     const [genPhrase, setGenPhrase] = useState<string[]>([]);
+    const databases = useSelector((state: BabbleRootState) => state.database);
 
     const handleGenerate = () => {
         axios.get('/api/generator/')
             .then((response) => {
                 setGenPhrase((prev) => [...prev, response.data]);
+            }).catch((error) => {
+                console.error(error);
+            })
+    }
+
+    const handleGenerateFrom = () => {
+        axios.get('/api/generator/generateFrom', { params: { dbName: databases.selectedDatabase } })
+            .then((response) => {
+                console.log(response);
+                setGenPhrase((prev) => [...prev, response.data.genPhrase]);
             }).catch((error) => {
                 console.error(error);
             })
@@ -28,7 +43,7 @@ export const GenerateBase: React.FC = () => {
         <div className="babblerContainer">
             <DataSetSelector />
             <div className="babblerContainerButtons">
-                <Button style={{ marginRight: 15 }} onClick={handleGenerate}>Generate Babble</Button>
+                <Button style={{ marginRight: 15 }} onClick={handleGenerateFrom}>Generate Babble</Button>
                 <Button onClick={resetBabbler}>Clear Babble</Button>
             </div>
             <div className="babblerContainerBabbles">

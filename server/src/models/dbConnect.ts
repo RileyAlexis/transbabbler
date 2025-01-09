@@ -11,9 +11,8 @@ const mongoPort = "27017";
 
 const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?tls=true&authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
 
-// Retry configuration
-const RETRY_DELAY = 5000; // Delay between retries in milliseconds
-const MAX_RETRIES = 5; // Maximum number of retry attempts
+const RETRY_DELAY = 5000;
+const MAX_RETRIES = 25;
 
 export const dbConnect = async (): Promise<void> => {
     let attempts = 0;
@@ -26,14 +25,14 @@ export const dbConnect = async (): Promise<void> => {
             });
             mongoose.set("autoIndex", false);
             console.log("Connected to Mongo DB");
-            return; // Exit the function after a successful connection
+            return;
         } catch (error) {
             attempts++;
             console.error(`Error Connecting to Mongo DB (Attempt ${attempts}/${MAX_RETRIES}):`, error);
 
             if (attempts >= MAX_RETRIES) {
                 console.error("Max retries reached. Could not connect to Mongo DB.");
-                return; // Stop retrying after reaching the maximum number of retries
+                return;
             }
 
             console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);

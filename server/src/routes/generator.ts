@@ -9,6 +9,12 @@ import { AdjectiveType, NounType, VerbType, PrefixType, SuffixType } from '../ty
 
 const router = express.Router();
 
+type WordType = "verb" | "prefix" | "adjective" | "noun";
+
+type WordDatabase = {
+    [key in WordType]: string[];
+};
+
 router.get('/', async (req, res) => {
     try {
         const noun: NounType[] = await NounCollection.aggregate([{ $sample: { size: 1 } }]);
@@ -27,7 +33,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('generateFrom', async (req, res) => {
+router.get('/generateFrom', async (req, res) => {
     const { dbName } = req.query;
 
     if (!dbName) {
@@ -41,19 +47,60 @@ router.get('generateFrom', async (req, res) => {
             res.status(404).json({ message: "Dataset not found" });
             return;
         }
-        const categories = ['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'];
-
-        const randomWords: Record<string, string | null> = {};
-        for (const category of categories) {
-            const words = dataset[category]; // Access the array for the category
-            if (Array.isArray(words) && words.length > 0) {
-                const randomIndex = Math.floor(Math.random() * words.length);
-                randomWords[category] = words[randomIndex];
-            } else {
-                randomWords[category] = null; // If category is empty or not an array
+        const randomWords = await DatabaseCollection.aggregate([
+            { $match: { name: dbName } }, // Match the dataset by name
+            {
+                $project: {
+                    _id: 0, // Exclude the _id field
+                    randomVerb: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$verbs" }, 0] }, // Check if verbs array is not empty
+                            then: { $arrayElemAt: ["$verbs", { $floor: { $multiply: [{ $rand: {} }, { $size: "$verbs" }] } }] },
+                            else: null // If empty, return null
+                        }
+                    },
+                    randomPrefix: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$prefixes" }, 0] }, // Check if prefixes array is not empty
+                            then: { $arrayElemAt: ["$prefixes", { $floor: { $multiply: [{ $rand: {} }, { $size: "$prefixes" }] } }] },
+                            else: null // If empty, return null
+                        }
+                    },
+                    randomAdjective: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$adjectives" }, 0] }, // Check if adjectives array is not empty
+                            then: { $arrayElemAt: ["$adjectives", { $floor: { $multiply: [{ $rand: {} }, { $size: "$adjectives" }] } }] },
+                            else: null // If empty, return null
+                        }
+                    },
+                    randomNoun: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$nouns" }, 0] }, // Check if nouns array is not empty
+                            then: { $arrayElemAt: ["$nouns", { $floor: { $multiply: [{ $rand: {} }, { $size: "$nouns" }] } }] },
+                            else: null // If empty, return null
+                        }
+                    }
+                }
             }
+        ]);
+
+        if (!randomWords || randomWords.length === 0) {
+            res.status(404).json({ message: "Dataset not found or empty." });
+            return;
         }
-        res.status(200).send(randomWords);
+
+        const { randomVerb, randomPrefix, randomAdjective, randomNoun } = randomWords[0];
+
+        const genPhrase = [
+            randomVerb.word,
+            "the",
+            randomPrefix ? `${randomPrefix.word}${randomAdjective.word || ""}` : randomAdjective.word,
+            randomNoun.word
+        ].filter(Boolean)
+            .join(" ");
+
+        res.status(200).json({ genPhrase })
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Failed to generate phrase" });
