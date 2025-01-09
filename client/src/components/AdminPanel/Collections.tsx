@@ -9,13 +9,14 @@ import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 //Modules
 import { capitalize } from '../../modules/capitalize';
 import { alphabetize } from '../../modules/alphabetize';
+import { addOneWord } from "../../modules/addOneWord";
+import { loadCollection } from "../../modules/loadCollection";
 
 //Types
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../../Types/WordTypes";
 import { Button } from "@radix-ui/themes/dist/cjs/index.js";
 import { ModifyWord } from "./ModifyWord";
 import { BabbleRootState } from "../../Types/BabblerRootState";
-import { loadCollection } from "../../modules/loadCollection";
 
 //Actions
 
@@ -42,21 +43,11 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
 
     useEffect(() => {
         handleLoadCollection();
-    }, [collection]);
+    }, [collection, database]);
 
-    const handleAddWord = (wordToAdd: string, wordType: string) => {
-        if (wordToAdd !== '' && wordType) {
-            setLoading(true);
-            axios.post(`/api/words/addOneWord`, { word: wordToAdd, type: wordType })
-                .then((response) => {
-                    console.log(response.data.message);
-                    handleLoadCollection();
-                    setLoading(false);
-                    setIsAdding(false);
-                }).catch((error) => {
-                    console.error(error);
-                    setLoading(false);
-                })
+    const handleAddWord = async (wordToAdd: string) => {
+        if (wordToAdd !== '') {
+            const response = await addOneWord(database.selectedDatabase, collection, wordToAdd)
         }
     }
 
@@ -120,7 +111,7 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
                     {isAdding &&
                         <Table.Row>
                             <Table.RowHeaderCell>
-                                <ModifyWord word={wordToAdd} loading={loading} onSubmit={(word: string) => handleAddWord(word, collection)} />
+                                <ModifyWord word={wordToAdd} loading={loading} onSubmit={(word: string) => handleAddWord(word)} />
                             </Table.RowHeaderCell>
                         </Table.Row>
                     }

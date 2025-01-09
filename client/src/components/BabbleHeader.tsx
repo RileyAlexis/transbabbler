@@ -12,8 +12,7 @@ import { setUser } from '../redux/reducers/userReducer';
 import { setSelectedDatabase, setSelectedDatabaseToDefault } from '../redux/reducers/databaseReducer';
 
 //Types
-import { BabbleRootState } from 'src/Types/BabblerRootState';
-import { CheckIcon } from '@radix-ui/react-icons';
+import { BabbleRootState } from '../Types/BabblerRootState';
 
 export const BabbleHeader: React.FC = () => {
 
@@ -40,6 +39,10 @@ export const BabbleHeader: React.FC = () => {
 
     const handleAdminSelect = () => {
         navigate('/admin')
+    }
+
+    const handleDatabaseSelect = (item: string) => {
+        dispatch(setSelectedDatabase(item));
     }
 
     return (
@@ -87,7 +90,8 @@ export const BabbleHeader: React.FC = () => {
                             <DropdownMenu.Sub>
                                 <DropdownMenu.SubTrigger>Data Set</DropdownMenu.SubTrigger>
                                 <DropdownMenu.SubContent>
-                                    <div style={{
+
+                                    {/* <div style={{
                                         display: 'flex',
                                         alignItems: 'center',
                                     }}>
@@ -99,15 +103,20 @@ export const BabbleHeader: React.FC = () => {
                                             onSelect={() => dispatch(setSelectedDatabaseToDefault())}>Default
                                         </DropdownMenu.Item>
 
-                                    </div>
+                                    </div> */}
                                     {databases.availableDatabases.map((item, index) => (
+
+
+
                                         <DropdownMenu.Item key={index}
                                             style={{
                                                 backgroundColor: databases.selectedDatabase === item ? 'var(--highlightColor)' : '',
                                                 border: databases.selectedDatabase === item ? '1px solid white' : '',
                                             }}
-                                            onSelect={() => dispatch(setSelectedDatabase(item))}>{item}
+                                            onSelect={() => handleDatabaseSelect(item)}>{item}
                                         </DropdownMenu.Item>
+
+
                                     ))}
 
                                 </DropdownMenu.SubContent>
