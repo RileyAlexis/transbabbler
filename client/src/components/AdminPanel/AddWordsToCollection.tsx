@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 //RadixUI
 import { PlusIcon } from "@radix-ui/react-icons";

@@ -44,6 +44,22 @@ router.get('/databaseNames', async (req, res) => {
     }
 });
 
+router.delete('/deleteDataset', checkAdmin, async (req, res) => {
+    const { dbName } = req.body;
+    console.log('/deleteDataset called', dbName);
+    try {
+        const existingDatabase = await DatabaseCollection.findOne({ name: dbName });
+        if (!existingDatabase) {
+            res.status(404).json({ message: "Database Not Found" });
+        } else {
+            await DatabaseCollection.deleteOne({ name: dbName });
+            res.status(200).json({ message: `Data set ${dbName} deleted` })
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Failed to delete database" });
+    }
+});
+
 
 
 module.exports = router;

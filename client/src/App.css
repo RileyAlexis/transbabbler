@@ -2,7 +2,8 @@
     :root {
         --blue: #5BCEFA;
         --pink: #F5A9B8;
-        --highlightColor: #4EDF00;
+        --warningColor: #FF496E;
+        --highlightColor: #205B00;
         --primary-color: #F5A9B8;
         --secondary-color: ##5bCEFA;
         --textColor: dimgray;

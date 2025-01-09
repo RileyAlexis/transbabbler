@@ -7,11 +7,12 @@ import { Tabs } from "@radix-ui/themes";
 //Components
 import { BabbleHeader } from "../BabbleHeader";
 import { Collections } from "./Collections";
-import { DbOptions } from "./DbOptions";
+import { NewDataSet } from "./NewDataSet";
 import { AddWordsToCollection } from "./AddWordsToCollection";
 
 //Types
 import { BabbleRootState } from "../../Types/BabblerRootState";
+import { DataSetSelector } from "../DataSetSelector";
 
 
 export const AdminPanel: React.FC = () => {
@@ -33,7 +34,8 @@ export const AdminPanel: React.FC = () => {
                     gap: 10
                 }}>
                     <AddWordsToCollection collection={collection} database={database.selectedDatabase} setAllWords={setAllWords} />
-                    <DbOptions />
+                    <NewDataSet />
+                    <DataSetSelector />
                 </div>
                 <Tabs.Root style={{
                     width: '100%'
