@@ -49,15 +49,6 @@ export const BabbleHeader: React.FC = () => {
         dispatch(setSelectedDatabase(item));
     }
 
-    useEffect(() => {
-        getDatabaseNames()
-            .then((response) => {
-                dispatch(setAvilableDatabases(response));
-            }).catch((error) => {
-                console.error(error);
-            })
-    }, [databases]);
-
     return (
         <div style={{
             display: 'flex',

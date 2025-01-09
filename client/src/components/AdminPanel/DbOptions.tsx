@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 //RadixUI
 import { FilePlusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Button, IconButton, TextArea, TextField } from "@radix-ui/themes";
 import { Popover } from "@radix-ui/themes";
+
+//Modules
 import { getDatabaseNames } from "../../modules/getDatabaseNames";
+
+//Actions
+import { setAvilableDatabases } from "../../redux/reducers/databaseReducer";
+
 
 export const DbOptions: React.FC = () => {
 
     const [newDbName, setNewDbname] = useState('');
+    const dispatch = useDispatch();
 
     const handleCreateDatabase = () => {
         if (newDbName === '') {
@@ -19,6 +27,10 @@ export const DbOptions: React.FC = () => {
                 .then((response) => {
                     console.log(response.data);
                     setNewDbname('');
+                    getDatabaseNames()
+                        .then((response) => {
+                            dispatch(setAvilableDatabases(response));
+                        })
                 }).catch((error) => {
                     console.error(error.message);
                 })
