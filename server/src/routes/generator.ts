@@ -1,7 +1,7 @@
 import express from 'express';
 
 //DB
-import { AdjectiveCollection, NounCollection, PrefixCollection, SuffixCollection, VerbCollection } from '../models/wordSchema';
+import { AdjectiveCollection, DatabaseCollection, NounCollection, PrefixCollection, SuffixCollection, VerbCollection } from '../models/wordSchema';
 
 //Types
 import { Request, Response } from "express";
@@ -26,6 +26,39 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: "Error generating babbler" })
     }
 });
+
+router.get('generateFrom', async (req, res) => {
+    const { dbName } = req.query;
+
+    if (!dbName) {
+        res.status(400).json({ message: "Dataset name is required" });
+        return;
+    }
+
+    try {
+        const dataset = await DatabaseCollection.findOne({ name: dbName });
+        if (!dataset) {
+            res.status(404).json({ message: "Dataset not found" });
+            return;
+        }
+        const categories = ['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'];
+
+        const randomWords: Record<string, string | null> = {};
+        for (const category of categories) {
+            const words = dataset[category]; // Access the array for the category
+            if (Array.isArray(words) && words.length > 0) {
+                const randomIndex = Math.floor(Math.random() * words.length);
+                randomWords[category] = words[randomIndex];
+            } else {
+                randomWords[category] = null; // If category is empty or not an array
+            }
+        }
+        res.status(200).send(randomWords);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to generate phrase" });
+    }
+})
 
 
 module.exports = router;

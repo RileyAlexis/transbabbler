@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
+
 import { Button, Text } from "@radix-ui/themes";
+
+import { DataSetSelector } from "./DataSetSelector";
 
 export const GenerateBase: React.FC = () => {
 
@@ -22,6 +26,7 @@ export const GenerateBase: React.FC = () => {
 
     return (
         <div className="babblerContainer">
+            <DataSetSelector />
             <div className="babblerContainerButtons">
                 <Button style={{ marginRight: 15 }} onClick={handleGenerate}>Generate Babble</Button>
                 <Button onClick={resetBabbler}>Clear Babble</Button>
