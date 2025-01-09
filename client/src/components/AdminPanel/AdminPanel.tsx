@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 //RadixUI
@@ -12,7 +12,6 @@ import { AddWordsToCollection } from "./AddWordsToCollection";
 
 //Types
 import { BabbleRootState } from "../../Types/BabblerRootState";
-import { loadCollection } from "../../modules/loadCollection";
 
 
 export const AdminPanel: React.FC = () => {
@@ -22,14 +21,7 @@ export const AdminPanel: React.FC = () => {
 
 
     const handleCollectionChange = async (collection: string) => {
-        loadCollection(database.selectedDatabase, collection)
-            .then((response) => {
-                setCollection(collection);
-                console.log(response);
-                setAllWords(response);
-            }).catch((error) => {
-                console.error(error);
-            })
+        setCollection(collection);
     }
 
     return (
@@ -84,6 +76,7 @@ export const AdminPanel: React.FC = () => {
 
                 </Tabs.Root>
             </div>
+
         </>
     )
 }

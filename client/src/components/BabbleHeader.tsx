@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -9,11 +9,10 @@ import { DropdownMenu } from '@radix-ui/themes';
 
 //Modules
 import { capitalize } from '../modules/capitalize';
-import { getDatabaseNames } from '../modules/getDatabaseNames';
 
 //Actions
 import { setUser } from '../redux/reducers/userReducer';
-import { setAvilableDatabases, setSelectedDatabase } from '../redux/reducers/databaseReducer';
+import { setSelectedDatabase } from '../redux/reducers/databaseReducer';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
@@ -42,7 +41,7 @@ export const BabbleHeader: React.FC = () => {
     }
 
     const handleAdminSelect = () => {
-        navigate('/admin')
+        navigate('/admin');
     }
 
     const handleDatabaseSelect = (item: string) => {
@@ -94,20 +93,6 @@ export const BabbleHeader: React.FC = () => {
                             <DropdownMenu.Sub>
                                 <DropdownMenu.SubTrigger>Data Set</DropdownMenu.SubTrigger>
                                 <DropdownMenu.SubContent>
-
-                                    {/* <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                    }}>
-                                        <DropdownMenu.Item
-                                            style={{
-                                                backgroundColor: databases.selectedDatabase === 'default' ? 'var(--highlightColor)' : '',
-                                                border: databases.selectedDatabase === 'default' ? '1px solid white' : ''
-                                            }}
-                                            onSelect={() => dispatch(setSelectedDatabaseToDefault())}>Default
-                                        </DropdownMenu.Item>
-
-                                    </div> */}
                                     {databases.availableDatabases.map((item, index) => (
 
 

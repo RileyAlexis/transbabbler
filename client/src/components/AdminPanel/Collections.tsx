@@ -2,27 +2,25 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 //UI
-import { IconButton, Table } from "@radix-ui/themes";
-import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { Table } from "@radix-ui/themes";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
-import { addOneWord } from "../../modules/addOneWord";
 import { deleteWord } from "../../modules/deleteWord";
 import { updateWord } from "../../modules/updateWord";
 import { loadCollection } from "../../modules/loadCollection";
 
 //Components
 import { ModifyWord } from "./ModifyWord";
+import { BabbleCallout } from "../BabbleCallout";
 
 //Types
-import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../../Types/WordTypes";
 import { Button } from "@radix-ui/themes/dist/cjs/index.js";
 import { BabbleRootState } from "../../Types/BabblerRootState";
 
 interface CollectionsProps {
     collection: string;
-    allWords: string[];
+    allWords: any[];
     setAllWords: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
@@ -31,14 +29,14 @@ export const Collections: React.FC<CollectionsProps> = ({ collection, allWords, 
 
     const database = useSelector((state: BabbleRootState) => state.database);
     const [loading, setLoading] = useState(false);
-    const [isAdding, setIsAdding] = useState(false);
-    const [wordToAdd, setWordToAdd] = useState(`Add a Word to ${collection}`);
-    const [error, setError] = useState<string>('');
+    const [isCalloutVisible, setIsCalloutVisible] = useState(false);
+    const [calloutMessage, setCalloutMessage] = useState('');
+    const [calloutColor, setCalloutColor] = useState('blue');
 
 
     const handleLoadCollection = async () => {
         const response = await loadCollection(database.selectedDatabase, collection);
-        setAllWords(response);
+        setAllWords(response.data);
     }
 
     useEffect(() => {
@@ -48,6 +46,10 @@ export const Collections: React.FC<CollectionsProps> = ({ collection, allWords, 
 
     const handleDeleteWord = async (word: string) => {
         await deleteWord(database.selectedDatabase, collection, word);
+        setIsCalloutVisible(true);
+        setCalloutMessage(`${word} deleted from ${collection}`);
+
+        setTimeout(() => setIsCalloutVisible(false), 3000);
         handleLoadCollection();
     }
 
@@ -86,10 +88,8 @@ export const Collections: React.FC<CollectionsProps> = ({ collection, allWords, 
                         </Table.Row>
                     ))}
                 </Table.Body>
-
-
-
             </Table.Root>
+            <BabbleCallout message={calloutMessage} color={calloutColor} isVisible={isCalloutVisible} />
         </div>
     )
 }
