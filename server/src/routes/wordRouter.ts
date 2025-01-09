@@ -142,33 +142,47 @@ router.post('/addOneWord', checkAdmin, async (req: Request, res: Response) => {
     }
 });
 
-router.post('/addManyWords', checkAdmin, async (req, res) => {
+router.post('/addManyWords', checkAdmin, async (req: Request, res: Response) => {
+    const { databaseName, type, words } = req.body;
+    const category = "none";
+
     try {
-        const { words, type } = req.body;
-
-        if (!Array.isArray(words) || words.some((word) => typeof word !== 'string')) {
-            res.status(400).json({ message: "Invalid Input, must be an array of strings" })
+        if (!Array.isArray(words) || words.length === 0) {
+            res.status(400).json({ message: "Invalid input: 'words' must be a non-empty array of strings" });
+            return;
         }
 
-        const wordDocs = words.map((word: string) => ({ word }));
-        let result;
-        switch (type) {
-            case "noun": result = await NounCollection.insertMany(wordDocs, { ordered: false }); break;
-            case "verb": result = await VerbCollection.insertMany(wordDocs, { ordered: false }); break;
-            case "adjective": result = await AdjectiveCollection.insertMany(wordDocs, { ordered: false }); break;
-            case "prefix": result = await PrefixCollection.insertMany(wordDocs, { ordered: false }); break;
-            case "suffix": result = await SuffixCollection.insertMany(wordDocs, { ordered: false }); break;
-            default: res.status(400).json({ message: "Invalid Type" });
+        if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
+            res.status(400).json({ message: "Invalid collection type" });
+            return;
         }
-        if (result) {
-            res.status(200).json({ message: "Words successfully added to database" })
+
+        const database = await DatabaseCollection.findOne({ name: databaseName });
+        if (!database) {
+            res.status(400).json({ message: "Database not found" });
+            return;
         }
-    } catch (error: any) {
-        if (error.code === 11000) {
-            res.status(400).json({ message: "Some words were duplicates and not added" })
-        } else {
-            res.status(500).json({ message: "An error ocurred.", error: error.message });
+
+        const isAlphaRegex = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/;
+        const validWords = words.filter(word => isAlphaRegex.test(word));
+        const invalidWords = words.filter(word => !isAlphaRegex.test(word));
+
+        if (validWords.length === 0) {
+            res.status(400).json({ message: "No valid words to add. Ensure words contain only alphabetic characters." });
+            return;
         }
+
+        const newWords = validWords.map(word => ({ word, category }));
+        (database[type] as any).push(...newWords);
+        await database.save();
+
+        res.status(201).json({
+            message: `${validWords.length} word(s) added to ${type} in ${databaseName}`,
+            invalidWords: invalidWords.length > 0 ? invalidWords : undefined,
+        });
+    } catch (error) {
+        console.error('Error adding words', error);
+        res.status(500).json({ message: "Failed to add words" });
     }
 });
 
