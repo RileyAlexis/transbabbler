@@ -12,6 +12,9 @@ import { BabbleHeader } from './components/BabbleHeader';
 import { AdminPanel } from './components/AdminPanel/AdminPanel';
 import { BaseApp } from './components/BaseApp';
 
+//Modules
+import { getDatabaseNames } from './modules/getDatabaseNames';
+
 //Actions
 import { setUser } from './redux/reducers/userReducer';
 import { setAvilableDatabases } from './redux/reducers/databaseReducer';
@@ -33,10 +36,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.get('/api/data/databaseNames')
+    getDatabaseNames()
       .then((response) => {
-        const dbArray = response.data.map((item: { name: string }) => item.name);
-        dispatch(setAvilableDatabases(dbArray))
+        dispatch(setAvilableDatabases(response));
       }).catch((error) => {
         console.error(error);
       })

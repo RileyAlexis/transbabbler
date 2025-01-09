@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -9,10 +9,11 @@ import { DropdownMenu } from '@radix-ui/themes';
 
 //Modules
 import { capitalize } from '../modules/capitalize';
+import { getDatabaseNames } from '../modules/getDatabaseNames';
 
 //Actions
 import { setUser } from '../redux/reducers/userReducer';
-import { setSelectedDatabase, setSelectedDatabaseToDefault } from '../redux/reducers/databaseReducer';
+import { setAvilableDatabases, setSelectedDatabase } from '../redux/reducers/databaseReducer';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
@@ -47,6 +48,15 @@ export const BabbleHeader: React.FC = () => {
     const handleDatabaseSelect = (item: string) => {
         dispatch(setSelectedDatabase(item));
     }
+
+    useEffect(() => {
+        getDatabaseNames()
+            .then((response) => {
+                dispatch(setAvilableDatabases(response));
+            }).catch((error) => {
+                console.error(error);
+            })
+    }, [databases]);
 
     return (
         <div style={{

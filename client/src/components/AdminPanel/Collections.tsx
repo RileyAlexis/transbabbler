@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 //UI
 import { IconButton, Table } from "@radix-ui/themes";
@@ -8,7 +7,6 @@ import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
-import { alphabetize } from '../../modules/alphabetize';
 import { addOneWord } from "../../modules/addOneWord";
 import { deleteWord } from "../../modules/deleteWord";
 import { updateWord } from "../../modules/updateWord";

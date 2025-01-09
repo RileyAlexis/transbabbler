@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { IconButton, TextField } from "@radix-ui/themes";
+
+//RadixUI
+import { FilePlusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Button, IconButton, TextArea, TextField } from "@radix-ui/themes";
+import { Popover } from "@radix-ui/themes";
+import { getDatabaseNames } from "../../modules/getDatabaseNames";
 
 export const DbOptions: React.FC = () => {
 
@@ -13,7 +17,8 @@ export const DbOptions: React.FC = () => {
         } else {
             axios.post('/api/data/createDatabase', { name: newDbName })
                 .then((response) => {
-                    console.log(response.data.messsage);
+                    console.log(response.data);
+                    setNewDbname('');
                 }).catch((error) => {
                     console.error(error.message);
                 })
@@ -21,16 +26,21 @@ export const DbOptions: React.FC = () => {
     }
 
     return (
-        <div style={{
-            display: 'flex',
-            gap: 10,
-        }}>
-            <TextField.Root placeholder="New DB Name" variant="soft" radius="small" value={newDbName} onChange={(e) => setNewDbname(e.target.value)}>
-                <TextField.Slot />
-            </TextField.Root>
-            <IconButton onClick={handleCreateDatabase}>
-                <PlusIcon />
-            </IconButton>
-        </div>
+        <Popover.Root>
+            <Popover.Trigger>
+                <Button variant="soft">
+                    <FilePlusIcon />
+                    New Dataset
+                </Button>
+            </Popover.Trigger>
+            <Popover.Content>
+                <TextField.Root variant="soft" size={"1"} value={newDbName} onChange={(e) => setNewDbname(e.target.value)}>
+                    <TextField.Slot />
+                </TextField.Root>
+                <Popover.Close>
+                    <Button size="1" onClick={handleCreateDatabase}>Create Dataset</Button>
+                </Popover.Close>
+            </Popover.Content>
+        </Popover.Root>
     )
 }
