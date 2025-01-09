@@ -10,16 +10,17 @@ import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { capitalize } from '../../modules/capitalize';
 import { alphabetize } from '../../modules/alphabetize';
 import { addOneWord } from "../../modules/addOneWord";
+import { deleteWord } from "../../modules/deleteWord";
+import { updateWord } from "../../modules/updateWord";
 import { loadCollection } from "../../modules/loadCollection";
+
+//Components
+import { ModifyWord } from "./ModifyWord";
 
 //Types
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "../../Types/WordTypes";
 import { Button } from "@radix-ui/themes/dist/cjs/index.js";
-import { ModifyWord } from "./ModifyWord";
 import { BabbleRootState } from "../../Types/BabblerRootState";
-
-//Actions
-
 
 interface CollectionsProps {
     collection: string;
@@ -47,35 +48,22 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
 
     const handleAddWord = async (wordToAdd: string) => {
         if (wordToAdd !== '') {
-            const response = await addOneWord(database.selectedDatabase, collection, wordToAdd)
+            await addOneWord(database.selectedDatabase, collection, wordToAdd);
+            handleLoadCollection();
         }
     }
 
-    const handleDeleteWord = (id: string) => {
-        axios.delete(`/api/words/deleteWord/${id}/${collection}`)
-            .then((response) => {
-                console.log(response.data.message);
-                handleLoadCollection();
-            }).catch((error) => {
-                console.error(error);
-            })
+    const handleDeleteWord = async (word: string) => {
+        await deleteWord(database.selectedDatabase, collection, word);
+        handleLoadCollection();
     }
 
-    const handleModify = (id: string, originalWord: string, modifiedWord: string) => {
-        console.log(modifiedWord);
+    const handleModify = async (originalWord: string, modifiedWord: string) => {
         if (originalWord === modifiedWord || modifiedWord === '') {
             return;
         } else {
-            setLoading(true);
-            axios.post('/api/words/updateWord', { type: collection, id: id, word: modifiedWord })
-                .then((response) => {
-                    console.log(response.data.message);
-                    handleLoadCollection();
-                    setLoading(false);
-                }).catch((error) => {
-                    console.log('Error Updating Word', error);
-                    setLoading(false);
-                });
+            await updateWord(database.selectedDatabase, collection, modifiedWord, originalWord);
+            handleLoadCollection();
         }
     }
 
@@ -122,9 +110,9 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
                             <Table.Cell>{item.category}</Table.Cell>
 
                             <Table.Cell>
-                                <ModifyWord word={item.word} loading={loading} onSubmit={(word: string) => handleModify(item._id.toString(), item.word, word)} />
+                                <ModifyWord word={item.word} loading={loading} onSubmit={(word: string) => handleModify(item.word, word)} />
                             </Table.Cell>
-                            <Table.Cell><Button onClick={() => handleDeleteWord(item._id.toString())}>X</Button></Table.Cell>
+                            <Table.Cell><Button onClick={() => handleDeleteWord(item.word)}>X</Button></Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>

@@ -7,6 +7,9 @@ import axios from 'axios';
 import { Button } from '@radix-ui/themes';
 import { DropdownMenu } from '@radix-ui/themes';
 
+//Modules
+import { capitalize } from '../modules/capitalize';
+
 //Actions
 import { setUser } from '../redux/reducers/userReducer';
 import { setSelectedDatabase, setSelectedDatabaseToDefault } from '../redux/reducers/databaseReducer';
@@ -113,7 +116,7 @@ export const BabbleHeader: React.FC = () => {
                                                 backgroundColor: databases.selectedDatabase === item ? 'var(--highlightColor)' : '',
                                                 border: databases.selectedDatabase === item ? '1px solid white' : '',
                                             }}
-                                            onSelect={() => handleDatabaseSelect(item)}>{item}
+                                            onSelect={() => handleDatabaseSelect(item)}>{capitalize(item)}
                                         </DropdownMenu.Item>
 
 

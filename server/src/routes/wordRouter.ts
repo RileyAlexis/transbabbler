@@ -7,6 +7,7 @@ import { AdjectiveCollection, DatabaseCollection, NounCollection, PrefixCollecti
 //Types
 import { Request, Response } from "express";
 import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from '../types/WordTypes';
+import { checkAdmin } from '../strategies/checkAdmin';
 
 const router = express.Router();
 
@@ -39,7 +40,7 @@ router.get('/loadCollection', async (req, res) => {
     }
 });
 
-router.delete('/deleteWord/', rejectUnauthenticated, async (req, res) => {
+router.delete('/deleteWord/', checkAdmin, async (req, res) => {
     const { databaseName, type, word } = req.body;
     console.log('/deleteWord called', databaseName, type, word);
 
@@ -70,22 +71,20 @@ router.delete('/deleteWord/', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
-    const { databaseName, type, word, newWord, newCategory } = req.body;
+router.post('/updateWord', checkAdmin, async (req, res) => {
+    const { databaseName, type, originalWord, newWord } = req.body;
 
-    const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
+    const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(originalWord);
 
     if (!isAlpha) {
         res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
     } else if (isAlpha) {
-        console.log('/updateWord called', databaseName, word, type, newCategory);
+        console.log('/updateWord called', databaseName, type, originalWord, newWord);
         try {
             if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
                 res.status(400).json({ message: "Invalid word type" });
                 return;
             }
-
-            // Find the target database document
             const database = await DatabaseCollection.findOne({ name: databaseName });
 
             if (!database) {
@@ -93,33 +92,26 @@ router.post('/updateWord', rejectUnauthenticated, async (req, res) => {
                 return;
             }
 
-            // Find the word within the specified collection
-            const wordIndex = (database[type] as any).findIndex((entry: any) => entry.word === word);
+            const wordIndex = (database[type] as any).findIndex((entry: any) => entry.word === originalWord);
 
             if (wordIndex === -1) {
-                res.status(404).json({ message: `Word '${word}' not found in ${type}` });
+                res.status(404).json({ message: `Word '${originalWord}' not found in ${type}` });
                 return;
             }
-
-            // Update the word properties
             if (newWord) {
                 (database[type] as any)[wordIndex].word = newWord;
             }
-            if (newCategory) {
-                (database[type] as any)[wordIndex].category = newCategory;
-            }
 
-            // Save the updated database document
             await database.save();
 
-            res.status(200).json({ message: `Word '${word}' updated successfully in ${type}` });
+            res.status(200).json({ message: `Word '${originalWord}' updated successfully in ${type}` });
         } catch (error) {
             res.status(500).json({ message: "Error updating record" });
         }
     }
 })
 
-router.post('/addOneWord', rejectUnauthenticated, async (req: Request, res: Response) => {
+router.post('/addOneWord', checkAdmin, async (req: Request, res: Response) => {
     const { databaseName, type, word } = req.body;
     const category = "none";
     console.log('/addOneWord route called', databaseName, type, word);
@@ -154,7 +146,7 @@ router.post('/addOneWord', rejectUnauthenticated, async (req: Request, res: Resp
     }
 });
 
-router.post('/addManyWords', rejectUnauthenticated, async (req, res) => {
+router.post('/addManyWords', checkAdmin, async (req, res) => {
     try {
         const { words, type } = req.body;
 
