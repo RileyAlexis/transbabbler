@@ -22,13 +22,14 @@ import { BabbleRootState } from "../../Types/BabblerRootState";
 
 interface CollectionsProps {
     collection: string;
+    allWords: string[];
+    setAllWords: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 
-export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
+export const Collections: React.FC<CollectionsProps> = ({ collection, allWords, setAllWords }) => {
 
     const database = useSelector((state: BabbleRootState) => state.database);
-    const [allWords, setAllWords] = useState<NounType[] | VerbType[] | AdjectiveType[] | PrefixType[] | SuffixType[]>([]);
     const [loading, setLoading] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const [wordToAdd, setWordToAdd] = useState(`Add a Word to ${collection}`);
@@ -44,12 +45,6 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
         handleLoadCollection();
     }, [collection, database]);
 
-    const handleAddWord = async (wordToAdd: string) => {
-        if (wordToAdd !== '') {
-            await addOneWord(database.selectedDatabase, collection, wordToAdd);
-            handleLoadCollection();
-        }
-    }
 
     const handleDeleteWord = async (word: string) => {
         await deleteWord(database.selectedDatabase, collection, word);
@@ -69,21 +64,6 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
         <div>
             <Table.Root>
                 <Table.Header>
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        marginLeft: 15,
-                        marginTop: 15,
-                    }}>
-                        <IconButton>
-                            {!isAdding &&
-                                <PlusCircledIcon onClick={() => setIsAdding(true)} />
-                            }
-                            {isAdding &&
-                                <MinusCircledIcon onClick={() => setIsAdding(false)} />
-                            }
-                        </IconButton>
-                    </div>
                     <Table.Row>
                         <Table.ColumnHeaderCell>{capitalize(collection)}</Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>Category</Table.ColumnHeaderCell>
@@ -94,14 +74,6 @@ export const Collections: React.FC<CollectionsProps> = ({ collection }) => {
                 </Table.Header>
 
                 <Table.Body>
-                    {isAdding &&
-                        <Table.Row>
-                            <Table.RowHeaderCell>
-                                <ModifyWord word={wordToAdd} loading={loading} onSubmit={(word: string) => handleAddWord(word)} />
-                            </Table.RowHeaderCell>
-                        </Table.Row>
-                    }
-
                     {allWords.map((item, _id) => (
                         <Table.Row key={_id}>
                             <Table.RowHeaderCell>{item.word}</Table.RowHeaderCell>

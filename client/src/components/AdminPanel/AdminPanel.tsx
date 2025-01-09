@@ -11,16 +11,26 @@ import { DbOptions } from "./DbOptions";
 import { AddWordsToCollection } from "./AddWordsToCollection";
 
 //Types
-import { BabbleRootState } from "src/Types/BabblerRootState";
+import { BabbleRootState } from "../../Types/BabblerRootState";
+import { loadCollection } from "../../modules/loadCollection";
 
 
 export const AdminPanel: React.FC = () => {
     const database = useSelector((state: BabbleRootState) => state.database);
     const [collection, setCollection] = useState("nouns");
+    const [allWords, setAllWords] = useState<string[]>([]);
 
-    useEffect(() => {
-        console.log(collection);
-    }, [collection]);
+
+    const handleCollectionChange = async (collection: string) => {
+        loadCollection(database.selectedDatabase, collection)
+            .then((response) => {
+                setCollection(collection);
+                console.log(response);
+                setAllWords(response);
+            }).catch((error) => {
+                console.error(error);
+            })
+    }
 
     return (
         <>
@@ -30,7 +40,7 @@ export const AdminPanel: React.FC = () => {
                     display: 'flex',
                     gap: 10
                 }}>
-                    <AddWordsToCollection collection={collection} database={database.selectedDatabase} />
+                    <AddWordsToCollection collection={collection} database={database.selectedDatabase} setAllWords={setAllWords} />
                     <DbOptions />
                 </div>
                 <Tabs.Root style={{
@@ -41,34 +51,34 @@ export const AdminPanel: React.FC = () => {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <Tabs.Trigger value="Nouns" onClick={() => setCollection("nouns")}>Nouns</Tabs.Trigger>
-                        <Tabs.Trigger value="Verbs" onClick={() => setCollection("verbs")}>Verbs</Tabs.Trigger>
-                        <Tabs.Trigger value="Adjectives" onClick={() => setCollection("adjectives")}>Adjectives</Tabs.Trigger>
-                        <Tabs.Trigger value="Prefixes" onClick={() => setCollection("prefixes")}>Prefixes</Tabs.Trigger>
-                        <Tabs.Trigger value="Suffixes" onClick={() => setCollection("suffixes")}>Suffixes</Tabs.Trigger>
+                        <Tabs.Trigger value="Nouns" onClick={() => handleCollectionChange("nouns")}>Nouns</Tabs.Trigger>
+                        <Tabs.Trigger value="Verbs" onClick={() => handleCollectionChange("verbs")}>Verbs</Tabs.Trigger>
+                        <Tabs.Trigger value="Adjectives" onClick={() => handleCollectionChange("adjectives")}>Adjectives</Tabs.Trigger>
+                        <Tabs.Trigger value="Prefixes" onClick={() => handleCollectionChange("prefixes")}>Prefixes</Tabs.Trigger>
+                        <Tabs.Trigger value="Suffixes" onClick={() => handleCollectionChange("suffixes")}>Suffixes</Tabs.Trigger>
                     </Tabs.List>
 
                     <Tabs.Content value="Nouns">
-                        <Collections collection={collection} />
+                        <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
                     </Tabs.Content>
 
                     <Tabs.Content value="Verbs">
-                        <Collections collection={collection} />
+                        <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
 
                     </Tabs.Content>
 
                     <Tabs.Content value="Adjectives">
-                        <Collections collection={collection} />
+                        <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
 
                     </Tabs.Content>
 
                     <Tabs.Content value="Prefixes">
-                        <Collections collection={collection} />
+                        <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
 
                     </Tabs.Content>
 
                     <Tabs.Content value="Suffixes">
-                        <Collections collection={collection} />
+                        <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
 
                     </Tabs.Content>
 

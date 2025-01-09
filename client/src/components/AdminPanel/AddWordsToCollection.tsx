@@ -7,14 +7,18 @@ import { Button, Popover, TextArea, Text, Badge } from "@radix-ui/themes";
 //Modules
 import { stringToArray } from "../../modules/stringToArray";
 import { addManyWords } from "../../modules/addManyWords";
+import { loadCollection } from "../../modules/loadCollection";
+
+//Actions
 
 interface AddWordsToCollectionProps {
     database: string;
     collection: string;
+    setAllWords: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 
-export const AddWordsToCollection: React.FC<AddWordsToCollectionProps> = ({ database, collection }) => {
+export const AddWordsToCollection: React.FC<AddWordsToCollectionProps> = ({ database, collection, setAllWords }) => {
     const [textData, setTextData] = useState('');
 
     const handleAddWords = async () => {
@@ -22,6 +26,12 @@ export const AddWordsToCollection: React.FC<AddWordsToCollectionProps> = ({ data
 
         addManyWords(database, collection, result).then((response) => {
             setTextData('');
+            loadCollection(database, collection)
+                .then((response) => {
+                    setAllWords(response);
+                }).catch((error) => {
+                    console.error(error);
+                })
             console.log(response);
         }).catch((error) => {
             console.error(error);
