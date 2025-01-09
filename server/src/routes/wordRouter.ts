@@ -13,7 +13,6 @@ const router = express.Router();
 
 router.get('/loadCollection', async (req, res) => {
     const { databaseName, type } = req.query;
-    console.log('/loadCollection called', databaseName, type);
 
     if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type as string)) {
         res.status(400).json({ message: "Invalid word type" });
@@ -42,7 +41,6 @@ router.get('/loadCollection', async (req, res) => {
 
 router.delete('/deleteWord/', checkAdmin, async (req, res) => {
     const { databaseName, type, word } = req.body;
-    console.log('/deleteWord called', databaseName, type, word);
 
     try {
         const database = await DatabaseCollection.findOne({ name: databaseName });
@@ -79,7 +77,6 @@ router.post('/updateWord', checkAdmin, async (req, res) => {
     if (!isAlpha) {
         res.status(400).json({ message: "Invalid input: Word must contain only alphabetic characters" });
     } else if (isAlpha) {
-        console.log('/updateWord called', databaseName, type, originalWord, newWord);
         try {
             if (!['nouns', 'verbs', 'adjectives', 'prefixes', 'suffixes'].includes(type)) {
                 res.status(400).json({ message: "Invalid word type" });
@@ -114,7 +111,6 @@ router.post('/updateWord', checkAdmin, async (req, res) => {
 router.post('/addOneWord', checkAdmin, async (req: Request, res: Response) => {
     const { databaseName, type, word } = req.body;
     const category = "none";
-    console.log('/addOneWord route called', databaseName, type, word);
     const isAlpha = /^[a-zA-Z]+(-?[a-zA-Z]+)?(\s[a-zA-Z]+(-?[a-zA-Z]+)?)?$/.test(word);
 
     try {
