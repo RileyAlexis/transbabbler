@@ -9,12 +9,6 @@ import App from './App';
 import "@radix-ui/themes/styles.css";
 
 type ThemeType = 'light' | 'dark' | 'auto';
-type User = {
-  usernanme: string;
-  email: string;
-  isAuthenticated: boolean;
-  is_admin?: boolean;
-}
 
 interface ThemeContextValue {
   theme: ThemeType;
@@ -22,13 +16,7 @@ interface ThemeContextValue {
   setTheme: (theme: ThemeType) => void;
 }
 
-interface UserContextValue {
-  user: User | null;
-  setUser: (user: User | null) => void;
-}
-
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 function ThemedContainer({ children }: { children: React.ReactNode }) {
 
@@ -85,26 +73,6 @@ export const useTheme = () => {
   }
   return context;
 }
-
-// export const useUser = () => {
-//   const context = useContext(UserContext);
-//   if (!context) {
-//     throw new Error('useUser must be used within a UserProvider');
-//   }
-//   return context;
-// }
-
-// function UserProvider({ children }: { children: React.ReactNode }) {
-//   const [user, setUser] = useState<User | null>(null);
-
-//   return (
-//     <UserContext.Provider value={{ user, setUser }}>
-//       {children}
-//     </UserContext.Provider>
-//   )
-// }
-
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemedContainer>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 //RadixUI
-import { Tabs } from "@radix-ui/themes";
+import { Tabs, Text } from "@radix-ui/themes";
 
 //Components
 import { BabbleHeader } from "../BabbleHeader";
@@ -31,11 +31,15 @@ export const AdminPanel: React.FC = () => {
             <div className="adminContainer">
                 <div style={{
                     display: 'flex',
-                    gap: 10
+                    gap: 10,
+                    alignItems: 'center'
                 }}>
                     <AddWordsToCollection collection={collection} database={database.selectedDatabase} setAllWords={setAllWords} />
                     <NewDataSet />
                     <DataSetSelector />
+                    {allWords.length > 0 &&
+                        <Text size="2" weight="bold">{allWords.length} entries</Text>
+                    }
                 </div>
                 <Tabs.Root style={{
                     width: '100%'

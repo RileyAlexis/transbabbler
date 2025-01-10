@@ -94,7 +94,7 @@ router.get('/generateFrom', async (req, res) => {
         const genPhrase = [
             randomVerb.word,
             "the",
-            randomPrefix ? `${randomPrefix.word}${randomAdjective.word || ""}` : randomAdjective.word,
+            randomPrefix ? `${randomPrefix.word}-${randomAdjective.word || ""}` : randomAdjective.word,
             randomNoun.word
         ].filter(Boolean)
             .join(" ");

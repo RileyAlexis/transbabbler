@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 //UI
-import { Table } from "@radix-ui/themes";
+import { Table, Text } from "@radix-ui/themes";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';

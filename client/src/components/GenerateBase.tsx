@@ -4,9 +4,6 @@ import axios from "axios";
 
 import { Button, Text } from "@radix-ui/themes";
 
-//Components
-import { DataSetSelector } from "./DataSetSelector";
-
 //Types
 import { BabbleRootState } from "src/Types/BabblerRootState";
 
@@ -41,7 +38,6 @@ export const GenerateBase: React.FC = () => {
 
     return (
         <div className="babblerContainer">
-            <DataSetSelector />
             <div className="babblerContainerButtons">
                 <Button style={{ marginRight: 15 }} onClick={handleGenerateFrom}>Generate Babble</Button>
                 <Button onClick={resetBabbler}>Clear Babble</Button>

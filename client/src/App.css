@@ -33,14 +33,6 @@
         --radius: 5px;
     }
 
-    .dark-theme {
-        --backgroundColor: #373737;
-        --textColor: lightgray;
-        --primary-color: #205063;
-        --secondary-color: #7A5159;
-        --border-color: white;
-    }
-
     html {
         box-sizing: border-box;
     }
@@ -57,92 +49,137 @@
         font-size: var(--base-size);
         padding: 0;
         margin: 0;
-        /* color: var(--textColor); */
-        /* background-color: var(--backgroundColor); */
-        /* transition: background-color 0.3s ease, color 0.3s ease; */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .primaryContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background: radial-gradient(rgba(255, 75, 190, 0.07), rgba(0, 0, 0, 1));
+        }
+
+        .secondaryContainer {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto;
+            grid-gap: 0.5rem;
+            min-width: 75vw;
+            max-width: 75vw;
+            min-height: 75vh;
+            max-height: 75vh;
+            /* border: 1px solid white; */
+        }
+
+        .sideContainer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-top: 1rem;
+            padding-left: 0.5rem;
+            grid-column: 1;
+            background:
+                radial-gradient(ellipse,
+                    rgba(255, 182, 193, 0.07) 20%,
+                    rgba(255, 182, 193, 0.001) 50%,
+                    rgba(255, 182, 193, 0) 100%),
+                linear-gradient(to right,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0) 90%);
+            background-blend-mode: multiply;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.05);
+            /* border: 1px solid hotpink; */
+        }
+
+        .contentContainer {
+            grid-column: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0px 0px 3px rgba(255, 255, 255, 0.05);
+            /* border: 1px solid green; */
+        }
+
+        .babbleHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            padding-right: 10;
+        }
+
+        .babblerContainer {
+            width: 100%;
+            height: 100%;
+            /* border: 1px solid blue; */
+            text-align: center;
+        }
+
+        .babblerContainerButtons {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+        }
+
+        .babblerContainerBabbles {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .babblerLines {
+            margin-left: 0.1rem;
+            margin-right: 0.1rem;
+            padding: 0;
+        }
+
+        .adminContainer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            overflow-y: auto;
+            width: 100vw;
+            height: 90vh;
+            border: 2px solid hotpink;
+            margin-top: 1rem;
+        }
+
+
+
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-weight: 400;
-        margin: 0;
+    @media only screen and (max-width: 450px) and (orientation: portrait) {
+        .babblerContainer {
+            height: 92vh;
+            width: 100vw;
+            margin-top: 0.3rem;
+        }
+
+        .babblerContainerBabbles {
+            margin-top: 0.3rem;
+        }
+
+        .babblerLines {
+            word-wrap: break-word;
+        }
+
     }
-
-    .primaryContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .babblerContainer {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-        overflow-y: auto;
-        width: 95vw;
-        height: 50vh;
-        border: 2px solid hotpink;
-        margin-top: 1rem;
-    }
-
-    .babblerContainerButtons {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-top: 0.5rem;
-    }
-
-    .babblerContainerBabbles {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        /* flex-direction: row; */
-        flex-wrap: wrap;
-        margin-top: 1rem;
-        margin-left: 0.1rem;
-        margin-right: 0.1rem;
-    }
-
-    .babblerLines {
-        margin-left: 0.1rem;
-        margin-right: 0.1rem;
-        padding: 0;
-    }
-
-    .adminContainer {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-        overflow-y: auto;
-        width: 100vw;
-        height: 90vh;
-        border: 2px solid hotpink;
-        margin-top: 1rem;
-    }
-
-
-
-}
-
-@media only screen and (max-width: 450px) and (orientation: portrait) {
-    .babblerContainer {
-        height: 92vh;
-        width: 100vw;
-        margin-top: 0.3rem;
-    }
-
-    .babblerContainerBabbles {
-        margin-top: 0.3rem;
-    }
-
-    .babblerLines {
-        word-wrap: break-word;
-    }
-
-}

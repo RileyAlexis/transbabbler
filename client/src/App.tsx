@@ -18,6 +18,7 @@ import { getDatabaseNames } from './modules/getDatabaseNames';
 //Actions
 import { setUser } from './redux/reducers/userReducer';
 import { setAvilableDatabases } from './redux/reducers/databaseReducer';
+import { SideControls } from './components/SideControls';
 
 function App() {
 
@@ -46,35 +47,37 @@ function App() {
 
   return (
     <div className='primaryContainer' >
-      <div>
-        <Routes>
-          <Route path="/" element={
-            <div>
+      <Routes>
+        <Route path="/" element={
+          <div className='secondaryContainer'>
+            <SideControls />
+            <div className='contentContainer'>
+
               <BabbleHeader />
               <GenerateBase />
             </div>
-          } />
-          <Route path="/themeSelect" element={<>
-            <ThemeSelector />
-          </>
-          } />
+          </div>
+        } />
+        <Route path="/themeSelect" element={<>
+          <ThemeSelector />
+        </>
+        } />
 
-          <Route path="/login" element={<>
-            <LoginScreen />
-          </>}
-          />
+        <Route path="/login" element={<>
+          <LoginScreen />
+        </>}
+        />
 
-          <Route path="test" element={<>
-            <BabbleHeader />
-            <BaseApp />
-          </>} />
+        <Route path="test" element={<>
+          <BabbleHeader />
+          <BaseApp />
+        </>} />
 
-          <Route path="/admin" element={<>
-            <AdminPanel />
-          </>}
-          />
-        </Routes>
-      </div>
+        <Route path="/admin" element={<>
+          <AdminPanel />
+        </>}
+        />
+      </Routes>
     </div>
   )
 }
