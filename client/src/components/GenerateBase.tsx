@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
 import { Button, Text } from "@radix-ui/themes";
@@ -7,15 +7,19 @@ import { Button, Text } from "@radix-ui/themes";
 //Types
 import { BabbleRootState } from "src/Types/BabblerRootState";
 
+//Actions
+import { addBabbleLine, clearBabble } from "../redux/reducers/babbleReducer";
+
 export const GenerateBase: React.FC = () => {
 
-    const [genPhrase, setGenPhrase] = useState<string[]>([]);
+    const dispatch = useDispatch();
     const databases = useSelector((state: BabbleRootState) => state.database);
+    const babble = useSelector((state: BabbleRootState) => state.babble);
 
     const handleGenerate = () => {
         axios.get('/api/generator/')
             .then((response) => {
-                setGenPhrase((prev) => [...prev, response.data]);
+                dispatch(addBabbleLine(response.data.genPhrase));
             }).catch((error) => {
                 console.error(error);
             })
@@ -25,14 +29,14 @@ export const GenerateBase: React.FC = () => {
         axios.get('/api/generator/generateFrom', { params: { dbName: databases.selectedDatabase } })
             .then((response) => {
                 console.log(response);
-                setGenPhrase((prev) => [...prev, response.data.genPhrase]);
+                dispatch(addBabbleLine(response.data.genPhrase));
             }).catch((error) => {
                 console.error(error);
             })
     }
 
     const resetBabbler = () => {
-        setGenPhrase([]);
+        dispatch(clearBabble());
     }
 
 
@@ -53,12 +57,12 @@ export const GenerateBase: React.FC = () => {
                     weight="medium"
                     as="p"
                 >
-                    {genPhrase.length > 0 &&
-                        genPhrase.map((line, index) => (
+                    {babble.length > 0 &&
+                        babble.map((line, index) => (
                             <span className="babblerLines" key={index}>
                                 {line}
                                 {
-                                    genPhrase.length > 1 &&
+                                    babble.length > 1 &&
                                     <Text color="pink" size="6" as="span" style={{ marginLeft: '0.2rem' }}>|</Text>
                                 }
                             </span>
