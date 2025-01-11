@@ -91,13 +91,20 @@ router.get('/generateFrom', async (req, res) => {
 
         const { randomVerb, randomPrefix, randomAdjective, randomNoun } = randomWords[0];
 
-        const genPhrase = [
-            randomVerb.word,
-            "the",
-            randomPrefix ? `${randomPrefix.word}-${randomAdjective.word || ""}` : randomAdjective.word,
-            randomNoun.word
-        ].filter(Boolean)
-            .join(" ");
+        const sentenceStructures = [
+            () => `${randomVerb.word} the ${randomAdjective.word} ${randomNoun.word}`,
+            () => `The ${randomAdjective.word} ${randomNoun.word} ${randomVerb.word}s`,
+            () => `${randomVerb.word} a ${randomPrefix ? `${randomPrefix.word}-${randomNoun.word}` : randomNoun.word}`,
+        ];
+
+        const genPhrase = sentenceStructures[Math.floor(Math.random() * sentenceStructures.length)]();
+        // const genPhrase = [
+        //     randomVerb.word,
+        //     "the",
+        //     randomPrefix ? `${randomPrefix.word}-${randomAdjective.word || ""}` : randomAdjective.word,
+        //     randomNoun.word
+        // ].filter(Boolean)
+        //     .join(" ");
 
         res.status(200).json({ genPhrase })
 
