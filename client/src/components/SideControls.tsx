@@ -5,6 +5,8 @@ import { Text } from "@radix-ui/themes";
 //Components
 import { DataSetSelector } from "./DataSetSelector";
 import { UserMenu } from "./UserMenu";
+import { GenerateBabbleButton } from "./GenerateBabbleButton";
+import { ClearBabbleButton } from "./ClearBabbleButton";
 
 export const SideControls: React.FC = () => {
     return (
@@ -26,6 +28,8 @@ export const SideControls: React.FC = () => {
                     <Text size="1">Select Data Set: </Text>
                     <DataSetSelector />
                 </div>
+                <GenerateBabbleButton />
+                <ClearBabbleButton />
             </div>
         </div>
     )

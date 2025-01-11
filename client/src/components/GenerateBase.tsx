@@ -42,10 +42,7 @@ export const GenerateBase: React.FC = () => {
 
     return (
         <div className="babblerContainer">
-            <div className="babblerContainerButtons">
-                <Button style={{ marginRight: 15 }} onClick={handleGenerateFrom}>Generate Babble</Button>
-                <Button onClick={resetBabbler}>Clear Babble</Button>
-            </div>
+
             <div className="babblerContainerBabbles">
 
 
@@ -69,10 +66,6 @@ export const GenerateBase: React.FC = () => {
                         ))
                     }
                 </Text>
-
-
-
-
             </div>
         </div>
     );
