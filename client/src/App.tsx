@@ -28,7 +28,6 @@ function App() {
   useEffect(() => {
     axios.get('/api/users/', { withCredentials: true })
       .then((response) => {
-        console.log(response.data.user);
         dispatch(setUser(response.data.user));
 
       }).catch((error) => {

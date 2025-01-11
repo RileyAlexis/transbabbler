@@ -30,7 +30,6 @@ export const GenerateBabbleButton: React.FC<GenerateBabbleButtonProps> = ({ titl
     const handleGenerateFrom = () => {
         axios.get('/api/generator/generateFrom', { params: { dbName: databases.selectedDatabase } })
             .then((response) => {
-                console.log(response);
                 dispatch(addBabbleLine(response.data.genPhrase));
             }).catch((error) => {
                 console.error(error);

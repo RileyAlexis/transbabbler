@@ -9,7 +9,7 @@ import { DropdownMenu } from '@radix-ui/themes';
 
 
 //Actions
-import { setUser } from '../redux/reducers/userReducer';
+import { setUser, logoutUser } from '../redux/reducers/userReducer';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
@@ -19,7 +19,6 @@ export const UserMenu: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: BabbleRootState) => state.user);
-    // const databases = useSelector((state: BabbleRootState) => state.database);
 
     const handleLogin = () => {
         navigate('/login');
@@ -29,7 +28,7 @@ export const UserMenu: React.FC = () => {
         axios.get('/api/users/logout', { withCredentials: true })
             .then((response) => {
                 if (response.request.responseURL) {
-                    dispatch(setUser(null));
+                    dispatch(logoutUser());
                     navigate('/');
                 }
             }).catch((error) => {
@@ -41,9 +40,7 @@ export const UserMenu: React.FC = () => {
         navigate('/admin');
     }
 
-    // const handleDatabaseSelect = (item: string) => {
-    //     dispatch(setSelectedDatabase(item));
-    // }
+
 
     return (
         <div
