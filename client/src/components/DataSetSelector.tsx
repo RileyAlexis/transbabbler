@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 //Radix UI
@@ -17,7 +18,7 @@ import { getDatabaseNames } from '../modules/getDatabaseNames';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
-import { useState } from 'react';
+import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
 
 interface DataSetSelectorProps {
     size: "1" | "2" | "3" | undefined;
@@ -29,11 +30,19 @@ export const DataSetSelector: React.FC<DataSetSelectorProps> = ({ size, title })
     const dispatch = useDispatch();
     const databases = useSelector((state: BabbleRootState) => state.database);
     const user = useSelector((state: BabbleRootState) => state.user);
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [dataToDelete, setDataToDelete] = useState('');
     const [isCalloutVisible, setIsCalloutVisible] = useState(false);
     const [calloutMessage, setCalloutMessage] = useState('');
     const [calloutColor, setCalloutColor] = useState('blue');
+
+    useEffect(() => {
+        const handleResize = () => setScreenWidth(window.innerWidth);
+
+        window.addEventListener("resize", handleResize); // Add resize event listener
+        return () => window.removeEventListener("resize", handleResize); // Cleanup on unmount
+    }, []);
 
     const handleSelect = (item: string) => {
         dispatch(setSelectedDatabase(item));
@@ -72,18 +81,41 @@ export const DataSetSelector: React.FC<DataSetSelectorProps> = ({ size, title })
                 <DropdownMenu.Content>
                     {databases.availableDatabases.map((item) => (
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <DropdownMenu.Item
-                                style={{
-                                    display: databases.selectedDatabase === item ? 'none' : '',
-                                }}
-                                onSelect={() => handleSelect(item)}
-                            >{capitalize(item)}
-                            </DropdownMenu.Item>
+                            {screenWidth > 450 &&
+                                <DropdownMenu.Item
+                                    style={{
+                                        display: databases.selectedDatabase === item ? 'none' : '',
+                                    }}
+                                    onSelect={() => handleSelect(item)}
+                                >{capitalize(item)}
+                                </DropdownMenu.Item>
+                            }
+
+                            {screenWidth <= 450 &&
+                                <DropdownMenu.Item
+                                    style={{
+                                        backgroundColor: databases.selectedDatabase === item ? 'green' : '',
+                                    }}
+                                    onSelect={() => handleSelect(item)}
+                                >{capitalize(item)}
+
+                                </DropdownMenu.Item>
+                            }
+
+
                             {user.is_admin &&
                                 <DropdownMenu.Sub>
-                                    <DropdownMenu.SubTrigger style={{
-                                        display: databases.selectedDatabase === item ? 'none' : '',
-                                    }} />
+                                    {screenWidth > 450 &&
+
+                                        <DropdownMenu.SubTrigger style={{
+                                            display: databases.selectedDatabase === item ? 'none' : '',
+                                        }} />
+                                    }
+
+                                    {screenWidth <= 450 &&
+                                        <DropdownMenu.SubTrigger />
+                                    }
+
                                     <DropdownMenu.SubContent>
                                         <DropdownMenu.Item
                                             style={{

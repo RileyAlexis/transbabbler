@@ -212,7 +212,6 @@
         align-items: center;
         background-color: rgba(120, 120, 120, 0.3);
         color: var(--textColor);
-        /* border: 1px solid red; */
     }
 
     .bottomMenuButtonsContainer {
