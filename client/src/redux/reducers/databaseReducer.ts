@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DatabaseType } from "src/Types/DatabaseType";
 
 const initialState: DatabaseType = {
-    selectedDatabase: 'default',
+    selectedDatabase: 'Technobabble',
     availableDatabases: [],
 }
 
