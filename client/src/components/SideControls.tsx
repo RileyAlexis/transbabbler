@@ -26,10 +26,10 @@ export const SideControls: React.FC = () => {
                     gap: '0.5rem'
                 }}>
                     <Text size="1">Select Data Set: </Text>
-                    <DataSetSelector />
+                    <DataSetSelector size="3" />
                 </div>
-                <GenerateBabbleButton />
-                <ClearBabbleButton />
+                <GenerateBabbleButton size="2" title="Generate Babble" />
+                <ClearBabbleButton size="2" />
             </div>
         </div>
     )

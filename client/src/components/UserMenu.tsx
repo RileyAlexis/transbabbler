@@ -22,7 +22,7 @@ export const UserMenu: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: BabbleRootState) => state.user);
-    const databases = useSelector((state: BabbleRootState) => state.database);
+    // const databases = useSelector((state: BabbleRootState) => state.database);
 
     const handleLogin = () => {
         navigate('/login');
@@ -44,9 +44,9 @@ export const UserMenu: React.FC = () => {
         navigate('/admin');
     }
 
-    const handleDatabaseSelect = (item: string) => {
-        dispatch(setSelectedDatabase(item));
-    }
+    // const handleDatabaseSelect = (item: string) => {
+    //     dispatch(setSelectedDatabase(item));
+    // }
 
     return (
         <div
@@ -75,7 +75,7 @@ export const UserMenu: React.FC = () => {
                                 <DropdownMenu.Item onSelect={handleAdminSelect}>Admin Panel</DropdownMenu.Item>
                             </>
                         }
-                        <DropdownMenu.Separator />
+                        {/* <DropdownMenu.Separator />
                         <DropdownMenu.Sub>
                             <DropdownMenu.SubTrigger>Data Set</DropdownMenu.SubTrigger>
                             <DropdownMenu.SubContent>
@@ -90,7 +90,7 @@ export const UserMenu: React.FC = () => {
                                 ))}
 
                             </DropdownMenu.SubContent>
-                        </DropdownMenu.Sub>
+                        </DropdownMenu.Sub> */}
                     </DropdownMenu.Content>
 
                 </DropdownMenu.Root>

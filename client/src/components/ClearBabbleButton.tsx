@@ -2,7 +2,12 @@ import { useDispatch } from "react-redux";
 import { Button } from "@radix-ui/themes";
 import { clearBabble } from "../redux/reducers/babbleReducer";
 
-export const ClearBabbleButton: React.FC = () => {
+interface ClearBabbleButtonProps {
+    size: "1" | "2" | "3" | undefined;
+    title?: string;
+}
+
+export const ClearBabbleButton: React.FC<ClearBabbleButtonProps> = ({ size, title }) => {
 
     const dispatch = useDispatch();
 
@@ -10,6 +15,6 @@ export const ClearBabbleButton: React.FC = () => {
         dispatch(clearBabble());
     }
     return (
-        <Button onClick={resetBabbler}>Clear Babble</Button>
+        <Button size={size} onClick={resetBabbler}>{title !== undefined ? title : 'Clear Babble'}</Button>
     )
 }

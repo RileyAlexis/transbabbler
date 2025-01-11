@@ -19,7 +19,12 @@ import { getDatabaseNames } from '../modules/getDatabaseNames';
 import { BabbleRootState } from '../Types/BabblerRootState';
 import { useState } from 'react';
 
-export const DataSetSelector: React.FC = () => {
+interface DataSetSelectorProps {
+    size: "1" | "2" | "3" | undefined;
+    title?: string;
+}
+
+export const DataSetSelector: React.FC<DataSetSelectorProps> = ({ size, title }) => {
 
     const dispatch = useDispatch();
     const databases = useSelector((state: BabbleRootState) => state.database);
@@ -60,7 +65,7 @@ export const DataSetSelector: React.FC = () => {
         <div>
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
-                    <Button variant="soft">{capitalize(databases.selectedDatabase)}
+                    <Button size={size} variant="soft">{title !== undefined ? title : capitalize(databases.selectedDatabase)}
                         <DropdownMenu.TriggerIcon />
                     </Button>
                 </DropdownMenu.Trigger>

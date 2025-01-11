@@ -8,7 +8,12 @@ import { addBabbleLine } from "../redux/reducers/babbleReducer";
 //Types
 import { BabbleRootState } from "../Types/BabblerRootState";
 
-export const GenerateBabbleButton: React.FC = () => {
+interface GenerateBabbleButtonProps {
+    title: string;
+    size: "1" | "2" | "3" | undefined;
+}
+
+export const GenerateBabbleButton: React.FC<GenerateBabbleButtonProps> = ({ title, size }) => {
 
     const dispatch = useDispatch();
     const databases = useSelector((state: BabbleRootState) => state.database);
@@ -34,6 +39,6 @@ export const GenerateBabbleButton: React.FC = () => {
 
 
     return (
-        <Button onClick={handleGenerateFrom}>Generate Babble</Button>
+        <Button size={size} onClick={handleGenerateFrom}>{title}</Button>
     )
 }

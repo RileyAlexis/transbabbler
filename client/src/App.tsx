@@ -19,6 +19,7 @@ import { getDatabaseNames } from './modules/getDatabaseNames';
 import { setUser } from './redux/reducers/userReducer';
 import { setAvilableDatabases } from './redux/reducers/databaseReducer';
 import { SideControls } from './components/SideControls';
+import { BottomMenu } from './components/BottomMenu';
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
 
               <BabbleHeader />
               <GenerateBase />
+              <BottomMenu />
             </div>
           </div>
         } />
@@ -73,9 +75,9 @@ function App() {
           <BaseApp />
         </>} />
 
-        <Route path="/admin" element={<>
+        <Route path="/admin" element={
           <AdminPanel />
-        </>}
+        }
         />
       </Routes>
     </div>
