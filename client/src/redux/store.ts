@@ -3,10 +3,12 @@ import logger from 'redux-logger';
 
 import userSlice from './reducers/userReducer';
 import databaseSlice from './reducers/databaseReducer';
+import babbleSlice from './reducers/babbleReducer';
 
 const allReducers = combineReducers({
     user: userSlice,
     database: databaseSlice,
+    babble: babbleSlice,
 });
 
 const storeInstance = configureStore({
