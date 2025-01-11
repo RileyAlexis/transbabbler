@@ -4,7 +4,7 @@ import { Text } from "@radix-ui/themes";
 
 //Components
 import { DataSetSelector } from "./DataSetSelector";
-import { UserMenu } from "./UserMenu";
+// import { UserMenu } from "./UserMenu";
 import { GenerateBabbleButton } from "./GenerateBabbleButton";
 import { ClearBabbleButton } from "./ClearBabbleButton";
 
@@ -18,7 +18,7 @@ export const SideControls: React.FC = () => {
                 alignItems: 'center',
                 gap: '1rem',
             }}>
-                <UserMenu />
+                {/* <UserMenu /> */}
 
                 <div style={{
                     display: 'flex',

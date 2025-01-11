@@ -17,7 +17,6 @@ interface AddWordsToCollectionProps {
     setAllWords: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-
 export const AddWordsToCollection: React.FC<AddWordsToCollectionProps> = ({ database, collection, setAllWords }) => {
 
     const [textData, setTextData] = useState('');
@@ -32,7 +31,6 @@ export const AddWordsToCollection: React.FC<AddWordsToCollectionProps> = ({ data
             setTextData('');
             loadCollection(database, collection)
                 .then((response) => {
-                    console.log(response);
                     setAllWords(response.data);
                 }).catch((error) => {
                     console.error(error);

@@ -9,7 +9,7 @@ import { DropdownMenu } from '@radix-ui/themes';
 
 
 //Actions
-import { setUser, logoutUser } from '../redux/reducers/userReducer';
+import { logoutUser } from '../redux/reducers/userReducer';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
