@@ -53,7 +53,7 @@ export const AdminPanel: React.FC = () => {
                     <Tabs.Trigger value="Verbs" onClick={() => handleCollectionChange("verbs")}>Verbs</Tabs.Trigger>
                     <Tabs.Trigger value="Adjectives" onClick={() => handleCollectionChange("adjectives")}>Adjectives</Tabs.Trigger>
                     <Tabs.Trigger value="Prefixes" onClick={() => handleCollectionChange("prefixes")}>Prefixes</Tabs.Trigger>
-                    <Tabs.Trigger value="Suffixes" onClick={() => handleCollectionChange("suffixes")}>Suffixes</Tabs.Trigger>
+                    {/* <Tabs.Trigger value="Suffixes" onClick={() => handleCollectionChange("suffixes")}>Suffixes</Tabs.Trigger> */}
                 </Tabs.List>
 
                 <Tabs.Content value="Nouns">
@@ -75,14 +75,13 @@ export const AdminPanel: React.FC = () => {
 
                 </Tabs.Content>
 
-                <Tabs.Content value="Suffixes">
+                {/* <Tabs.Content value="Suffixes">
                     <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
-
-                </Tabs.Content>
+                </Tabs.Content> */}
 
             </Tabs.Root>
 
 
-        </div>
+        </div >
     )
 }
