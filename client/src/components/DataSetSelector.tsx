@@ -78,8 +78,8 @@ export const DataSetSelector: React.FC<DataSetSelectorProps> = ({ size, title })
                     </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
-                    {databases.availableDatabases.map((item) => (
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {databases.availableDatabases.map((item, index) => (
+                        <div key={index} style={{ display: 'flex', justifyContent: 'space-between' }}>
                             {screenWidth > 450 &&
                                 <DropdownMenu.Item
                                     style={{
