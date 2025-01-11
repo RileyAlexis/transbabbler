@@ -18,7 +18,6 @@ import { getDatabaseNames } from '../modules/getDatabaseNames';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
-import { DropdownMenuArrow } from '@radix-ui/react-dropdown-menu';
 
 interface DataSetSelectorProps {
     size: "1" | "2" | "3" | undefined;

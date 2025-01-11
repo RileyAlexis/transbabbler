@@ -12,7 +12,8 @@ const babbleSlice = createSlice({
             state.push(action.payload);
         },
         clearBabble(state) {
-            return state = initialState;
+            state = [];
+            return state;
         }
     }
 });

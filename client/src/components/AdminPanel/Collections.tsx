@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 //UI
-import { Table, Text } from "@radix-ui/themes";
+import { Table } from "@radix-ui/themes";
 
 //Modules
 import { capitalize } from '../../modules/capitalize';
@@ -28,10 +28,10 @@ interface CollectionsProps {
 export const Collections: React.FC<CollectionsProps> = ({ collection, allWords, setAllWords }) => {
 
     const database = useSelector((state: BabbleRootState) => state.database);
-    const [loading, setLoading] = useState(false);
+    const [loading, _setLoading] = useState(false);
     const [isCalloutVisible, setIsCalloutVisible] = useState(false);
     const [calloutMessage, setCalloutMessage] = useState('');
-    const [calloutColor, setCalloutColor] = useState('blue');
+    const [calloutColor, _setCalloutColor] = useState('blue');
 
 
     const handleLoadCollection = async () => {

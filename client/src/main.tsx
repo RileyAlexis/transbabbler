@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, ProviderProps } from 'react-redux';
+import { Provider } from 'react-redux';
 import { storeInstance } from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 import { Theme } from '@radix-ui/themes';
@@ -73,6 +73,7 @@ export const useTheme = () => {
   }
   return context;
 }
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemedContainer>

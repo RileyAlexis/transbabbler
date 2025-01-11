@@ -36,7 +36,7 @@ export const AdminPanel: React.FC = () => {
             }}>
                 <AddWordsToCollection collection={collection} database={database.selectedDatabase} setAllWords={setAllWords} />
                 <NewDataSet />
-                <DataSetSelector />
+                <DataSetSelector size="2" />
                 {allWords.length > 0 &&
                     <Text size="2" weight="bold">{allWords.length} entries</Text>
                 }

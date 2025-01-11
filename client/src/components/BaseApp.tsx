@@ -2,16 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import { Text, Button, TextField } from "@radix-ui/themes";
 
-import { NounType, VerbType, AdjectiveType, PrefixType, SuffixType } from "src/Types/WordTypes";
+import { NounType } from "src/Types/WordTypes";
 import { ModifyWord } from "./AdminPanel/ModifyWord";
 
 export const BaseApp = () => {
 
     const [allWords, setAllWords] = useState<NounType[] | []>([]);
-    const [collection, setCollection] = useState<string | undefined>();
     const [wordToAdd, setWordToAdd] = useState<string>('');
-    const [wordType, setWordType] = useState<string | undefined>();
-    const [error, setError] = useState('');
+    const [error, _setError] = useState('');
 
     const handleLoadCollection = () => {
 
@@ -88,7 +86,7 @@ export const BaseApp = () => {
             <div>
                 {allWords.length > 0 &&
                     allWords.map((item, index) => (
-                        <ModifyWord word={item.word} loading={false} onSubmit={(word: string) => handleModify(item.word, word)} />
+                        <ModifyWord key={index} word={item.word} loading={false} onSubmit={(word: string) => handleModify(item.word, word)} />
                     ))
                 }
 

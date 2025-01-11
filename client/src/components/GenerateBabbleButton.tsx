@@ -18,14 +18,14 @@ export const GenerateBabbleButton: React.FC<GenerateBabbleButtonProps> = ({ titl
     const dispatch = useDispatch();
     const databases = useSelector((state: BabbleRootState) => state.database);
 
-    const handleGenerate = () => {
-        axios.get('/api/generator/')
-            .then((response) => {
-                dispatch(addBabbleLine(response.data.genPhrase));
-            }).catch((error) => {
-                console.error(error);
-            })
-    }
+    // const handleGenerate = () => {
+    //     axios.get('/api/generator/')
+    //         .then((response) => {
+    //             dispatch(addBabbleLine(response.data.genPhrase));
+    //         }).catch((error) => {
+    //             console.error(error);
+    //         })
+    // }
 
     const handleGenerateFrom = () => {
         axios.get('/api/generator/generateFrom', { params: { dbName: databases.selectedDatabase } })

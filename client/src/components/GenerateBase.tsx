@@ -1,51 +1,18 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { useSelector, } from "react-redux";
 
-import { Button, Text } from "@radix-ui/themes";
+import { Text } from "@radix-ui/themes";
 
 //Types
 import { BabbleRootState } from "src/Types/BabblerRootState";
 
-//Actions
-import { addBabbleLine, clearBabble } from "../redux/reducers/babbleReducer";
 
 export const GenerateBase: React.FC = () => {
 
-    const dispatch = useDispatch();
-    const databases = useSelector((state: BabbleRootState) => state.database);
     const babble = useSelector((state: BabbleRootState) => state.babble);
-
-    const handleGenerate = () => {
-        axios.get('/api/generator/')
-            .then((response) => {
-                dispatch(addBabbleLine(response.data.genPhrase));
-            }).catch((error) => {
-                console.error(error);
-            })
-    }
-
-    const handleGenerateFrom = () => {
-        axios.get('/api/generator/generateFrom', { params: { dbName: databases.selectedDatabase } })
-            .then((response) => {
-                console.log(response);
-                dispatch(addBabbleLine(response.data.genPhrase));
-            }).catch((error) => {
-                console.error(error);
-            })
-    }
-
-    const resetBabbler = () => {
-        dispatch(clearBabble());
-    }
-
 
     return (
         <div className="babblerContainer">
-
             <div className="babblerContainerBabbles">
-
-
                 <Text
                     style={{
                         marginRight: '0.3rem',

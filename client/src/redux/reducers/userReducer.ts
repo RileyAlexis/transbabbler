@@ -17,7 +17,9 @@ const userSlice = createSlice({
             state.is_admin = action.payload.is_admin;
         },
         logoutUser(state) {
-            state = initialState;
+            state.username = null;
+            state.is_admin = false;
+            return state;
         }
     }
 });

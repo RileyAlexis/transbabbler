@@ -7,12 +7,9 @@ import axios from 'axios';
 import { Button } from '@radix-ui/themes';
 import { DropdownMenu } from '@radix-ui/themes';
 
-//Modules
-import { capitalize } from '../modules/capitalize';
 
 //Actions
 import { setUser } from '../redux/reducers/userReducer';
-import { setSelectedDatabase } from '../redux/reducers/databaseReducer';
 
 //Types
 import { BabbleRootState } from '../Types/BabblerRootState';
@@ -75,22 +72,6 @@ export const UserMenu: React.FC = () => {
                                 <DropdownMenu.Item onSelect={handleAdminSelect}>Admin Panel</DropdownMenu.Item>
                             </>
                         }
-                        {/* <DropdownMenu.Separator />
-                        <DropdownMenu.Sub>
-                            <DropdownMenu.SubTrigger>Data Set</DropdownMenu.SubTrigger>
-                            <DropdownMenu.SubContent>
-                                {databases.availableDatabases.map((item, index) => (
-                                    <DropdownMenu.Item key={index}
-                                        style={{
-                                            backgroundColor: databases.selectedDatabase === item ? 'var(--highlightColor)' : '',
-                                            border: databases.selectedDatabase === item ? '1px solid white' : '',
-                                        }}
-                                        onSelect={() => handleDatabaseSelect(item)}>{capitalize(item)}
-                                    </DropdownMenu.Item>
-                                ))}
-
-                            </DropdownMenu.SubContent>
-                        </DropdownMenu.Sub> */}
                     </DropdownMenu.Content>
 
                 </DropdownMenu.Root>

@@ -2,7 +2,7 @@ import { SegmentedControl } from "@radix-ui/themes";
 import { useTheme } from "../main";
 
 export const ThemeSelector = () => {
-    const { theme, setTheme } = useTheme();
+    const { setTheme } = useTheme();
 
     return (
         <SegmentedControl.Root defaultValue="dark" onValueChange={(value) => { setTheme(value as 'light' | 'dark' | 'auto') }}>
