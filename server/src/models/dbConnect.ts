@@ -25,6 +25,7 @@ export const dbConnect = async (): Promise<void> => {
     const tlsCertBuffer = Buffer.from(mongoTLS, "base64");
     const caCertBuffer = Buffer.from(mongoCA, "base64");
     const pfxBuffer = Buffer.from(mongoPFX);
+    console.log(mongoURI);
 
 
     while (attempts < MAX_RETRIES) {
