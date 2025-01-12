@@ -1,7 +1,7 @@
 import { GenerateBabbleButton } from "./GenerateBabbleButton";
 import { DataSetSelector } from "./DataSetSelector";
 import { ClearBabbleButton } from "./ClearBabbleButton";
-import { UserMenu } from "./UserMenu";
+// import { UserMenu } from "./UserMenu";
 
 export const BottomMenu: React.FC = () => {
     return (
