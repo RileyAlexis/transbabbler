@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-// import path from 'path';
+import path from 'path';
 // import fs from 'fs';
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const mongoUser = process.env.MONGO_USER!;
 const mongoPassword = process.env.MONGO_PASSWORD!;
@@ -25,6 +25,8 @@ export const dbConnect = async (): Promise<void> => {
     // const tlsCertBuffer = Buffer.from(mongoTLS, "base64");
     // const caCertBuffer = Buffer.from(mongoCA, "base64");
     // const pfxBuffer = Buffer.from(mongoPFX);
+    const tlsCertificateKeyFile = path.resolve(__dirname, "../../keys/mongo.pem");
+    const tlsCAFile = path.resolve(__dirname, "../../keys/caMongo.pem");
     console.log(mongoURI);
 
 
@@ -35,8 +37,8 @@ export const dbConnect = async (): Promise<void> => {
                 // ca: caCertBuffer,
                 // pfx: pfxBuffer,
                 // passphrase: '',
-                tlsCertificateKeyFile: "./keys/mongo.pem",
-                tlsCAFile: "./keys/caMongo.pem",
+                tlsCertificateKeyFile: tlsCertificateKeyFile,
+                tlsCAFile: tlsCAFile,
             });
             mongoose.set("autoIndex", false);
             console.log("Connected to Mongo DB");
