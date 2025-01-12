@@ -11,7 +11,7 @@ export const BottomMenu: React.FC = () => {
                 <DataSetSelector size="2" title="Data" />
                 <ClearBabbleButton size="2" title="Clear" />
 
-                <UserMenu />
+                {/* <UserMenu /> */}
             </div>
         </div>
     )
