@@ -169,7 +169,7 @@
 @media only screen and (max-width: 450px) and (orientation: portrait) {
 
     .primaryContainer {
-        border: 1px solid white;
+        /* border: 1px solid white; */
 
     }
 
