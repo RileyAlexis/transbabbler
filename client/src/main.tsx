@@ -35,7 +35,8 @@ function ThemedContainer({ children }: { children: React.ReactNode }) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     const updateResolvedTheme = () => {
-      setResolvedTheme(mediaQuery.matches ? 'dark' : 'light');
+      setResolvedTheme('dark');
+      // setResolvedTheme(mediaQuery.matches ? 'dark' : 'light');
     };
 
     if (theme === 'auto') {
