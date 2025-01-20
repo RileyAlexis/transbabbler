@@ -51,14 +51,29 @@ router.post('/register', async (req: Request, res: Response) => {
     console.log('/register', username)
     try {
         const existingUser = await UserCollection.findOne({ username });
-        if (existingUser) res.status(400).send('Username already exists');
-        const newUser = new UserCollection({ username, password });
-        await newUser.save();
-        res.send('User Registered Successfully');
+        if (existingUser) {
+            res.status(400).send('Username already exists');
+        } else {
+            const newUser = new UserCollection({ username, password });
+            await newUser.save();
+            res.send('User Registered Successfully');
+        }
     } catch (error) {
         res.status(500).send('Server Error');
     }
+});
+
+router.get('/allUsers', async (req: Request, res: Response) => {
+    try {
+        const users = await UserCollection.find();
+        console.log(users);
+        res.sendStatus(200);
+    } catch {
+        res.sendStatus(500);
+    }
 })
+
+
 
 
 module.exports = router;
