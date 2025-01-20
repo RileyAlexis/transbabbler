@@ -67,8 +67,11 @@ router.post('/register', async (req: Request, res: Response) => {
 router.get('/allUsers', checkAdmin, async (req: Request, res: Response) => {
     try {
         const users = await UserCollection.find();
-        console.log(users);
-        res.status(200).send(users);
+        const usersWithoutPassword = users.map(user => {
+            const { password, ...userWithoutPassword } = user.toObject();
+            return userWithoutPassword;
+        });
+        res.status(200).send(usersWithoutPassword);
     } catch {
         res.sendStatus(500);
     }
