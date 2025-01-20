@@ -142,7 +142,7 @@ router.get('/phrases', rejectUnauthenticated, async (req: Request, res: Response
         }
         console.log(userPhrases);
 
-        res.status(200).json(userPhrases.phrases);
+        res.status(200).json(userPhrases?.phrases);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to get phrases" });
@@ -181,7 +181,7 @@ router.post('/removePhrase', rejectUnauthenticated, async (req: Request, res: Re
             return;
         }
 
-        userToModify.phrases = userToModify.phrases?.filter((line) => line !== phrase);
+        userToModify.phrases = userToModify.phrases?.filter((line: string) => line !== phrase);
         await userToModify.save();
         res.status(200).json({ message: `Phrase ${phrase} removed from user ${user.username}` });
     } catch (error) {
