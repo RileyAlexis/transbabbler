@@ -13,6 +13,7 @@ import { AddWordsToCollection } from "./AddWordsToCollection";
 //Types
 import { BabbleRootState } from "../../Types/BabblerRootState";
 import { DataSetSelector } from "../DataSetSelector";
+import { UserMenu } from "../UserMenu";
 
 
 export const AdminPanel: React.FC = () => {
@@ -37,6 +38,7 @@ export const AdminPanel: React.FC = () => {
                 <AddWordsToCollection collection={collection} database={database.selectedDatabase} setAllWords={setAllWords} />
                 <NewDataSet />
                 <DataSetSelector size="2" />
+                <UserMenu />
                 {allWords.length > 0 &&
                     <Text size="2" weight="bold">{allWords.length} entries</Text>
                 }
