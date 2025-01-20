@@ -1,4 +1,5 @@
 import express from 'express';
+import { checkAdmin } from '../strategies/checkAdmin';
 
 //Types
 import { Request, Response } from "express";
@@ -13,7 +14,7 @@ router.post('/login', (req, res, next) => {
         if (error) {
             res.status(500).json({ message: 'An error occurred during authentication' });
         } else if (!user) {
-            res.status(401).json({ message: 'User not Found' });
+            res.status(401).json({ message: 'Username or password incorrect' });
             return;
         }
 
@@ -63,17 +64,30 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/allUsers', async (req: Request, res: Response) => {
+router.get('/allUsers', checkAdmin, async (req: Request, res: Response) => {
     try {
         const users = await UserCollection.find();
         console.log(users);
-        res.sendStatus(200);
+        res.status(200).send(users);
     } catch {
         res.sendStatus(500);
     }
+});
+
+router.delete('/removeUser', checkAdmin, async (req: Request, res: Response) => {
+    const { userId } = req.body;
+    try {
+        const userToRemove = await UserCollection.findById({ _id: userId });
+        if (!userToRemove) {
+            res.status(404).json({ message: "User not found" });
+        } else {
+            await UserCollection.deleteOne({ _id: userId });
+            res.status(200).json({ message: `User ${userId} Deleted` });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to delete user" });
+    }
 })
-
-
-
 
 module.exports = router;

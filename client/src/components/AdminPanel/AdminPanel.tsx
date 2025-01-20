@@ -14,6 +14,7 @@ import { AddWordsToCollection } from "./AddWordsToCollection";
 import { BabbleRootState } from "../../Types/BabblerRootState";
 import { DataSetSelector } from "../DataSetSelector";
 import { UserMenu } from "../UserMenu";
+import { UserManager } from "./UserManager";
 
 
 export const AdminPanel: React.FC = () => {
@@ -55,6 +56,7 @@ export const AdminPanel: React.FC = () => {
                     <Tabs.Trigger value="Verbs" onClick={() => handleCollectionChange("verbs")}>Verbs</Tabs.Trigger>
                     <Tabs.Trigger value="Adjectives" onClick={() => handleCollectionChange("adjectives")}>Adjectives</Tabs.Trigger>
                     <Tabs.Trigger value="Prefixes" onClick={() => handleCollectionChange("prefixes")}>Prefixes</Tabs.Trigger>
+                    <Tabs.Trigger value="User Manager">User Manager</Tabs.Trigger>
                     {/* <Tabs.Trigger value="Suffixes" onClick={() => handleCollectionChange("suffixes")}>Suffixes</Tabs.Trigger> */}
                 </Tabs.List>
 
@@ -80,6 +82,10 @@ export const AdminPanel: React.FC = () => {
                 {/* <Tabs.Content value="Suffixes">
                     <Collections collection={collection} allWords={allWords} setAllWords={setAllWords} />
                 </Tabs.Content> */}
+
+                <Tabs.Content value="User Manager">
+                    <UserManager />
+                </Tabs.Content>
 
             </Tabs.Root>
 
