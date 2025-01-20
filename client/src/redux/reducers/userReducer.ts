@@ -3,7 +3,8 @@ import { UserType } from "src/Types/UserType";
 
 const initialState: UserType = {
     username: null,
-    is_admin: false
+    is_admin: false,
+    phrases: []
 };
 
 
