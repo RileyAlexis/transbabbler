@@ -16,10 +16,11 @@ import { BaseApp } from './components/BaseApp';
 import { getDatabaseNames } from './modules/getDatabaseNames';
 
 //Actions
-import { setUser } from './redux/reducers/userReducer';
+import { setUser, setPhrases } from './redux/reducers/userReducer';
 import { setAvilableDatabases } from './redux/reducers/databaseReducer';
 import { SideControls } from './components/SideControls';
 import { BottomMenu } from './components/BottomMenu';
+import { UserSavedPhrases } from './components/UserSavedPhrases';
 
 function App() {
 
@@ -29,7 +30,6 @@ function App() {
     axios.get('/api/users/', { withCredentials: true })
       .then((response) => {
         dispatch(setUser(response.data.user));
-
       }).catch((error) => {
         console.log(error);
         setUser(null);
@@ -43,7 +43,17 @@ function App() {
       }).catch((error) => {
         console.error(error);
       })
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/users/phrases', { withCredentials: true })
+      .then((response) => {
+        dispatch(setPhrases(response.data.phrases));
+        console.log(response.data);
+      }).catch((error) => {
+        console.error(error);
+      })
+  }, []);
 
   return (
     <div className='primaryContainer' >
@@ -61,6 +71,12 @@ function App() {
         } />
         <Route path="/themeSelect" element={<>
           <ThemeSelector />
+        </>
+        } />
+
+        <Route path="/userPhrases" element={<>
+          <BabbleHeader />
+          <UserSavedPhrases />
         </>
         } />
 

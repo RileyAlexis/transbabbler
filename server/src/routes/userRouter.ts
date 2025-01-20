@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import passport from 'passport';
 import { UserType } from '../types/UserType';
 import { UserCollection } from '../models/userSchema';
+import { rejectUnauthenticated } from '../strategies/rejectUnauthenticated';
 
 const router = express.Router();
 
@@ -127,6 +128,65 @@ router.post('/removeAdmin', checkAdmin, async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to demote user" });
+    }
+});
+
+router.get('/phrases', rejectUnauthenticated, async (req: Request, res: Response) => {
+    const user = req.user as UserType;
+    console.log('/getPhrases', user._id);
+    try {
+        const userPhrases = await UserCollection.findById({ _id: user._id });
+        if (!userPhrases) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+        console.log(userPhrases);
+
+        res.status(200).json(userPhrases.phrases);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to get phrases" });
+    }
+});
+
+router.post('/addPhrase', rejectUnauthenticated, async (req: Request, res: Response) => {
+    const { phrase } = req.body;
+    const user = req.user as UserType;
+    console.log('/addPhrase', phrase);
+    try {
+        const userToModify = await UserCollection.findById({ _id: user._id });
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+
+        user.phrases?.push(phrase);
+        await user.save();
+        res.status(200).json({ message: `Phrase ${phrase} added to user ${user.username}` });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to add phrase" });
+    }
+});
+
+router.post('/removePhrase', rejectUnauthenticated, async (req: Request, res: Response) => {
+    const { phrase } = req.body;
+    const user = req.user as UserType;
+    console.log('/removePhrase', phrase);
+
+    try {
+        const userToModify = await UserCollection.findById({ _id: user._id });
+        if (!userToModify) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+
+        userToModify.phrases = userToModify.phrases?.filter((line) => line !== phrase);
+        await userToModify.save();
+        res.status(200).json({ message: `Phrase ${phrase} removed from user ${user.username}` });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to remove phrase" });
     }
 });
 

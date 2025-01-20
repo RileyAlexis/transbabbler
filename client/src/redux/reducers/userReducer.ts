@@ -27,9 +27,12 @@ const userSlice = createSlice({
         },
         removePhrase(state, action) {
             state.phrases?.splice(action.payload, 1);
+        },
+        setPhrases(state, action) {
+            state.phrases = action.payload;
         }
     }
 });
 
-export const { setUser, logoutUser, addPhrase } = userSlice.actions;
+export const { setUser, logoutUser, addPhrase, removePhrase, setPhrases } = userSlice.actions;
 export default userSlice.reducer;

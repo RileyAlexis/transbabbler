@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-
+import axios from "axios";
 import { Text } from "@radix-ui/themes";
 
 //Actions
@@ -12,12 +12,19 @@ import { BabbleRootState } from "../Types/BabblerRootState";
 export const GenerateBase: React.FC = () => {
 
     const babble = useSelector((state: BabbleRootState) => state.babble);
-    const user = useSelector((state: BabbleRootState) => state.user);
     const dispatch = useDispatch();
 
     const addPhraseToUser = (phrase: string) => {
         dispatch(addPhrase(phrase));
+
+        axios.post('/api/users/addPhrase', { phrase }, { withCredentials: true })
+            .then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            })
     }
+
 
     return (
         <div className="babblerContainer">

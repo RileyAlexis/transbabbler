@@ -6,7 +6,8 @@ import { UserType } from "../types/UserType";
 const userSchema: Schema = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    is_admin: { type: Boolean, required: false }
+    is_admin: { type: Boolean, required: false },
+    phrases: { type: Array, required: false }
 });
 
 userSchema.pre<UserType>('save', async function (next) {
