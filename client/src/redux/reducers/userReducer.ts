@@ -26,7 +26,7 @@ const userSlice = createSlice({
             state.phrases?.push(action.payload);
         },
         removePhrase(state, action) {
-            state.phrases?.splice(action.payload, 1);
+            state.phrases = state.phrases?.filter(phrase => phrase !== action.payload);
         },
         setPhrases(state, action) {
             state.phrases = action.payload;
