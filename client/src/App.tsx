@@ -29,6 +29,8 @@ function App() {
   useEffect(() => {
     axios.get('/api/users/', { withCredentials: true })
       .then((response) => {
+        // Does not include phrases (only username and is_admin)
+        // console.log('get /api/users', response.data.user)
         dispatch(setUser(response.data.user));
       }).catch((error) => {
         console.log(error);
@@ -48,6 +50,7 @@ function App() {
   useEffect(() => {
     axios.get('/api/users/phrases', { withCredentials: true })
       .then((response) => {
+        console.log('get /api/users/phrases', response.data);
         dispatch(setPhrases(response.data));
       }).catch((error) => {
         console.error(error);

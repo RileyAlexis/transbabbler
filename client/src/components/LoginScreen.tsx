@@ -5,7 +5,7 @@ import axios from "axios";
 import { Button, TextField, Text } from "@radix-ui/themes";
 
 //Actions
-import { setUser } from "../redux/reducers/userReducer";
+import { setUser, setPhrases } from "../redux/reducers/userReducer";
 
 
 export const LoginScreen: React.FC = () => {
@@ -43,9 +43,17 @@ export const LoginScreen: React.FC = () => {
 
                 axios.post('/api/users/login', { username: username, password: password })
                     .then((response) => {
-                        dispatch(
-                            setUser(response.data));
-                        navigate('/');
+                        console.log('get /api/users/login', response.data);
+                        dispatch(setUser(response.data));
+
+                        axios.get('/api/users/phrases', { withCredentials: true })
+                            .then((response) => {
+                                dispatch(setPhrases(response.data));
+                                navigate('/');
+                            }).catch((error) => {
+                                console.error(error);
+                            });
+
                     }).catch((error) => {
                         if (error.response.data.message === 'User not Found') {
                             setErrMessage('User not Found');
