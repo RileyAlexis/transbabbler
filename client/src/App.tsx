@@ -73,10 +73,15 @@ function App() {
         </>
         } />
 
-        <Route path="/userPhrases" element={<>
-          <BabbleHeader />
-          <UserSavedPhrases />
-        </>
+        <Route path="/userPhrases" element={
+          <div className='secondaryContainer'>
+            <SideControls />
+            <div className='contentContainer'>
+              <BabbleHeader />
+              <UserSavedPhrases />
+              <BottomMenu />
+            </div>
+          </div>
         } />
 
         <Route path="/login" element={

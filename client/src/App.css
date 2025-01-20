@@ -144,6 +144,27 @@
         justify-content: center;
     }
 
+    .savedPhrasesContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: left;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-left: 2rem;
+    }
+
+    .savedbabbleSubContainer {
+        display: flex;
+    }
+
+    .savedbabblerLine {
+        flex: 1;
+        text-align: left;
+    }
+
+    .savedbabbleButtons {}
+
     .babblerLines {
         margin-left: 0.1rem;
         margin-right: 0.1rem;

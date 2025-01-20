@@ -5,6 +5,7 @@ import { removePhrase } from "../redux/reducers/userReducer";
 
 //Types
 import { BabbleRootState } from "../Types/BabblerRootState";
+import { Button } from "@radix-ui/themes";
 
 export const UserSavedPhrases: React.FC = () => {
 
@@ -12,18 +13,22 @@ export const UserSavedPhrases: React.FC = () => {
 
     return (
         <div className="babblerContainer">
-            <div className="babblerContainerBabbles">
+            <div className="savedPhrasesContainer">
                 {user.phrases && user.phrases.length > 0 &&
                     user.phrases?.map((line, index) => (
-                        <div className="babblerLines" key={index}>
-                            <a style={{ cursor: 'pointer' }}>
+                        <div className="savedbabbleSubContainer" key={index}>
+                            <div className="savedbabblerLine">
                                 {line}
-                            </a>
-                            <a onClick={() => removePhrase(index)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <span style={{ marginLeft: '0.5rem' }}>🗑️</span>
-                            </a>
+                            </div>
+
+                            <Button
+                                style={{
+                                    marginLeft: '0.3rem',
+                                    marginRight: '0.3rem',
+                                }}
+                                variant="ghost">X</Button>
+
+
                         </div>
                     ))
                 }
