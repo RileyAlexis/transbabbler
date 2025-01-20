@@ -150,6 +150,27 @@
         padding: 0;
     }
 
+    .loginContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loginInputsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loginButtons {
+        display: flex;
+        gap: 3rem;
+    }
+
     .adminContainer {
         display: flex;
         justify-content: flex-start;

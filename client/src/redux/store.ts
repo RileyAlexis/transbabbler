@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-// import logger from 'redux-logger';
+import logger from 'redux-logger';
 
 import userSlice from './reducers/userReducer';
 import databaseSlice from './reducers/databaseReducer';
@@ -17,7 +17,7 @@ const storeInstance = configureStore({
         getDefaultMiddleware({
             serializableCheck: false,
         })
-    // .concat(logger),
+            .concat(logger),
 });
 
 export { storeInstance };

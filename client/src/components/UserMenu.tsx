@@ -51,7 +51,7 @@ export const UserMenu: React.FC = () => {
             {!user.username &&
                 <Button variant='soft' onClick={handleLogin}>Log In</Button>
             }
-            {user.usernanme !== null &&
+            {user.username !== null &&
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                         <Button variant='soft' style={{

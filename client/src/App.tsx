@@ -64,9 +64,12 @@ function App() {
         </>
         } />
 
-        <Route path="/login" element={<>
-          <LoginScreen />
-        </>}
+        <Route path="/login" element={
+          <div className='loginContainer'>
+            <BabbleHeader />
+            <LoginScreen />
+          </div>
+        }
         />
 
         <Route path="test" element={<>

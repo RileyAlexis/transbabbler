@@ -35,22 +35,28 @@ export const LoginScreen: React.FC = () => {
                         setUser(response.data));
                     navigate('/');
                 }).catch((error) => {
-                    console.error(error);
+                    if (error.response.data.message === 'User not Found') {
+
+                    }
+
+                    console.error(error.response.data.message);
+
                 })
         }
     }
 
     return (
-        <div>
+        <div className="loginInputsContainer">
             <TextField.Root placeholder="User Name" variant="soft" radius="large" value={username} onChange={(e) => setUsername(e.target.value)} >
                 <TextField.Slot />
             </TextField.Root>
             <TextField.Root placeholder="Password" type="password" variant="soft" radius="large" value={password} onChange={(e) => setPassword(e.target.value)}>
                 <TextField.Slot />
             </TextField.Root>
-            <Button onClick={submitLogin}>Submit</Button>
-            <Button onClick={() => setRegisterNew(!registerNew)}>{!registerNew ? 'Register' : 'Log In'}</Button>
-
+            <div className="loginButtons">
+                <Button onClick={submitLogin}>Submit</Button>
+                <Button onClick={() => setRegisterNew(!registerNew)}>{!registerNew ? 'Register' : 'Log In'}</Button>
+            </div>
         </div>
     )
 }

@@ -13,7 +13,8 @@ router.post('/login', (req, res, next) => {
         if (error) {
             res.status(500).json({ message: 'An error occurred during authentication' });
         } else if (!user) {
-            res.status(401).json({ message: 'Login failed' });
+            res.status(401).json({ message: 'User not Found' });
+            return;
         }
 
         req.logIn(user, (loginErr) => {
