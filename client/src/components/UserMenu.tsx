@@ -63,6 +63,7 @@ export const UserMenu: React.FC = () => {
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Content>
+                        <DropdownMenu.Item onSelect={() => navigate('/userPhrases')}>Saved Phrases</DropdownMenu.Item>
                         <DropdownMenu.Item onSelect={handleLogout}>Logout</DropdownMenu.Item>
                         {user.is_admin === true &&
                             <>
