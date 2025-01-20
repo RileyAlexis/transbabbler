@@ -79,6 +79,7 @@ router.get('/allUsers', checkAdmin, async (req: Request, res: Response) => {
 
 router.delete('/removeUser', checkAdmin, async (req: Request, res: Response) => {
     const { userId } = req.body;
+    console.log('/removeUser', userId);
     try {
         const userToRemove = await UserCollection.findById({ _id: userId });
         if (!userToRemove) {
