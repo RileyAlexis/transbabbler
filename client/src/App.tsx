@@ -50,7 +50,7 @@ function App() {
   useEffect(() => {
     axios.get('/api/users/phrases', { withCredentials: true })
       .then((response) => {
-        console.log('get /api/users/phrases', response.data);
+        // console.log('get /api/users/phrases', response.data);
         dispatch(setPhrases(response.data));
       }).catch((error) => {
         console.error(error);

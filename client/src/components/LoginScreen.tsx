@@ -43,7 +43,7 @@ export const LoginScreen: React.FC = () => {
 
                 axios.post('/api/users/login', { username: username, password: password })
                     .then((response) => {
-                        console.log('get /api/users/login', response.data);
+                        // console.log('get /api/users/login', response.data);
                         dispatch(setUser(response.data));
 
                         axios.get('/api/users/phrases', { withCredentials: true })
