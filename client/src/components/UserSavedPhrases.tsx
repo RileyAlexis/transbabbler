@@ -41,8 +41,6 @@ export const UserSavedPhrases: React.FC = () => {
                                     marginRight: '0.3rem',
                                 }}
                                 variant="ghost">X</Button>
-
-
                         </div>
                     ))
                 }
