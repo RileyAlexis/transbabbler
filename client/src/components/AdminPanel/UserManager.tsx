@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Button, Table, AlertDialog, Text } from "@radix-ui/themes";
+import { Button, Table, AlertDialog, Text, DropdownMenu } from "@radix-ui/themes";
 
 import { UserType } from "src/Types/UserType";
 
@@ -39,6 +39,25 @@ export const UserManager: React.FC<UserManagerProps> = ({ setAllWords }) => {
         console.log(user);
         setIsAlertOpen(true);
         setUserToDelete(user);
+    };
+
+    const makeAdmin = (userId: string) => {
+        axios.post('/api/users/makeAdmin', { userId: userId })
+            .then(() => {
+                getAllUsers();
+            }).catch((error) => {
+                console.log(error);
+            }
+            )
+    }
+
+    const removeAdmin = (userId: string) => {
+        axios.post('/api/users/removeAdmin', { userId: userId })
+            .then(() => {
+                getAllUsers();
+            }).catch((error) => {
+                console.log(error);
+            })
     }
 
 
@@ -71,7 +90,19 @@ export const UserManager: React.FC<UserManagerProps> = ({ setAllWords }) => {
                     {userList.map((user, index) => (
                         <Table.Row key={index}>
                             <Table.RowHeaderCell>{user.username}</Table.RowHeaderCell>
-                            <Table.Cell>{user.is_admin ? 'Yes' : 'No'}</Table.Cell>
+                            <Table.Cell>
+                                <DropdownMenu.Root>
+                                    <DropdownMenu.Trigger>
+                                        <Button variant='soft' color={user.is_admin ? 'green' : 'gray'}>{user.is_admin ? 'Admin' : 'User'}
+                                            <DropdownMenu.TriggerIcon />
+                                        </Button>
+                                    </DropdownMenu.Trigger>
+                                    <DropdownMenu.Content>
+                                        <DropdownMenu.Item onSelect={() => makeAdmin(user._id)}>Make Admin</DropdownMenu.Item>
+                                        <DropdownMenu.Item onSelect={() => removeAdmin(user._id)}>Remove Admin</DropdownMenu.Item>
+                                    </DropdownMenu.Content>
+                                </DropdownMenu.Root>
+                            </Table.Cell>
                             <Table.Cell>{user.phrases?.length}</Table.Cell>
                             <Table.Cell>
                                 <Button onClick={() => runAlert(user)}>Remove</Button>
