@@ -84,7 +84,7 @@ export const AdminPanel: React.FC = () => {
                 </Tabs.Content> */}
 
                 <Tabs.Content value="User Manager">
-                    <UserManager />
+                    <UserManager setAllWords={setAllWords} />
                 </Tabs.Content>
 
             </Tabs.Root>

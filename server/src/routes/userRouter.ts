@@ -92,6 +92,42 @@ router.delete('/removeUser', checkAdmin, async (req: Request, res: Response) => 
         console.log(error);
         res.status(500).json({ message: "Failed to delete user" });
     }
-})
+});
+
+router.post('/makeAdmin', checkAdmin, async (req: Request, res: Response) => {
+    const { userId } = req.body;
+    console.log('/makeAdmin', userId);
+    try {
+        const userToPromote = await UserCollection.findById({ _id: userId });
+        if (!userToPromote) {
+            res.status(404).json({ message: "User not found" });
+        } else {
+            userToPromote.is_admin = true;
+            await userToPromote.save();
+            res.status(200).json({ message: `User ${userId} Promoted to Admin` });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to promote user" });
+    }
+});
+
+router.post('/removeAdmin', checkAdmin, async (req: Request, res: Response) => {
+    const { userId } = req.body;
+    console.log('/removeAdmin', userId);
+    try {
+        const userToDemote = await UserCollection.findById({ _id: userId });
+        if (!userToDemote) {
+            res.status(404).json({ message: "User not found" });
+        } else {
+            userToDemote.is_admin = false;
+            await userToDemote.save();
+            res.status(200).json({ message: `User ${userId} Demoted from Admin` });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to demote user" });
+    }
+});
 
 module.exports = router;

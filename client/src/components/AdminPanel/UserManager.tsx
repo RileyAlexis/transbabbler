@@ -5,7 +5,11 @@ import { Button, Table, AlertDialog, Text } from "@radix-ui/themes";
 
 import { UserType } from "src/Types/UserType";
 
-export const UserManager: React.FC = () => {
+interface UserManagerProps {
+    setAllWords: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export const UserManager: React.FC<UserManagerProps> = ({ setAllWords }) => {
 
     const [userList, setUserList] = useState<UserType[]>([]);
     const [userToDelete, setUserToDelete] = useState<UserType>();
@@ -15,6 +19,7 @@ export const UserManager: React.FC = () => {
         axios.get('/api/users/allUsers')
             .then((response) => {
                 setUserList(response.data);
+                setAllWords(response.data);
             }).catch((error) => {
                 console.log(error);
             })
