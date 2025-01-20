@@ -21,9 +21,15 @@ const userSlice = createSlice({
             state.username = null;
             state.is_admin = false;
             return state;
+        },
+        addPhrase(state, action) {
+            state.phrases?.push(action.payload);
+        },
+        removePhrase(state, action) {
+            state.phrases?.splice(action.payload, 1);
         }
     }
 });
 
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser, addPhrase } = userSlice.actions;
 export default userSlice.reducer;

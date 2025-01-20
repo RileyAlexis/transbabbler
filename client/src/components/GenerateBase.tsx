@@ -1,14 +1,23 @@
-import { useSelector, } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Text } from "@radix-ui/themes";
 
+//Actions
+import { addPhrase } from "../redux/reducers/userReducer";
+
 //Types
-import { BabbleRootState } from "src/Types/BabblerRootState";
+import { BabbleRootState } from "../Types/BabblerRootState";
 
 
 export const GenerateBase: React.FC = () => {
 
     const babble = useSelector((state: BabbleRootState) => state.babble);
+    const user = useSelector((state: BabbleRootState) => state.user);
+    const dispatch = useDispatch();
+
+    const addPhraseToUser = (phrase: string) => {
+        dispatch(addPhrase(phrase));
+    }
 
     return (
         <div className="babblerContainer">
@@ -24,7 +33,11 @@ export const GenerateBase: React.FC = () => {
                     {babble.length > 0 &&
                         babble.map((line, index) => (
                             <span className="babblerLines" key={index}>
-                                {line}
+                                <a onClick={() => addPhraseToUser(line)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {line}
+                                </a>
                                 {
                                     babble.length > 1 &&
                                     <Text color="pink" size="6" as="span" style={{ marginLeft: '0.2rem' }}>|</Text>
