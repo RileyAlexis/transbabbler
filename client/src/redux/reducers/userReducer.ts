@@ -13,7 +13,6 @@ const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         setUser(state, action) {
-            console.log(action.payload.username);
             state.username = action.payload.username;
             state.is_admin = action.payload.is_admin;
         },

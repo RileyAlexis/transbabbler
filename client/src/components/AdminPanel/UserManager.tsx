@@ -26,7 +26,6 @@ export const UserManager: React.FC<UserManagerProps> = ({ setAllWords }) => {
     };
 
     const removeUser = () => {
-        console.log('removeUser', userToDelete);
         axios.delete('/api/users/removeUser', { data: { userId: userToDelete?._id } })
             .then(() => {
                 getAllUsers();
@@ -36,7 +35,6 @@ export const UserManager: React.FC<UserManagerProps> = ({ setAllWords }) => {
     }
 
     const runAlert = (user: UserType) => {
-        console.log(user);
         setIsAlertOpen(true);
         setUserToDelete(user);
     };

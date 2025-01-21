@@ -24,8 +24,7 @@ export const GenerateBase: React.FC = () => {
             dispatch(removePhrase(phrase));
 
             axios.post('/api/users/removePhrase', { phrase }, { withCredentials: true })
-                .then((response) => {
-                    console.log(response);
+                .then(() => {
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -33,8 +32,7 @@ export const GenerateBase: React.FC = () => {
             dispatch(addPhrase(phrase));
 
             axios.post('/api/users/addPhrase', { phrase }, { withCredentials: true })
-                .then((response) => {
-                    console.log(response);
+                .then(() => {
                 }).catch((error) => {
                     console.log(error);
                 });

@@ -15,8 +15,7 @@ export const UserSavedPhrases: React.FC = () => {
 
     const handleRemovePhrase = (phrase: string) => {
         axios.post('/api/users/removePhrase', { phrase }, { withCredentials: true })
-            .then((response) => {
-                console.log(response);
+            .then(() => {
                 dispatch(removePhrase(phrase));
             }).catch((error) => {
                 console.log(error);
