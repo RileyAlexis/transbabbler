@@ -142,6 +142,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
+        will-change: transform;
+        transform: translateZ(0);
     }
 
     .savedPhrasesContainer {
