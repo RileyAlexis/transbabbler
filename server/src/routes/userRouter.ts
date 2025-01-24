@@ -14,6 +14,7 @@ router.post('/login', (req, res, next) => {
     passport.authenticate('local', (error: Error, user: UserType) => {
         if (error) {
             res.status(500).json({ message: 'An error occurred during authentication' });
+            return;
         } else if (!user) {
             res.status(401).json({ message: 'Username or password incorrect' });
             return;
@@ -23,7 +24,7 @@ router.post('/login', (req, res, next) => {
             if (loginErr) {
                 res.status(500).json({ message: 'Login failed' });
             } else {
-                res.status(200).send({ message: 'Logged in successfully', id: user._id, username: user.username, is_admin: user.is_admin });
+                res.status(200).json({ message: 'Logged in successfully', id: user._id, username: user.username, is_admin: user.is_admin });
             }
         });
     })(req, res, next);
@@ -54,14 +55,14 @@ router.post('/register', async (req: Request, res: Response) => {
     try {
         const existingUser = await UserCollection.findOne({ username });
         if (existingUser) {
-            res.status(400).send('Username already exists');
+            res.status(400).json({ message: 'Username already exists' });
         } else {
             const newUser = new UserCollection({ username, password });
             await newUser.save();
-            res.send('User Registered Successfully');
+            res.status(200).json({ message: 'User Registered Successfully' });
         }
     } catch (error) {
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 });
 
