@@ -39,8 +39,8 @@ export const DataSetSelector: React.FC<DataSetSelectorProps> = ({ size, title })
     useEffect(() => {
         const handleResize = () => setScreenWidth(window.innerWidth);
 
-        window.addEventListener("resize", handleResize); // Add resize event listener
-        return () => window.removeEventListener("resize", handleResize); // Cleanup on unmount
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const handleSelect = (item: string) => {
