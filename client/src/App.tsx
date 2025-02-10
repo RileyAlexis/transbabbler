@@ -26,35 +26,39 @@ function App() {
 
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    axios.get('/api/users/', { withCredentials: true })
-      .then((response) => {
-        // Does not include phrases (only username and is_admin)
-        // console.log('get /api/users', response.data.user)
-        dispatch(setUser(response.data.user));
-      }).catch((error) => {
-        console.log(error);
+    const fetchData = async () => {
+      const [userRes, dbRes, phrasesRes] = await Promise.allSettled([
+        axios.get('/api/users/', { withCredentials: true }),
+        getDatabaseNames(),
+        axios.get('/api/users/phrases', { withCredentials: true }),
+      ]);
+
+      if (userRes.status === 'fulfilled') {
+        dispatch(setUser(userRes.value.data.user));
+        console.log('user', userRes.value.data.user);
+      } else {
+        console.error(userRes.reason);
         setUser(null);
-      })
-  }, []);
+      }
 
-  useEffect(() => {
-    getDatabaseNames()
-      .then((response) => {
-        dispatch(setAvilableDatabases(response));
-      }).catch((error) => {
-        console.error(error);
-      })
-  }, []);
+      if (dbRes.status === 'fulfilled') {
+        dispatch(setAvilableDatabases(dbRes.value));
+        console.log('databases', dbRes.value);
+      } else {
+        console.error(dbRes.reason);
+      }
 
-  useEffect(() => {
-    axios.get('/api/users/phrases', { withCredentials: true })
-      .then((response) => {
-        // console.log('get /api/users/phrases', response.data);
-        dispatch(setPhrases(response.data));
-      }).catch((error) => {
-        console.error(error);
-      })
+      if (phrasesRes.status === 'fulfilled') {
+        dispatch(setPhrases(phrasesRes.value.data));
+        console.log('phrases', phrasesRes.value.data);
+      } else {
+        console.error(phrasesRes.reason);
+      }
+    }
+    fetchData();
+
   }, []);
 
   return (
