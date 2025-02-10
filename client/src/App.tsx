@@ -10,7 +10,6 @@ import { ThemeSelector } from './components/ThemeSelector';
 import { GenerateBase } from './components/GenerateBase';
 import { BabbleHeader } from './components/BabbleHeader';
 import { AdminPanel } from './components/AdminPanel/AdminPanel';
-import { BaseApp } from './components/BaseApp';
 
 //Modules
 import { getDatabaseNames } from './modules/getDatabaseNames';
@@ -37,7 +36,6 @@ function App() {
 
       if (userRes.status === 'fulfilled') {
         dispatch(setUser(userRes.value.data.user));
-        console.log('user', userRes.value.data.user);
       } else {
         console.error(userRes.reason);
         setUser(null);
@@ -45,14 +43,12 @@ function App() {
 
       if (dbRes.status === 'fulfilled') {
         dispatch(setAvilableDatabases(dbRes.value));
-        console.log('databases', dbRes.value);
       } else {
         console.error(dbRes.reason);
       }
 
       if (phrasesRes.status === 'fulfilled') {
         dispatch(setPhrases(phrasesRes.value.data));
-        console.log('phrases', phrasesRes.value.data);
       } else {
         console.error(phrasesRes.reason);
       }
