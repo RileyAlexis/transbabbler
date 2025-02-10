@@ -99,11 +99,6 @@ function App() {
         }
         />
 
-        <Route path="test" element={<>
-          <BabbleHeader />
-          <BaseApp />
-        </>} />
-
         <Route path="/admin" element={
           <AdminPanel />
         }
