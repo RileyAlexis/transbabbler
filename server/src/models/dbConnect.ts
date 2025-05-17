@@ -14,7 +14,8 @@ const mongoDB = process.env.MONGO_DB!;
 // const mongoPFX = process.env.MONGO_PFX!;
 const mongoPort = "27017";
 
-const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?tls=true&authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
+// const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?tls=true&authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
+const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
 
 const RETRY_DELAY = 5000;
 const MAX_RETRIES = 25;
@@ -25,8 +26,8 @@ export const dbConnect = async (): Promise<void> => {
     // const tlsCertBuffer = Buffer.from(mongoTLS, "base64");
     // const caCertBuffer = Buffer.from(mongoCA, "base64");
     // const pfxBuffer = Buffer.from(mongoPFX);
-    const tlsCertificateKeyFile = path.resolve(__dirname, "../../keys/mongo.pem");
-    const tlsCAFile = path.resolve(__dirname, "../../keys/caMongo.pem");
+    // const tlsCertificateKeyFile = path.resolve(__dirname, "../../keys/mongo.pem");
+    // const tlsCAFile = path.resolve(__dirname, "../../keys/caMongo.pem");
     console.log(mongoURI);
 
 
@@ -37,8 +38,8 @@ export const dbConnect = async (): Promise<void> => {
                 // ca: caCertBuffer,
                 // pfx: pfxBuffer,
                 // passphrase: '',
-                tlsCertificateKeyFile: tlsCertificateKeyFile,
-                tlsCAFile: tlsCAFile,
+                // tlsCertificateKeyFile: tlsCertificateKeyFile,
+                // tlsCAFile: tlsCAFile,
             });
             mongoose.set("autoIndex", false);
             console.log("Connected to Mongo DB");
