@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-import path from 'path';
+// import dotenv from "dotenv";
+// import path from 'path';
 // import fs from 'fs';
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+// dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const mongoUser = process.env.MONGO_USER!;
 const mongoPassword = process.env.MONGO_PASSWORD!;
