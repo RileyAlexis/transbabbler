@@ -22,6 +22,7 @@ dotenv.config();
 
 const corsOptions = {
     origin: function (origin: any, callback: any) {
+        console.log('Incoming Origin:', origin);
         const allowedOrigins = [
             'http://localhost:5173',
             'https://localhost:5173',
