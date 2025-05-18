@@ -36,9 +36,9 @@ const corsOptions = {
         }
     },
     credentials: true,  // Allow cookies to be sent across origins
-    // methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    // allowedHeaders: ['Content-Type', 'Authorization'],
-    // exposedHeaders: ['Content-Length', 'X-Kuma-Revision'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'X-Kuma-Revision'],
 };
 
 declare module 'express-session' {
