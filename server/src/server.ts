@@ -27,7 +27,7 @@ const corsOptions = {
             'https://localhost:5173',
             'http://transphasic.asuscomm.com',
             'https://transphasic.asuscomm.com',
-        ];
+        ]
 
         if (allowedOrigins.includes(origin) || !origin) {
             callback(null, true);  // Allow if origin matches or if no origin
@@ -61,7 +61,7 @@ app.use(session({
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     },
 }));
 
