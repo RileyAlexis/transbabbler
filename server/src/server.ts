@@ -26,8 +26,8 @@ const corsOptions = {
         const allowedOrigins = [
             'http://localhost:5173',
             'https://localhost:5173',
-            'http://transphasic.asuscomm.com',
-            'https://transphasic.asuscomm.com',
+            'http://transphasic.rileyalexis.com',
+            'https://transphasic.rileyalexis.com',
         ]
 
         if (allowedOrigins.includes(origin) || !origin) {
