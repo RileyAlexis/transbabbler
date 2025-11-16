@@ -16,8 +16,8 @@ const mongoDB = process.env.MONGO_DB!;
 const mongoPort = "27017";
 
 // const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?tls=true&authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
-const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
-
+// const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
+const mongoURI = process.env.LOACAL_MONGO_URI as string;
 const RETRY_DELAY = 5000;
 const MAX_RETRIES = 25;
 
