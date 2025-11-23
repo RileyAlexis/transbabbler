@@ -25,12 +25,18 @@ function App() {
 
   const dispatch = useDispatch();
 
+ useEffect(() => {
+  (async () => {
+    const dbNames:any = await getDatabaseNames()
+    dispatch(setAvilableDatabases(dbNames));
+    })();
+  },[]);
+ 
 
   useEffect(() => {
     const fetchData = async () => {
-      const [userRes, dbRes, phrasesRes] = await Promise.allSettled([
+      const [userRes, phrasesRes] = await Promise.allSettled([
         axios.get('/api/users/', { withCredentials: true }),
-        getDatabaseNames(),
         axios.get('/api/users/phrases', { withCredentials: true }),
       ]);
 
@@ -39,12 +45,6 @@ function App() {
       } else {
         console.error(userRes.reason);
         setUser(null);
-      }
-
-      if (dbRes.status === 'fulfilled') {
-        dispatch(setAvilableDatabases(dbRes.value));
-      } else {
-        console.error(dbRes.reason);
       }
 
       if (phrasesRes.status === 'fulfilled') {

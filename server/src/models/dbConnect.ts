@@ -9,39 +9,20 @@ const mongoPassword = process.env.MONGO_PASSWORD!;
 const mongoAuthSource = process.env.MONGO_AUTH_SOURCE!;
 const mongoHost = process.env.MONGO_HOST!;
 const mongoDB = process.env.MONGO_DB!;
-// const mongoURI = process.env.LOCAL_MONGO_URI as string;
-// const mongoTLS = process.env.MONGO_TLS_CERT!;
-// const mongoCA = process.env.MONGO_CA!;
-// const mongoPFX = process.env.MONGO_PFX!;
+
 const mongoPort = "27017";
 
-// const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?tls=true&authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
 const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDB}?authSource=${mongoAuthSource}&authMechanism=SCRAM-SHA-256`;
-// const mongoURI = process.env.LOACAL_MONGO_URI as string;
+// const mongoURI = process.env.LOCAL_MONGO_URI as string;
 const RETRY_DELAY = 5000;
 const MAX_RETRIES = 25;
 
 export const dbConnect = async (): Promise<void> => {
     let attempts = 0;
-
-    // const tlsCertBuffer = Buffer.from(mongoTLS, "base64");
-    // const caCertBuffer = Buffer.from(mongoCA, "base64");
-    // const pfxBuffer = Buffer.from(mongoPFX);
-    // const tlsCertificateKeyFile = path.resolve(__dirname, "../../keys/mongo.pem");
-    // const tlsCAFile = path.resolve(__dirname, "../../keys/caMongo.pem");
     console.log(mongoURI);
-
-
     while (attempts < MAX_RETRIES) {
         try {
-            await mongoose.connect(mongoURI, {
-                // cert: tlsCertBuffer,
-                // ca: caCertBuffer,
-                // pfx: pfxBuffer,
-                // passphrase: '',
-                // tlsCertificateKeyFile: tlsCertificateKeyFile,
-                // tlsCAFile: tlsCAFile,
-            });
+            await mongoose.connect(mongoURI, {});
             mongoose.set("autoIndex", false);
             console.log("Connected to Mongo DB");
             return;
